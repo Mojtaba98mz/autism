@@ -42,6 +42,8 @@
     "jwtSecretKey": "MjUyZTZkYmYxOTU1MGEzNzQ2NTdmZWExNWNjNjE2ZjhkNDRlZWJhZWE2YzU3YzZhOWJmYzJmMWIwYmZmZDJjM2VjZWZjYTdiOThlOGEwOGZmODdhZWNiNTI2NmMwMjAzNjFiN2RjNGM5MmY2MjdjMTI1NWY2MzYyMmFhNmI2ZTM=",
     "devServerPort": 4200,
     "clientPackageManager": "npm",
-    "languages": ["fa"]
+    "languages": ["fa"],
+    "entities": ["Giver", "Donation", "GiverAuditor"],
+    "lastLiquibaseTimestamp": 1626453879000
   }
 }

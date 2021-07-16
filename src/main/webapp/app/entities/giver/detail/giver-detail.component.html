@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="giver">
+      <h2 data-cy="giverDetailsHeading"><span jhiTranslate="autismApp.giver.detail.title">Giver</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ giver.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.name">Name</span></dt>
+        <dd>
+          <span>{{ giver.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.family">Family</span></dt>
+        <dd>
+          <span>{{ giver.family }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span></dt>
+        <dd>
+          <span>{{ giver.phoneNumber }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.code">Code</span></dt>
+        <dd>
+          <span>{{ giver.code }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.province">Province</span></dt>
+        <dd>
+          <span>{{ giver.province }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.city">City</span></dt>
+        <dd>
+          <span>{{ giver.city }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.address">Address</span></dt>
+        <dd>
+          <span>{{ giver.address }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.absorbDate">Absorb Date</span></dt>
+        <dd>
+          <span>{{ giver.absorbDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.absorbant">Absorbant</span></dt>
+        <dd>
+          <span>{{ giver.absorbant?.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.supporter">Supporter</span></dt>
+        <dd>
+          <span>{{ giver.supporter?.id }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/giver', giver.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+{
+  "name": "GiverAuditor",
+  "fields": [
+    {
+      "fieldName": "fiedlName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "oldValue",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "newValue",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "changeDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "giverAuditor",
+      "relationshipName": "auditor"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "giver",
+      "otherEntityRelationshipName": "giverauditor",
+      "relationshipName": "giver"
+    }
+  ],
+  "entityTableName": "giver_auditor",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210716164439"
+}

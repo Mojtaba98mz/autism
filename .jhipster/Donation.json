@@ -1,0 +1,49 @@
+{
+  "name": "Donation",
+  "fields": [
+    {
+      "fieldName": "isCash",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "donationDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "helpType",
+      "fieldType": "HelpType",
+      "fieldValues": "BERENJ (برنج),ROGHAN (روغن),LEBAS (لباس),DARMAN (درمان),KHEIRATENAN (خیرات نان),KAFARE (کفاره),FETRIE (فطریه),GOOSHTEGHORBANI (گوشت قربانی),SAYER (سایر)"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "receipt",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "giver",
+      "otherEntityRelationshipName": "donation",
+      "relationshipName": "giver"
+    }
+  ],
+  "entityTableName": "donation",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210716164438"
+}

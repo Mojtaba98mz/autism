@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="donation">
+      <h2 data-cy="donationDetailsHeading"><span jhiTranslate="autismApp.donation.detail.title">Donation</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ donation.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.donation.isCash">Is Cash</span></dt>
+        <dd>
+          <span>{{ donation.isCash }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.donation.amount">Amount</span></dt>
+        <dd>
+          <span>{{ donation.amount }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.donation.donationDate">Donation Date</span></dt>
+        <dd>
+          <span>{{ donation.donationDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.donation.helpType">Help Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'autismApp.HelpType.' + donation.helpType }}">{{ donation.helpType }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.donation.description">Description</span></dt>
+        <dd>
+          <span>{{ donation.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.donation.receipt">Receipt</span></dt>
+        <dd>
+          <div *ngIf="donation.receipt">
+            <a (click)="openFile(donation.receipt, donation.receiptContentType)">
+              <img
+                [src]="'data:' + donation.receiptContentType + ';base64,' + donation.receipt"
+                style="max-width: 100%"
+                alt="donation image"
+              />
+            </a>
+            {{ donation.receiptContentType }}, {{ byteSize(donation.receipt) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="autismApp.donation.giver">Giver</span></dt>
+        <dd>
+          <div *ngIf="donation.giver">
+            <a [routerLink]="['/giver', donation.giver?.id, 'view']">{{ donation.giver?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/donation', donation.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

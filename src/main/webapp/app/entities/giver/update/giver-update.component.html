@@ -1,0 +1,141 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-giver-heading" data-cy="GiverCreateUpdateHeading" jhiTranslate="autismApp.giver.home.createOrEditLabel">
+        Create or edit a Giver
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.family" for="field_family">Family</label>
+          <input type="text" class="form-control" name="family" id="field_family" data-cy="family" formControlName="family" />
+          <div *ngIf="editForm.get('family')!.invalid && (editForm.get('family')!.dirty || editForm.get('family')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('family')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.phoneNumber" for="field_phoneNumber">Phone Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="phoneNumber"
+            id="field_phoneNumber"
+            data-cy="phoneNumber"
+            formControlName="phoneNumber"
+          />
+          <div *ngIf="editForm.get('phoneNumber')!.invalid && (editForm.get('phoneNumber')!.dirty || editForm.get('phoneNumber')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('phoneNumber')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.code" for="field_code">Code</label>
+          <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
+          <div *ngIf="editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('code')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.province" for="field_province">Province</label>
+          <input type="text" class="form-control" name="province" id="field_province" data-cy="province" formControlName="province" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.city" for="field_city">City</label>
+          <input type="text" class="form-control" name="city" id="field_city" data-cy="city" formControlName="city" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.address" for="field_address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.absorbDate" for="field_absorbDate">Absorb Date</label>
+          <div class="d-flex">
+            <input
+              id="field_absorbDate"
+              data-cy="absorbDate"
+              type="datetime-local"
+              class="form-control"
+              name="absorbDate"
+              formControlName="absorbDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.absorbant" for="field_absorbant">Absorbant</label>
+          <select class="form-control" id="field_absorbant" data-cy="absorbant" name="absorbant" formControlName="absorbant">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('absorbant')!.value?.id ? editForm.get('absorbant')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.supporter" for="field_supporter">Supporter</label>
+          <select class="form-control" id="field_supporter" data-cy="supporter" name="supporter" formControlName="supporter">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('supporter')!.value?.id ? editForm.get('supporter')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+{
+  "autismApp": {
+    "giver": {
+      "home": {
+        "title": "Givers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Giver",
+        "createOrEditLabel": "Create or edit a Giver",
+        "notFound": "No Givers found"
+      },
+      "created": "A new Giver is created with identifier {{ param }}",
+      "updated": "A Giver is updated with identifier {{ param }}",
+      "deleted": "A Giver is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Giver {{ id }}?"
+      },
+      "detail": {
+        "title": "Giver"
+      },
+      "id": "ID",
+      "name": "Name",
+      "family": "Family",
+      "phoneNumber": "Phone Number",
+      "code": "Code",
+      "province": "Province",
+      "city": "City",
+      "address": "Address",
+      "absorbDate": "Absorb Date",
+      "donation": "Donation",
+      "giverauditor": "Giverauditor",
+      "absorbant": "Absorbant",
+      "supporter": "Supporter"
+    }
+  }
+}

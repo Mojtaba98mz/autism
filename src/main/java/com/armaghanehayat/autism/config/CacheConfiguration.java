@@ -48,6 +48,11 @@ public class CacheConfiguration {
             createCache(cm, com.armaghanehayat.autism.domain.User.class.getName());
             createCache(cm, com.armaghanehayat.autism.domain.Authority.class.getName());
             createCache(cm, com.armaghanehayat.autism.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.armaghanehayat.autism.domain.Giver.class.getName());
+            createCache(cm, com.armaghanehayat.autism.domain.Giver.class.getName() + ".donations");
+            createCache(cm, com.armaghanehayat.autism.domain.Giver.class.getName() + ".giverauditors");
+            createCache(cm, com.armaghanehayat.autism.domain.Donation.class.getName());
+            createCache(cm, com.armaghanehayat.autism.domain.GiverAuditor.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,0 +1,137 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-giver-auditor-heading"
+        data-cy="GiverAuditorCreateUpdateHeading"
+        jhiTranslate="autismApp.giverAuditor.home.createOrEditLabel"
+      >
+        Create or edit a Giver Auditor
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giverAuditor.fiedlName" for="field_fiedlName">Fiedl Name</label>
+          <input type="text" class="form-control" name="fiedlName" id="field_fiedlName" data-cy="fiedlName" formControlName="fiedlName" />
+          <div *ngIf="editForm.get('fiedlName')!.invalid && (editForm.get('fiedlName')!.dirty || editForm.get('fiedlName')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('fiedlName')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giverAuditor.oldValue" for="field_oldValue">Old Value</label>
+          <input type="text" class="form-control" name="oldValue" id="field_oldValue" data-cy="oldValue" formControlName="oldValue" />
+          <div *ngIf="editForm.get('oldValue')!.invalid && (editForm.get('oldValue')!.dirty || editForm.get('oldValue')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('oldValue')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giverAuditor.newValue" for="field_newValue">New Value</label>
+          <input type="text" class="form-control" name="newValue" id="field_newValue" data-cy="newValue" formControlName="newValue" />
+          <div *ngIf="editForm.get('newValue')!.invalid && (editForm.get('newValue')!.dirty || editForm.get('newValue')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('newValue')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giverAuditor.changeDate" for="field_changeDate">Change Date</label>
+          <div class="d-flex">
+            <input
+              id="field_changeDate"
+              data-cy="changeDate"
+              type="datetime-local"
+              class="form-control"
+              name="changeDate"
+              formControlName="changeDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('changeDate')!.invalid && (editForm.get('changeDate')!.dirty || editForm.get('changeDate')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('changeDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('changeDate')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giverAuditor.auditor" for="field_auditor">Auditor</label>
+          <select class="form-control" id="field_auditor" data-cy="auditor" name="auditor" formControlName="auditor">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('auditor')!.value?.id ? editForm.get('auditor')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giverAuditor.giver" for="field_giver">Giver</label>
+          <select class="form-control" id="field_giver" data-cy="giver" name="giver" formControlName="giver">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="giverOption.id === editForm.get('giver')!.value?.id ? editForm.get('giver')!.value : giverOption"
+              *ngFor="let giverOption of giversSharedCollection; trackBy: trackGiverById"
+            >
+              {{ giverOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

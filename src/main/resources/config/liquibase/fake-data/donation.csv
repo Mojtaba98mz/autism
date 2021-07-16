@@ -1,0 +1,11 @@
+id;is_cash;amount;donation_date;help_type;description;receipt;receipt_content_type
+1;false;12219;2021-07-16T04:36:28;BERENJ;قطبی;../fake-data/blob/hipster.png;image/png
+2;true;44192;2021-07-15T22:33:39;KHEIRATENAN;صورتحساب Avon generating;../fake-data/blob/hipster.png;image/png
+3;false;44863;2021-07-15T23:54:08;LEBAS;معمولی فلزی ایسلند;../fake-data/blob/hipster.png;image/png
+4;false;31917;2021-07-16T06:49:36;GOOSHTEGHORBANI;تحلیلگر Borders معماری;../fake-data/blob/hipster.png;image/png
+5;true;39258;2021-07-16T12:21:52;SAYER;ساز رئیس نرم;../fake-data/blob/hipster.png;image/png
+6;false;96394;2021-07-16T08:06:02;KAFARE;سپرده transmitting ماوس;../fake-data/blob/hipster.png;image/png
+7;true;69030;2021-07-15T20:31:11;SAYER;transmit;../fake-data/blob/hipster.png;image/png
+8;false;11766;2021-07-16T04:21:02;FETRIE;حقانی Bedfordshire;../fake-data/blob/hipster.png;image/png
+9;false;85263;2021-07-16T07:48:27;KHEIRATENAN;خوش فلزی generating;../fake-data/blob/hipster.png;image/png
+10;true;44267;2021-07-16T04:25:17;ROGHAN;یک;../fake-data/blob/hipster.png;image/png

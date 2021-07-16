@@ -1,0 +1,62 @@
+entity Giver {
+	name String required
+    family String required
+    phoneNumber String required
+    code String required
+    province String
+    city String
+    address String
+    absorbDate Instant
+}
+
+entity Donation {
+	isCash Boolean
+    amount Long
+    donationDate Instant
+    helpType HelpType
+    description String
+    receipt ImageBlob
+}
+
+entity GiverAuditor{
+	fiedlName String required
+    oldValue String required
+    newValue String required
+    changeDate Instant required
+}
+
+enum HelpType{
+	BERENJ("برنج"),
+  	ROGHAN ("روغن"),
+    LEBAS ("لباس"),
+	DARMAN ("درمان"),
+  	KHEIRATENAN ("خیرات نان"),
+  	KAFARE ("کفاره"),
+  	FETRIE ("فطریه"),
+    GOOSHTEGHORBANI ("گوشت قربانی"),
+    SAYER ("سایر")
+}
+
+relationship OneToMany {
+	Giver{donation} to Donation{giver}
+    Giver{giverauditor} to GiverAuditor{giver}
+}
+
+relationship ManyToOne {
+	Giver{absorbant} to User
+    Giver{supporter} to User
+    GiverAuditor{auditor} to User
+}
+
+// Set pagination options
+paginate all with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+filter all
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

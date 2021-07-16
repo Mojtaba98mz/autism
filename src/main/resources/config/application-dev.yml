@@ -33,8 +33,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://localhost:5432/autism
-    username: autism
-    password:
+    username: postgres
+    password: postgres
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -54,7 +54,7 @@ spring:
     cache: false
 
 server:
-  port: 8080
+  port: 8090
 
 # ===================================================================
 # JHipster specific properties

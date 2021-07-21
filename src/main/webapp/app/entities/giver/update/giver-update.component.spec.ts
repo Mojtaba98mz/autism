@@ -9,6 +9,10 @@ import { of, Subject } from 'rxjs';
 
 import { GiverService } from '../service/giver.service';
 import { IGiver, Giver } from '../giver.model';
+import { IProvince } from 'app/entities/province/province.model';
+import { ProvinceService } from 'app/entities/province/service/province.service';
+import { ICity } from 'app/entities/city/city.model';
+import { CityService } from 'app/entities/city/service/city.service';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
@@ -21,6 +25,8 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<GiverUpdateComponent>;
     let activatedRoute: ActivatedRoute;
     let giverService: GiverService;
+    let provinceService: ProvinceService;
+    let cityService: CityService;
     let userService: UserService;
 
     beforeEach(() => {
@@ -35,12 +41,50 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(GiverUpdateComponent);
       activatedRoute = TestBed.inject(ActivatedRoute);
       giverService = TestBed.inject(GiverService);
+      provinceService = TestBed.inject(ProvinceService);
+      cityService = TestBed.inject(CityService);
       userService = TestBed.inject(UserService);
 
       comp = fixture.componentInstance;
     });
 
     describe('ngOnInit', () => {
+      it('Should call province query and add missing value', () => {
+        const giver: IGiver = { id: 456 };
+        const province: IProvince = { id: 8976 };
+        giver.province = province;
+
+        const provinceCollection: IProvince[] = [{ id: 78403 }];
+        jest.spyOn(provinceService, 'query').mockReturnValue(of(new HttpResponse({ body: provinceCollection })));
+        const expectedCollection: IProvince[] = [province, ...provinceCollection];
+        jest.spyOn(provinceService, 'addProvinceToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+        activatedRoute.data = of({ giver });
+        comp.ngOnInit();
+
+        expect(provinceService.query).toHaveBeenCalled();
+        expect(provinceService.addProvinceToCollectionIfMissing).toHaveBeenCalledWith(provinceCollection, province);
+        expect(comp.provincesCollection).toEqual(expectedCollection);
+      });
+
+      it('Should call city query and add missing value', () => {
+        const giver: IGiver = { id: 456 };
+        const city: ICity = { id: 10533 };
+        giver.city = city;
+
+        const cityCollection: ICity[] = [{ id: 32683 }];
+        jest.spyOn(cityService, 'query').mockReturnValue(of(new HttpResponse({ body: cityCollection })));
+        const expectedCollection: ICity[] = [city, ...cityCollection];
+        jest.spyOn(cityService, 'addCityToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+        activatedRoute.data = of({ giver });
+        comp.ngOnInit();
+
+        expect(cityService.query).toHaveBeenCalled();
+        expect(cityService.addCityToCollectionIfMissing).toHaveBeenCalledWith(cityCollection, city);
+        expect(comp.citiesCollection).toEqual(expectedCollection);
+      });
+
       it('Should call User query and add missing value', () => {
         const giver: IGiver = { id: 456 };
         const absorbant: IUser = { id: 81743 };
@@ -64,6 +108,10 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const giver: IGiver = { id: 456 };
+        const province: IProvince = { id: 66115 };
+        giver.province = province;
+        const city: ICity = { id: 83483 };
+        giver.city = city;
         const absorbant: IUser = { id: 73741 };
         giver.absorbant = absorbant;
         const supporter: IUser = { id: 58654 };
@@ -73,6 +121,8 @@ describe('Component Tests', () => {
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(giver));
+        expect(comp.provincesCollection).toContain(province);
+        expect(comp.citiesCollection).toContain(city);
         expect(comp.usersSharedCollection).toContain(absorbant);
         expect(comp.usersSharedCollection).toContain(supporter);
       });
@@ -143,6 +193,22 @@ describe('Component Tests', () => {
     });
 
     describe('Tracking relationships identifiers', () => {
+      describe('trackProvinceById', () => {
+        it('Should return tracked Province primary key', () => {
+          const entity = { id: 123 };
+          const trackResult = comp.trackProvinceById(0, entity);
+          expect(trackResult).toEqual(entity.id);
+        });
+      });
+
+      describe('trackCityById', () => {
+        it('Should return tracked City primary key', () => {
+          const entity = { id: 123 };
+          const trackResult = comp.trackCityById(0, entity);
+          expect(trackResult).toEqual(entity.id);
+        });
+      });
+
       describe('trackUserById', () => {
         it('Should return tracked User primary key', () => {
           const entity = { id: 123 };

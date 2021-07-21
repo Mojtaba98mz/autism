@@ -22,14 +22,6 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "province",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "city",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "address",
       "fieldType": "String"
     },
@@ -39,6 +31,20 @@
     }
   ],
   "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "province",
+      "otherEntityRelationshipName": "giver",
+      "relationshipName": "province",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "city",
+      "otherEntityRelationshipName": "giver",
+      "relationshipName": "city",
+      "ownerSide": true
+    },
     {
       "relationshipType": "one-to-many",
       "otherEntityName": "donation",

@@ -6,9 +6,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.armaghanehayat.autism.IntegrationTest;
+import com.armaghanehayat.autism.domain.City;
 import com.armaghanehayat.autism.domain.Donation;
 import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.domain.GiverAuditor;
+import com.armaghanehayat.autism.domain.Province;
 import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.GiverRepository;
 import com.armaghanehayat.autism.service.criteria.GiverCriteria;
@@ -47,12 +49,6 @@ class GiverResourceIT {
     private static final String DEFAULT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_CODE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PROVINCE = "AAAAAAAAAA";
-    private static final String UPDATED_PROVINCE = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CITY = "AAAAAAAAAA";
-    private static final String UPDATED_CITY = "BBBBBBBBBB";
-
     private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
@@ -88,8 +84,6 @@ class GiverResourceIT {
             .family(DEFAULT_FAMILY)
             .phoneNumber(DEFAULT_PHONE_NUMBER)
             .code(DEFAULT_CODE)
-            .province(DEFAULT_PROVINCE)
-            .city(DEFAULT_CITY)
             .address(DEFAULT_ADDRESS)
             .absorbDate(DEFAULT_ABSORB_DATE);
         return giver;
@@ -107,8 +101,6 @@ class GiverResourceIT {
             .family(UPDATED_FAMILY)
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .code(UPDATED_CODE)
-            .province(UPDATED_PROVINCE)
-            .city(UPDATED_CITY)
             .address(UPDATED_ADDRESS)
             .absorbDate(UPDATED_ABSORB_DATE);
         return giver;
@@ -136,8 +128,6 @@ class GiverResourceIT {
         assertThat(testGiver.getFamily()).isEqualTo(DEFAULT_FAMILY);
         assertThat(testGiver.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
         assertThat(testGiver.getCode()).isEqualTo(DEFAULT_CODE);
-        assertThat(testGiver.getProvince()).isEqualTo(DEFAULT_PROVINCE);
-        assertThat(testGiver.getCity()).isEqualTo(DEFAULT_CITY);
         assertThat(testGiver.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(DEFAULT_ABSORB_DATE);
     }
@@ -244,8 +234,6 @@ class GiverResourceIT {
             .andExpect(jsonPath("$.[*].family").value(hasItem(DEFAULT_FAMILY)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
-            .andExpect(jsonPath("$.[*].province").value(hasItem(DEFAULT_PROVINCE)))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].absorbDate").value(hasItem(DEFAULT_ABSORB_DATE.toString())));
     }
@@ -266,8 +254,6 @@ class GiverResourceIT {
             .andExpect(jsonPath("$.family").value(DEFAULT_FAMILY))
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
-            .andExpect(jsonPath("$.province").value(DEFAULT_PROVINCE))
-            .andExpect(jsonPath("$.city").value(DEFAULT_CITY))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
             .andExpect(jsonPath("$.absorbDate").value(DEFAULT_ABSORB_DATE.toString()));
     }
@@ -604,162 +590,6 @@ class GiverResourceIT {
 
     @Test
     @Transactional
-    void getAllGiversByProvinceIsEqualToSomething() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where province equals to DEFAULT_PROVINCE
-        defaultGiverShouldBeFound("province.equals=" + DEFAULT_PROVINCE);
-
-        // Get all the giverList where province equals to UPDATED_PROVINCE
-        defaultGiverShouldNotBeFound("province.equals=" + UPDATED_PROVINCE);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByProvinceIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where province not equals to DEFAULT_PROVINCE
-        defaultGiverShouldNotBeFound("province.notEquals=" + DEFAULT_PROVINCE);
-
-        // Get all the giverList where province not equals to UPDATED_PROVINCE
-        defaultGiverShouldBeFound("province.notEquals=" + UPDATED_PROVINCE);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByProvinceIsInShouldWork() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where province in DEFAULT_PROVINCE or UPDATED_PROVINCE
-        defaultGiverShouldBeFound("province.in=" + DEFAULT_PROVINCE + "," + UPDATED_PROVINCE);
-
-        // Get all the giverList where province equals to UPDATED_PROVINCE
-        defaultGiverShouldNotBeFound("province.in=" + UPDATED_PROVINCE);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByProvinceIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where province is not null
-        defaultGiverShouldBeFound("province.specified=true");
-
-        // Get all the giverList where province is null
-        defaultGiverShouldNotBeFound("province.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByProvinceContainsSomething() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where province contains DEFAULT_PROVINCE
-        defaultGiverShouldBeFound("province.contains=" + DEFAULT_PROVINCE);
-
-        // Get all the giverList where province contains UPDATED_PROVINCE
-        defaultGiverShouldNotBeFound("province.contains=" + UPDATED_PROVINCE);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByProvinceNotContainsSomething() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where province does not contain DEFAULT_PROVINCE
-        defaultGiverShouldNotBeFound("province.doesNotContain=" + DEFAULT_PROVINCE);
-
-        // Get all the giverList where province does not contain UPDATED_PROVINCE
-        defaultGiverShouldBeFound("province.doesNotContain=" + UPDATED_PROVINCE);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByCityIsEqualToSomething() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where city equals to DEFAULT_CITY
-        defaultGiverShouldBeFound("city.equals=" + DEFAULT_CITY);
-
-        // Get all the giverList where city equals to UPDATED_CITY
-        defaultGiverShouldNotBeFound("city.equals=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByCityIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where city not equals to DEFAULT_CITY
-        defaultGiverShouldNotBeFound("city.notEquals=" + DEFAULT_CITY);
-
-        // Get all the giverList where city not equals to UPDATED_CITY
-        defaultGiverShouldBeFound("city.notEquals=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByCityIsInShouldWork() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where city in DEFAULT_CITY or UPDATED_CITY
-        defaultGiverShouldBeFound("city.in=" + DEFAULT_CITY + "," + UPDATED_CITY);
-
-        // Get all the giverList where city equals to UPDATED_CITY
-        defaultGiverShouldNotBeFound("city.in=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByCityIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where city is not null
-        defaultGiverShouldBeFound("city.specified=true");
-
-        // Get all the giverList where city is null
-        defaultGiverShouldNotBeFound("city.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByCityContainsSomething() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where city contains DEFAULT_CITY
-        defaultGiverShouldBeFound("city.contains=" + DEFAULT_CITY);
-
-        // Get all the giverList where city contains UPDATED_CITY
-        defaultGiverShouldNotBeFound("city.contains=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
-    void getAllGiversByCityNotContainsSomething() throws Exception {
-        // Initialize the database
-        giverRepository.saveAndFlush(giver);
-
-        // Get all the giverList where city does not contain DEFAULT_CITY
-        defaultGiverShouldNotBeFound("city.doesNotContain=" + DEFAULT_CITY);
-
-        // Get all the giverList where city does not contain UPDATED_CITY
-        defaultGiverShouldBeFound("city.doesNotContain=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
     void getAllGiversByAddressIsEqualToSomething() throws Exception {
         // Initialize the database
         giverRepository.saveAndFlush(giver);
@@ -890,6 +720,44 @@ class GiverResourceIT {
 
     @Test
     @Transactional
+    void getAllGiversByProvinceIsEqualToSomething() throws Exception {
+        // Initialize the database
+        giverRepository.saveAndFlush(giver);
+        Province province = ProvinceResourceIT.createEntity(em);
+        em.persist(province);
+        em.flush();
+        giver.setProvince(province);
+        giverRepository.saveAndFlush(giver);
+        Long provinceId = province.getId();
+
+        // Get all the giverList where province equals to provinceId
+        defaultGiverShouldBeFound("provinceId.equals=" + provinceId);
+
+        // Get all the giverList where province equals to (provinceId + 1)
+        defaultGiverShouldNotBeFound("provinceId.equals=" + (provinceId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllGiversByCityIsEqualToSomething() throws Exception {
+        // Initialize the database
+        giverRepository.saveAndFlush(giver);
+        City city = CityResourceIT.createEntity(em);
+        em.persist(city);
+        em.flush();
+        giver.setCity(city);
+        giverRepository.saveAndFlush(giver);
+        Long cityId = city.getId();
+
+        // Get all the giverList where city equals to cityId
+        defaultGiverShouldBeFound("cityId.equals=" + cityId);
+
+        // Get all the giverList where city equals to (cityId + 1)
+        defaultGiverShouldNotBeFound("cityId.equals=" + (cityId + 1));
+    }
+
+    @Test
+    @Transactional
     void getAllGiversByDonationIsEqualToSomething() throws Exception {
         // Initialize the database
         giverRepository.saveAndFlush(giver);
@@ -977,8 +845,6 @@ class GiverResourceIT {
             .andExpect(jsonPath("$.[*].family").value(hasItem(DEFAULT_FAMILY)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
-            .andExpect(jsonPath("$.[*].province").value(hasItem(DEFAULT_PROVINCE)))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].absorbDate").value(hasItem(DEFAULT_ABSORB_DATE.toString())));
 
@@ -1033,8 +899,6 @@ class GiverResourceIT {
             .family(UPDATED_FAMILY)
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .code(UPDATED_CODE)
-            .province(UPDATED_PROVINCE)
-            .city(UPDATED_CITY)
             .address(UPDATED_ADDRESS)
             .absorbDate(UPDATED_ABSORB_DATE);
 
@@ -1054,8 +918,6 @@ class GiverResourceIT {
         assertThat(testGiver.getFamily()).isEqualTo(UPDATED_FAMILY);
         assertThat(testGiver.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
         assertThat(testGiver.getCode()).isEqualTo(UPDATED_CODE);
-        assertThat(testGiver.getProvince()).isEqualTo(UPDATED_PROVINCE);
-        assertThat(testGiver.getCity()).isEqualTo(UPDATED_CITY);
         assertThat(testGiver.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
     }
@@ -1128,13 +990,7 @@ class GiverResourceIT {
         Giver partialUpdatedGiver = new Giver();
         partialUpdatedGiver.setId(giver.getId());
 
-        partialUpdatedGiver
-            .name(UPDATED_NAME)
-            .phoneNumber(UPDATED_PHONE_NUMBER)
-            .code(UPDATED_CODE)
-            .city(UPDATED_CITY)
-            .address(UPDATED_ADDRESS)
-            .absorbDate(UPDATED_ABSORB_DATE);
+        partialUpdatedGiver.name(UPDATED_NAME).phoneNumber(UPDATED_PHONE_NUMBER).code(UPDATED_CODE).absorbDate(UPDATED_ABSORB_DATE);
 
         restGiverMockMvc
             .perform(
@@ -1152,9 +1008,7 @@ class GiverResourceIT {
         assertThat(testGiver.getFamily()).isEqualTo(DEFAULT_FAMILY);
         assertThat(testGiver.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
         assertThat(testGiver.getCode()).isEqualTo(UPDATED_CODE);
-        assertThat(testGiver.getProvince()).isEqualTo(DEFAULT_PROVINCE);
-        assertThat(testGiver.getCity()).isEqualTo(UPDATED_CITY);
-        assertThat(testGiver.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(testGiver.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
     }
 
@@ -1175,8 +1029,6 @@ class GiverResourceIT {
             .family(UPDATED_FAMILY)
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .code(UPDATED_CODE)
-            .province(UPDATED_PROVINCE)
-            .city(UPDATED_CITY)
             .address(UPDATED_ADDRESS)
             .absorbDate(UPDATED_ABSORB_DATE);
 
@@ -1196,8 +1048,6 @@ class GiverResourceIT {
         assertThat(testGiver.getFamily()).isEqualTo(UPDATED_FAMILY);
         assertThat(testGiver.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
         assertThat(testGiver.getCode()).isEqualTo(UPDATED_CODE);
-        assertThat(testGiver.getProvince()).isEqualTo(UPDATED_PROVINCE);
-        assertThat(testGiver.getCity()).isEqualTo(UPDATED_CITY);
         assertThat(testGiver.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
     }

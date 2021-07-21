@@ -30,8 +30,6 @@ describe('Service Tests', () => {
         family: 'AAAAAAA',
         phoneNumber: 'AAAAAAA',
         code: 'AAAAAAA',
-        province: 'AAAAAAA',
-        city: 'AAAAAAA',
         address: 'AAAAAAA',
         absorbDate: currentDate,
       };
@@ -84,8 +82,6 @@ describe('Service Tests', () => {
             family: 'BBBBBB',
             phoneNumber: 'BBBBBB',
             code: 'BBBBBB',
-            province: 'BBBBBB',
-            city: 'BBBBBB',
             address: 'BBBBBB',
             absorbDate: currentDate.format(DATE_TIME_FORMAT),
           },
@@ -110,7 +106,6 @@ describe('Service Tests', () => {
         const patchObject = Object.assign(
           {
             name: 'BBBBBB',
-            absorbDate: currentDate.format(DATE_TIME_FORMAT),
           },
           new Giver()
         );
@@ -139,8 +134,6 @@ describe('Service Tests', () => {
             family: 'BBBBBB',
             phoneNumber: 'BBBBBB',
             code: 'BBBBBB',
-            province: 'BBBBBB',
-            city: 'BBBBBB',
             address: 'BBBBBB',
             absorbDate: currentDate.format(DATE_TIME_FORMAT),
           },
@@ -199,7 +192,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Giver to an array', () => {
-          const giverArray: IGiver[] = [{ id: 123 }, { id: 456 }, { id: 5012 }];
+          const giverArray: IGiver[] = [{ id: 123 }, { id: 456 }, { id: 39849 }];
           const giverCollection: IGiver[] = [{ id: 123 }];
           expectedResult = service.addGiverToCollectionIfMissing(giverCollection, ...giverArray);
           expect(expectedResult).toHaveLength(3);

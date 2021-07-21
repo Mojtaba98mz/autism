@@ -52,12 +52,6 @@ public class GiverServiceImpl implements GiverService {
                     if (giver.getCode() != null) {
                         existingGiver.setCode(giver.getCode());
                     }
-                    if (giver.getProvince() != null) {
-                        existingGiver.setProvince(giver.getProvince());
-                    }
-                    if (giver.getCity() != null) {
-                        existingGiver.setCity(giver.getCity());
-                    }
                     if (giver.getAddress() != null) {
                         existingGiver.setAddress(giver.getAddress());
                     }

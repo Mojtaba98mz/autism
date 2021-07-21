@@ -10,6 +10,10 @@ import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IGiver, Giver } from '../giver.model';
 import { GiverService } from '../service/giver.service';
+import { IProvince } from 'app/entities/province/province.model';
+import { ProvinceService } from 'app/entities/province/service/province.service';
+import { ICity } from 'app/entities/city/city.model';
+import { CityService } from 'app/entities/city/service/city.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 
@@ -20,6 +24,8 @@ import { UserService } from 'app/entities/user/user.service';
 export class GiverUpdateComponent implements OnInit {
   isSaving = false;
 
+  provincesCollection: IProvince[] = [];
+  citiesCollection: ICity[] = [];
   usersSharedCollection: IUser[] = [];
 
   editForm = this.fb.group({
@@ -28,16 +34,18 @@ export class GiverUpdateComponent implements OnInit {
     family: [null, [Validators.required]],
     phoneNumber: [null, [Validators.required]],
     code: [null, [Validators.required]],
-    province: [],
-    city: [],
     address: [],
     absorbDate: [],
+    province: [],
+    city: [],
     absorbant: [],
     supporter: [],
   });
 
   constructor(
     protected giverService: GiverService,
+    protected provinceService: ProvinceService,
+    protected cityService: CityService,
     protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -70,6 +78,14 @@ export class GiverUpdateComponent implements OnInit {
     }
   }
 
+  trackProvinceById(index: number, item: IProvince): number {
+    return item.id!;
+  }
+
+  trackCityById(index: number, item: ICity): number {
+    return item.id!;
+  }
+
   trackUserById(index: number, item: IUser): number {
     return item.id!;
   }
@@ -100,14 +116,16 @@ export class GiverUpdateComponent implements OnInit {
       family: giver.family,
       phoneNumber: giver.phoneNumber,
       code: giver.code,
-      province: giver.province,
-      city: giver.city,
       address: giver.address,
       absorbDate: giver.absorbDate ? giver.absorbDate.format(DATE_TIME_FORMAT) : null,
+      province: giver.province,
+      city: giver.city,
       absorbant: giver.absorbant,
       supporter: giver.supporter,
     });
 
+    this.provincesCollection = this.provinceService.addProvinceToCollectionIfMissing(this.provincesCollection, giver.province);
+    this.citiesCollection = this.cityService.addCityToCollectionIfMissing(this.citiesCollection, giver.city);
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(
       this.usersSharedCollection,
       giver.absorbant,
@@ -116,6 +134,22 @@ export class GiverUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
+    this.provinceService
+      .query({ 'giverId.specified': 'false' })
+      .pipe(map((res: HttpResponse<IProvince[]>) => res.body ?? []))
+      .pipe(
+        map((provinces: IProvince[]) =>
+          this.provinceService.addProvinceToCollectionIfMissing(provinces, this.editForm.get('province')!.value)
+        )
+      )
+      .subscribe((provinces: IProvince[]) => (this.provincesCollection = provinces));
+
+    this.cityService
+      .query({ 'giverId.specified': 'false' })
+      .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))
+      .pipe(map((cities: ICity[]) => this.cityService.addCityToCollectionIfMissing(cities, this.editForm.get('city')!.value)))
+      .subscribe((cities: ICity[]) => (this.citiesCollection = cities));
+
     this.userService
       .query()
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
@@ -135,10 +169,10 @@ export class GiverUpdateComponent implements OnInit {
       family: this.editForm.get(['family'])!.value,
       phoneNumber: this.editForm.get(['phoneNumber'])!.value,
       code: this.editForm.get(['code'])!.value,
-      province: this.editForm.get(['province'])!.value,
-      city: this.editForm.get(['city'])!.value,
       address: this.editForm.get(['address'])!.value,
       absorbDate: this.editForm.get(['absorbDate'])!.value ? dayjs(this.editForm.get(['absorbDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      province: this.editForm.get(['province'])!.value,
+      city: this.editForm.get(['city'])!.value,
       absorbant: this.editForm.get(['absorbant'])!.value,
       supporter: this.editForm.get(['supporter'])!.value,
     };

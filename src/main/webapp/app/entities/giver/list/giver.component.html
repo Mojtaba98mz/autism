@@ -39,16 +39,16 @@
             <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="code"><span jhiTranslate="autismApp.giver.code">Code</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="province">
-            <span jhiTranslate="autismApp.giver.province">Province</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="city"><span jhiTranslate="autismApp.giver.city">City</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="address">
             <span jhiTranslate="autismApp.giver.address">Address</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="absorbDate">
             <span jhiTranslate="autismApp.giver.absorbDate">Absorb Date</span> <fa-icon icon="sort"></fa-icon>
           </th>
+          <th scope="col" jhiSortBy="province.id">
+            <span jhiTranslate="autismApp.giver.province">Province</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="city.id"><span jhiTranslate="autismApp.giver.city">City</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="absorbant.id">
             <span jhiTranslate="autismApp.giver.absorbant">Absorbant</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -67,10 +67,18 @@
           <td>{{ giver.family }}</td>
           <td>{{ giver.phoneNumber }}</td>
           <td>{{ giver.code }}</td>
-          <td>{{ giver.province }}</td>
-          <td>{{ giver.city }}</td>
           <td>{{ giver.address }}</td>
           <td>{{ giver.absorbDate | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="giver.province">
+              <a [routerLink]="['/province', giver.province?.id, 'view']">{{ giver.province?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="giver.city">
+              <a [routerLink]="['/city', giver.city?.id, 'view']">{{ giver.city?.id }}</a>
+            </div>
+          </td>
           <td>
             {{ giver.absorbant?.id }}
           </td>

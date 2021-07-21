@@ -1,0 +1,40 @@
+{
+  "name": "Province",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "enName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "city",
+      "otherEntityRelationshipName": "province",
+      "relationshipName": "city"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "giver",
+      "otherEntityRelationshipName": "province",
+      "relationshipName": "giver",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "province",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210721173050"
+}

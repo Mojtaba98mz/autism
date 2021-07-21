@@ -30,14 +30,6 @@
         <dd>
           <span>{{ giver.code }}</span>
         </dd>
-        <dt><span jhiTranslate="autismApp.giver.province">Province</span></dt>
-        <dd>
-          <span>{{ giver.province }}</span>
-        </dd>
-        <dt><span jhiTranslate="autismApp.giver.city">City</span></dt>
-        <dd>
-          <span>{{ giver.city }}</span>
-        </dd>
         <dt><span jhiTranslate="autismApp.giver.address">Address</span></dt>
         <dd>
           <span>{{ giver.address }}</span>
@@ -45,6 +37,18 @@
         <dt><span jhiTranslate="autismApp.giver.absorbDate">Absorb Date</span></dt>
         <dd>
           <span>{{ giver.absorbDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.province">Province</span></dt>
+        <dd>
+          <div *ngIf="giver.province">
+            <a [routerLink]="['/province', giver.province?.id, 'view']">{{ giver.province?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="autismApp.giver.city">City</span></dt>
+        <dd>
+          <div *ngIf="giver.city">
+            <a [routerLink]="['/city', giver.city?.id, 'view']">{{ giver.city?.id }}</a>
+          </div>
         </dd>
         <dt><span jhiTranslate="autismApp.giver.absorbant">Absorbant</span></dt>
         <dd>

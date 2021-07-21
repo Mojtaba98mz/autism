@@ -93,17 +93,23 @@ public class GiverQueryService extends QueryService<Giver> {
             if (criteria.getCode() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getCode(), Giver_.code));
             }
-            if (criteria.getProvince() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getProvince(), Giver_.province));
-            }
-            if (criteria.getCity() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCity(), Giver_.city));
-            }
             if (criteria.getAddress() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAddress(), Giver_.address));
             }
             if (criteria.getAbsorbDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getAbsorbDate(), Giver_.absorbDate));
+            }
+            if (criteria.getProvinceId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getProvinceId(), root -> root.join(Giver_.province, JoinType.LEFT).get(Province_.id))
+                    );
+            }
+            if (criteria.getCityId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getCityId(), root -> root.join(Giver_.city, JoinType.LEFT).get(City_.id))
+                    );
             }
             if (criteria.getDonationId() != null) {
                 specification =

@@ -43,7 +43,7 @@
     "devServerPort": 4200,
     "clientPackageManager": "npm",
     "languages": ["fa"],
-    "entities": ["Giver", "Donation", "GiverAuditor"],
-    "lastLiquibaseTimestamp": 1626453879000
+    "entities": ["Giver", "Donation", "GiverAuditor", "Province", "City"],
+    "lastLiquibaseTimestamp": 1626888651000
   }
 }

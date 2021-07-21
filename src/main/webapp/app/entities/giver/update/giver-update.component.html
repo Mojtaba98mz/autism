@@ -65,16 +65,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autismApp.giver.province" for="field_province">Province</label>
-          <input type="text" class="form-control" name="province" id="field_province" data-cy="province" formControlName="province" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autismApp.giver.city" for="field_city">City</label>
-          <input type="text" class="form-control" name="city" id="field_city" data-cy="city" formControlName="city" />
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" jhiTranslate="autismApp.giver.address" for="field_address">Address</label>
           <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
         </div>
@@ -92,6 +82,32 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.province" for="field_province">Province</label>
+          <select class="form-control" id="field_province" data-cy="province" name="province" formControlName="province">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="provinceOption.id === editForm.get('province')!.value?.id ? editForm.get('province')!.value : provinceOption"
+              *ngFor="let provinceOption of provincesCollection; trackBy: trackProvinceById"
+            >
+              {{ provinceOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.giver.city" for="field_city">City</label>
+          <select class="form-control" id="field_city" data-cy="city" name="city" formControlName="city">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="cityOption.id === editForm.get('city')!.value?.id ? editForm.get('city')!.value : cityOption"
+              *ngFor="let cityOption of citiesCollection; trackBy: trackCityById"
+            >
+              {{ cityOption.id }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group">

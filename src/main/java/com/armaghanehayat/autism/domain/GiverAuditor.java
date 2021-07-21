@@ -43,7 +43,7 @@ public class GiverAuditor implements Serializable {
     private User auditor;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "donations", "giverauditors", "absorbant", "supporter" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "province", "city", "donations", "giverauditors", "absorbant", "supporter" }, allowSetters = true)
     private Giver giver;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

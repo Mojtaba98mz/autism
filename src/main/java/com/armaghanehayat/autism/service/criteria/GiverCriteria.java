@@ -35,13 +35,13 @@ public class GiverCriteria implements Serializable, Criteria {
 
     private StringFilter code;
 
-    private StringFilter province;
-
-    private StringFilter city;
-
     private StringFilter address;
 
     private InstantFilter absorbDate;
+
+    private LongFilter provinceId;
+
+    private LongFilter cityId;
 
     private LongFilter donationId;
 
@@ -59,10 +59,10 @@ public class GiverCriteria implements Serializable, Criteria {
         this.family = other.family == null ? null : other.family.copy();
         this.phoneNumber = other.phoneNumber == null ? null : other.phoneNumber.copy();
         this.code = other.code == null ? null : other.code.copy();
-        this.province = other.province == null ? null : other.province.copy();
-        this.city = other.city == null ? null : other.city.copy();
         this.address = other.address == null ? null : other.address.copy();
         this.absorbDate = other.absorbDate == null ? null : other.absorbDate.copy();
+        this.provinceId = other.provinceId == null ? null : other.provinceId.copy();
+        this.cityId = other.cityId == null ? null : other.cityId.copy();
         this.donationId = other.donationId == null ? null : other.donationId.copy();
         this.giverauditorId = other.giverauditorId == null ? null : other.giverauditorId.copy();
         this.absorbantId = other.absorbantId == null ? null : other.absorbantId.copy();
@@ -149,36 +149,6 @@ public class GiverCriteria implements Serializable, Criteria {
         this.code = code;
     }
 
-    public StringFilter getProvince() {
-        return province;
-    }
-
-    public StringFilter province() {
-        if (province == null) {
-            province = new StringFilter();
-        }
-        return province;
-    }
-
-    public void setProvince(StringFilter province) {
-        this.province = province;
-    }
-
-    public StringFilter getCity() {
-        return city;
-    }
-
-    public StringFilter city() {
-        if (city == null) {
-            city = new StringFilter();
-        }
-        return city;
-    }
-
-    public void setCity(StringFilter city) {
-        this.city = city;
-    }
-
     public StringFilter getAddress() {
         return address;
     }
@@ -207,6 +177,36 @@ public class GiverCriteria implements Serializable, Criteria {
 
     public void setAbsorbDate(InstantFilter absorbDate) {
         this.absorbDate = absorbDate;
+    }
+
+    public LongFilter getProvinceId() {
+        return provinceId;
+    }
+
+    public LongFilter provinceId() {
+        if (provinceId == null) {
+            provinceId = new LongFilter();
+        }
+        return provinceId;
+    }
+
+    public void setProvinceId(LongFilter provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public LongFilter getCityId() {
+        return cityId;
+    }
+
+    public LongFilter cityId() {
+        if (cityId == null) {
+            cityId = new LongFilter();
+        }
+        return cityId;
+    }
+
+    public void setCityId(LongFilter cityId) {
+        this.cityId = cityId;
     }
 
     public LongFilter getDonationId() {
@@ -284,10 +284,10 @@ public class GiverCriteria implements Serializable, Criteria {
             Objects.equals(family, that.family) &&
             Objects.equals(phoneNumber, that.phoneNumber) &&
             Objects.equals(code, that.code) &&
-            Objects.equals(province, that.province) &&
-            Objects.equals(city, that.city) &&
             Objects.equals(address, that.address) &&
             Objects.equals(absorbDate, that.absorbDate) &&
+            Objects.equals(provinceId, that.provinceId) &&
+            Objects.equals(cityId, that.cityId) &&
             Objects.equals(donationId, that.donationId) &&
             Objects.equals(giverauditorId, that.giverauditorId) &&
             Objects.equals(absorbantId, that.absorbantId) &&
@@ -303,10 +303,10 @@ public class GiverCriteria implements Serializable, Criteria {
             family,
             phoneNumber,
             code,
-            province,
-            city,
             address,
             absorbDate,
+            provinceId,
+            cityId,
             donationId,
             giverauditorId,
             absorbantId,
@@ -323,10 +323,10 @@ public class GiverCriteria implements Serializable, Criteria {
             (family != null ? "family=" + family + ", " : "") +
             (phoneNumber != null ? "phoneNumber=" + phoneNumber + ", " : "") +
             (code != null ? "code=" + code + ", " : "") +
-            (province != null ? "province=" + province + ", " : "") +
-            (city != null ? "city=" + city + ", " : "") +
             (address != null ? "address=" + address + ", " : "") +
             (absorbDate != null ? "absorbDate=" + absorbDate + ", " : "") +
+            (provinceId != null ? "provinceId=" + provinceId + ", " : "") +
+            (cityId != null ? "cityId=" + cityId + ", " : "") +
             (donationId != null ? "donationId=" + donationId + ", " : "") +
             (giverauditorId != null ? "giverauditorId=" + giverauditorId + ", " : "") +
             (absorbantId != null ? "absorbantId=" + absorbantId + ", " : "") +

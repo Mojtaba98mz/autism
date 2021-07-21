@@ -3,8 +3,6 @@ entity Giver {
     family String required
     phoneNumber String required
     code String required
-    province String
-    city String
     address String
     absorbDate Instant
 }
@@ -25,6 +23,16 @@ entity GiverAuditor{
     changeDate Instant required
 }
 
+entity Province{
+	name String required
+    enName String required
+}
+
+entity City{
+	name String required
+    enName String required
+}
+
 enum HelpType{
 	BERENJ("برنج"),
   	ROGHAN ("روغن"),
@@ -40,6 +48,12 @@ enum HelpType{
 relationship OneToMany {
 	Giver{donation} to Donation{giver}
     Giver{giverauditor} to GiverAuditor{giver}
+    Province{city} to City{province}
+}
+
+relationship OneToOne {
+	Giver{province} to Province{giver}
+    Giver{city} to City{giver}
 }
 
 relationship ManyToOne {

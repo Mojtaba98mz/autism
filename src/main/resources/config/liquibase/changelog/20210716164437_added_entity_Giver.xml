@@ -26,17 +26,17 @@
             <column name="code" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="province" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="city" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="address" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="absorb_date" type="${datetimeType}">
                 <constraints nullable="true" />
+            </column>
+            <column name="province_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_giver__province_id" />
+            </column>
+            <column name="city_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_giver__city_id" />
             </column>
             <column name="absorbant_id" type="bigint">
                 <constraints nullable="true" />
@@ -69,8 +69,6 @@
             <column name="family" type="string"/>
             <column name="phone_number" type="string"/>
             <column name="code" type="string"/>
-            <column name="province" type="string"/>
-            <column name="city" type="string"/>
             <column name="address" type="string"/>
             <column name="absorb_date" type="${datetimeType}"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

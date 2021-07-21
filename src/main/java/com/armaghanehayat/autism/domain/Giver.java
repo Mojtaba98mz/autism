@@ -41,17 +41,21 @@ public class Giver implements Serializable {
     @Column(name = "code", nullable = false)
     private String code;
 
-    @Column(name = "province")
-    private String province;
-
-    @Column(name = "city")
-    private String city;
-
     @Column(name = "address")
     private String address;
 
     @Column(name = "absorb_date")
     private Instant absorbDate;
+
+    @JsonIgnoreProperties(value = { "cities", "giver" }, allowSetters = true)
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Province province;
+
+    @JsonIgnoreProperties(value = { "giver", "province" }, allowSetters = true)
+    @OneToOne
+    @JoinColumn(unique = true)
+    private City city;
 
     @OneToMany(mappedBy = "giver")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -135,32 +139,6 @@ public class Giver implements Serializable {
         this.code = code;
     }
 
-    public String getProvince() {
-        return this.province;
-    }
-
-    public Giver province(String province) {
-        this.province = province;
-        return this;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCity() {
-        return this.city;
-    }
-
-    public Giver city(String city) {
-        this.city = city;
-        return this;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getAddress() {
         return this.address;
     }
@@ -185,6 +163,32 @@ public class Giver implements Serializable {
 
     public void setAbsorbDate(Instant absorbDate) {
         this.absorbDate = absorbDate;
+    }
+
+    public Province getProvince() {
+        return this.province;
+    }
+
+    public Giver province(Province province) {
+        this.setProvince(province);
+        return this;
+    }
+
+    public void setProvince(Province province) {
+        this.province = province;
+    }
+
+    public City getCity() {
+        return this.city;
+    }
+
+    public Giver city(City city) {
+        this.setCity(city);
+        return this;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public Set<Donation> getDonations() {
@@ -303,8 +307,6 @@ public class Giver implements Serializable {
             ", family='" + getFamily() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", code='" + getCode() + "'" +
-            ", province='" + getProvince() + "'" +
-            ", city='" + getCity() + "'" +
             ", address='" + getAddress() + "'" +
             ", absorbDate='" + getAbsorbDate() + "'" +
             "}";

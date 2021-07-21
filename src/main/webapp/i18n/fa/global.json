@@ -10,6 +10,8 @@
         "giver": "Giver",
         "donation": "Donation",
         "giverAuditor": "Giver Auditor",
+        "province": "Province",
+        "city": "City",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

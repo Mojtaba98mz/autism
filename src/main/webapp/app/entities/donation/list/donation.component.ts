@@ -34,6 +34,7 @@ export class DonationComponent implements OnInit {
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
+    const giverId = this.activatedRoute.snapshot.params['giverId'];
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
@@ -42,6 +43,7 @@ export class DonationComponent implements OnInit {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
+        'giverId.equals': giverId,
       })
       .subscribe(
         (res: HttpResponse<IDonation[]>) => {
@@ -82,6 +84,11 @@ export class DonationComponent implements OnInit {
     });
   }
 
+  goToNewDonation(): void {
+    const giverId = this.activatedRoute.snapshot.params['giverId'];
+    this.router.navigate(['/donation', giverId, 'new']);
+  }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
     if (this.predicate !== 'id') {
@@ -107,9 +114,10 @@ export class DonationComponent implements OnInit {
 
   protected onSuccess(data: IDonation[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
+    const giverId = this.activatedRoute.snapshot.params['giverId'];
     this.page = page;
     if (navigate) {
-      this.router.navigate(['/donation'], {
+      this.router.navigate(['/donation', giverId, 'viewGiverDonate'], {
         queryParams: {
           page: this.page,
           size: this.itemsPerPage,

@@ -3,7 +3,7 @@
     "donation": {
       "home": {
         "title": "Donations",
-        "refreshListLabel": "Refresh list",
+        "refreshListLabel": "تازه سازی",
         "createLabel": "Create a new Donation",
         "createOrEditLabel": "Create or edit a Donation",
         "notFound": "No Donations found"

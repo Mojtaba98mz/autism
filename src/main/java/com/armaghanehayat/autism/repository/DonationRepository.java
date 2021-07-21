@@ -1,7 +1,9 @@
 package com.armaghanehayat.autism.repository;
 
 import com.armaghanehayat.autism.domain.Donation;
-import org.springframework.data.jpa.repository.*;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DonationRepository extends JpaRepository<Donation, Long>, JpaSpecificationExecutor<Donation> {}
+public interface DonationRepository extends JpaRepository<Donation, Long>, JpaSpecificationExecutor<Donation> {
+    List<Donation> findAllByGiverId(Long giverId);
+}

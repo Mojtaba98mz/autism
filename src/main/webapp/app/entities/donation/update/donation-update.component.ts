@@ -13,7 +13,7 @@ import { DonationService } from '../service/donation.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { IGiver } from 'app/entities/giver/giver.model';
+import { Giver, IGiver } from 'app/entities/giver/giver.model';
 import { GiverService } from 'app/entities/giver/service/giver.service';
 
 @Component({
@@ -132,7 +132,7 @@ export class DonationUpdateComponent implements OnInit {
       description: donation.description,
       receipt: donation.receipt,
       receiptContentType: donation.receiptContentType,
-      giver: donation.giver,
+      giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
     });
 
     this.giversSharedCollection = this.giverService.addGiverToCollectionIfMissing(this.giversSharedCollection, donation.giver);
@@ -159,7 +159,7 @@ export class DonationUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       receiptContentType: this.editForm.get(['receiptContentType'])!.value,
       receipt: this.editForm.get(['receipt'])!.value,
-      giver: this.editForm.get(['giver'])!.value,
+      giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
     };
   }
 }

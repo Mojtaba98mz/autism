@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-donation"
-        [routerLink]="['/donation/new']"
+        (click)="goToNewDonation()"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="autismApp.donation.home.createLabel"> Create a new Donation </span>
@@ -96,7 +96,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/donation', donation.id, 'edit']"
+                [routerLink]="['/donation', donation.id, donation.giver?.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

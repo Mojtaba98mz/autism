@@ -2,11 +2,11 @@
   "autismApp": {
     "giver": {
       "home": {
-        "title": "Givers",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Giver",
-        "createOrEditLabel": "Create or edit a Giver",
-        "notFound": "No Givers found"
+        "title": "خیرین",
+        "refreshListLabel": "تازه سازی",
+        "createLabel": "ثبت خیر جدید",
+        "createOrEditLabel": "ثبت یا ویرایش خیر",
+        "notFound": "خیری یافت نشد"
       },
       "created": "A new Giver is created with identifier {{ param }}",
       "updated": "A Giver is updated with identifier {{ param }}",
@@ -29,7 +29,8 @@
       "donation": "Donation",
       "giverauditor": "Giverauditor",
       "absorbant": "Absorbant",
-      "supporter": "Supporter"
+      "supporter": "Supporter",
+      "viewDonation": "مشاهده کمک ها"
     }
   }
 }

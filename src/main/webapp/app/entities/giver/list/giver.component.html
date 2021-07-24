@@ -68,7 +68,7 @@
           <td>{{ giver.phoneNumber }}</td>
           <td>{{ giver.code }}</td>
           <td>{{ giver.address }}</td>
-          <td>{{ giver.absorbDate | formatMediumDatetime }}</td>
+          <td>{{ giver.absorbDate | jalali }}</td>
           <td>
             <div *ngIf="giver.province">
               <a [routerLink]="['/province', giver.province?.id, 'view']">{{ giver.province?.id }}</a>

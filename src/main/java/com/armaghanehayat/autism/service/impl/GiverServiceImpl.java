@@ -1,9 +1,16 @@
 package com.armaghanehayat.autism.service.impl;
 
 import com.armaghanehayat.autism.domain.Giver;
+import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.GiverRepository;
 import com.armaghanehayat.autism.service.GiverService;
+import com.armaghanehayat.autism.service.UserService;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
+import javax.xml.crypto.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,16 +25,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class GiverServiceImpl implements GiverService {
 
+    private final UserService userService;
+
     private final Logger log = LoggerFactory.getLogger(GiverServiceImpl.class);
 
     private final GiverRepository giverRepository;
 
-    public GiverServiceImpl(GiverRepository giverRepository) {
+    public GiverServiceImpl(GiverRepository giverRepository, UserService userService) {
         this.giverRepository = giverRepository;
+        this.userService = userService;
     }
 
     @Override
     public Giver save(Giver giver) {
+        if (userService.getUserWithAuthorities().isPresent()) {
+            User currentUser = userService.getUserWithAuthorities().get();
+            giver.setAbsorbant(currentUser);
+            giver.setSupporter(currentUser);
+        }
+        giver.setAbsorbDate(Instant.now());
         log.debug("Request to save Giver : {}", giver);
         return giverRepository.save(giver);
     }

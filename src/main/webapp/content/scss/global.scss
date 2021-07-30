@@ -2,6 +2,7 @@
 @import '~bootstrap/scss/functions';
 @import '~bootswatch/dist/pulse/variables';
 @import '~bootstrap/scss/variables';
+@import '../css/font-vazir.css';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -171,3 +172,7 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+* {
+  font-family: Vazir, 'Font Awesome 5 Pro', 'Font Awesome 5 Brands', sans-serif !important;
+}

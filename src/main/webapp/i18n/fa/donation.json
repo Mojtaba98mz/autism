@@ -2,29 +2,29 @@
   "autismApp": {
     "donation": {
       "home": {
-        "title": "Donations",
+        "title": "کمک های خیر",
         "refreshListLabel": "تازه سازی",
-        "createLabel": "Create a new Donation",
-        "createOrEditLabel": "Create or edit a Donation",
-        "notFound": "No Donations found"
+        "createLabel": "افزودن کمک",
+        "createOrEditLabel": "ایجاد یا ویرایش کمک",
+        "notFound": "کمکی پیدا نشد"
       },
-      "created": "A new Donation is created with identifier {{ param }}",
-      "updated": "A Donation is updated with identifier {{ param }}",
-      "deleted": "A Donation is deleted with identifier {{ param }}",
+      "created": "کمک {{ param }} ایجاد شد",
+      "updated": "کمک {{ param }} ویرایش شد",
+      "deleted": "کمک {{ param }} حذف شد",
       "delete": {
-        "question": "Are you sure you want to delete Donation {{ id }}?"
+        "question": "آیا از حذف کمک {{ param }} اطمینان دارید؟"
       },
       "detail": {
-        "title": "Donation"
+        "title": "کمک خیر"
       },
-      "id": "ID",
-      "isCash": "Is Cash",
-      "amount": "Amount",
-      "donationDate": "Donation Date",
-      "helpType": "Help Type",
-      "description": "Description",
-      "receipt": "Receipt",
-      "giver": "Giver"
+      "id": "شناسه",
+      "isCash": "نقدی",
+      "amount": "مبلغ",
+      "donationDate": "تاریخ کمک",
+      "helpType": "نوع کمک",
+      "description": "توضیحات",
+      "receipt": "تصویر رسید",
+      "giver": "خیر"
     }
   }
 }

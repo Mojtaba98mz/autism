@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Autism",
+    "title": "ارمغان حیاط شکوفه ها",
     "browsehappy": "شما از مرورگر <strong>قدیمی</strong> استفاده می‌کنید. لطفا <a href=\"http://browsehappy.com/?locale=en\">مرورگر خود را به روز کنید</a>",
     "menu": {
       "home": "خانه",
@@ -15,7 +15,7 @@
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
-        "main": "حساب",
+        "main": "حساب کاربری",
         "settings": "تنظیمات",
         "password": "رمزعبور",
         "sessions": "نشست ها",

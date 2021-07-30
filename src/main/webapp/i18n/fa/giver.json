@@ -8,28 +8,28 @@
         "createOrEditLabel": "ثبت یا ویرایش خیر",
         "notFound": "خیری یافت نشد"
       },
-      "created": "A new Giver is created with identifier {{ param }}",
-      "updated": "A Giver is updated with identifier {{ param }}",
-      "deleted": "A Giver is deleted with identifier {{ param }}",
+      "created": "خیر {{ param }} ایجاد شد",
+      "updated": "خیر {{ param }} ویرایش شد",
+      "deleted": "خیر {{ param }} حذف شد",
       "delete": {
-        "question": "Are you sure you want to delete Giver {{ id }}?"
+        "question": "آیا از حذف خیر {{ param }} اطمینان دارید؟"
       },
       "detail": {
-        "title": "Giver"
+        "title": "خیر"
       },
-      "id": "ID",
-      "name": "Name",
-      "family": "Family",
-      "phoneNumber": "Phone Number",
-      "code": "Code",
-      "address": "Address",
-      "absorbDate": "Absorb Date",
-      "province": "Province",
-      "city": "City",
-      "donation": "Donation",
+      "id": "شناسه",
+      "name": "نام",
+      "family": "نام خانوادگی",
+      "phoneNumber": "شماره همراه",
+      "code": "کد",
+      "address": "نشانی",
+      "absorbDate": "تاریخ جذب",
+      "province": "استان",
+      "city": "شهر",
+      "donation": "کمک خیر",
       "giverauditor": "Giverauditor",
-      "absorbant": "Absorbant",
-      "supporter": "Supporter",
+      "absorbant": "جذب کننده",
+      "supporter": "پشتیبان",
       "viewDonation": "مشاهده کمک ها"
     }
   }

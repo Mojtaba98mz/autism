@@ -68,6 +68,18 @@ export class GiverUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  onProvinceChange(event: any): void {
+    const x = event.value;
+    this.cityService
+      .query({
+        size: '40',
+        'provinceId.equals': this.editForm.get('province')!.value ? this.editForm.get('province')!.value.id : 0,
+      })
+      .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))
+      .pipe(map((cities: ICity[]) => this.cityService.addCityToCollectionIfMissing(cities, this.editForm.get('city')!.value)))
+      .subscribe((cities: ICity[]) => (this.citiesCollection = cities));
+  }
+
   save(): void {
     this.isSaving = true;
     const giver = this.createFromForm();
@@ -135,7 +147,7 @@ export class GiverUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.provinceService
-      .query({ 'giverId.specified': 'false' })
+      .query({ size: '32' })
       .pipe(map((res: HttpResponse<IProvince[]>) => res.body ?? []))
       .pipe(
         map((provinces: IProvince[]) =>
@@ -144,11 +156,14 @@ export class GiverUpdateComponent implements OnInit {
       )
       .subscribe((provinces: IProvince[]) => (this.provincesCollection = provinces));
 
-    this.cityService
-      .query({ 'giverId.specified': 'false' })
+    /*this.cityService
+      .query({
+        'size': '40',
+        'provinceId.equals': this.editForm.get('province')!.value ? this.editForm.get('province')!.value.id : 0
+      })
       .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))
       .pipe(map((cities: ICity[]) => this.cityService.addCityToCollectionIfMissing(cities, this.editForm.get('city')!.value)))
-      .subscribe((cities: ICity[]) => (this.citiesCollection = cities));
+      .subscribe((cities: ICity[]) => (this.citiesCollection = cities));*/
 
     this.userService
       .query()

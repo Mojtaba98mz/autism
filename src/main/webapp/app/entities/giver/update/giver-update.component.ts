@@ -68,8 +68,7 @@ export class GiverUpdateComponent implements OnInit {
     window.history.back();
   }
 
-  onProvinceChange(event: any): void {
-    const x = event.value;
+  onProvinceChange(): void {
     this.cityService
       .query({
         size: '40',

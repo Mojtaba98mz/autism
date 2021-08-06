@@ -94,7 +94,14 @@
           <div class="col-6">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.giver.province" for="field_province">Province</label>
-              <select class="form-control" id="field_province" data-cy="province" name="province" formControlName="province">
+              <select
+                (change)="onProvinceChange()"
+                class="form-control"
+                id="field_province"
+                data-cy="province"
+                name="province"
+                formControlName="province"
+              >
                 <option [ngValue]="null"></option>
                 <option
                   [ngValue]="provinceOption.id === editForm.get('province')!.value?.id ? editForm.get('province')!.value : provinceOption"
@@ -124,14 +131,7 @@
             </div>-->
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.giver.city" for="field_city">City</label>
-              <select
-                class="form-control"
-                id="field_city"
-                data-cy="city"
-                name="city"
-                formControlName="city"
-                (change)="onProvinceChange($event)"
-              >
+              <select class="form-control" id="field_city" data-cy="city" name="city" formControlName="city">
                 <option [ngValue]="null"></option>
                 <option
                   [ngValue]="cityOption.id === editForm.get('city')!.value?.id ? editForm.get('city')!.value : cityOption"

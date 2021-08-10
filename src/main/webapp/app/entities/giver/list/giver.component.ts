@@ -53,12 +53,43 @@ export class GiverComponent implements OnInit {
       );
   }
 
+  loadPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
+    this.isLoading = true;
+    const pageToLoad: number = page ?? this.page ?? 1;
+
+    this.giverService.query(req).subscribe(
+      (res: HttpResponse<IGiver[]>) => {
+        this.isLoading = false;
+        this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+      },
+      () => {
+        this.isLoading = false;
+        this.onError();
+      }
+    );
+  }
+
   ngOnInit(): void {
     this.handleNavigation();
   }
 
   trackId(index: number, item: IGiver): number {
     return item.id!;
+  }
+
+  onEnterPressed(event: any, fieldName: string): void {
+    if (event.keyCode === 13) {
+      const searchValue = event.target.value;
+      const searchField = fieldName + '.contains';
+      const pageToLoad: number = this.page ?? 1;
+      const req = {
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      };
+      req[searchField] = searchValue;
+      this.loadPageWithReq(undefined, undefined, req);
+    }
   }
 
   delete(giver: IGiver): void {

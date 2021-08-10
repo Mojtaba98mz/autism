@@ -36,21 +36,33 @@
             <span jhiTranslate="global.field.id">ID</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="name">
-            <span jhiTranslate="autismApp.giver.name">Name</span>
-            <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="name">
+              <span jhiTranslate="autismApp.giver.name">Name</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" (keydown)="onEnterPressed($event, 'name')" />
           </th>
-          <th scope="col" jhiSortBy="family">
-            <span jhiTranslate="autismApp.giver.family">Family</span>
-            <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="family">
+              <span jhiTranslate="autismApp.giver.family">Family</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" (keydown)="onEnterPressed($event, 'family')" />
           </th>
-          <th scope="col" jhiSortBy="phoneNumber">
-            <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
-            <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="phoneNumber">
+              <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" (keydown)="onEnterPressed($event, 'phoneNumber')" />
           </th>
-          <th scope="col" jhiSortBy="code">
-            <span jhiTranslate="autismApp.giver.code">Code</span>
-            <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="code">
+              <span jhiTranslate="autismApp.giver.code">Code</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" (keydown)="onEnterPressed($event, 'code')" />
           </th>
           <th scope="col" jhiSortBy="address">
             <span jhiTranslate="autismApp.giver.address">Address</span>

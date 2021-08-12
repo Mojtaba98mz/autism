@@ -65,9 +65,6 @@ public class GiverServiceImpl implements GiverService {
                     if (giver.getPhoneNumber() != null) {
                         existingGiver.setPhoneNumber(giver.getPhoneNumber());
                     }
-                    if (giver.getCode() != null) {
-                        existingGiver.setCode(giver.getCode());
-                    }
                     if (giver.getAddress() != null) {
                         existingGiver.setAddress(giver.getAddress());
                     }

@@ -10,6 +10,7 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants
 import { DonationService } from '../service/donation.service';
 import { DonationDeleteDialogComponent } from '../delete/donation-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { IGiver } from '../../giver/giver.model';
 
 @Component({
   selector: 'jhi-donation',
@@ -57,8 +58,41 @@ export class DonationComponent implements OnInit {
       );
   }
 
+  loadPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
+    this.isLoading = true;
+    const pageToLoad: number = page ?? this.page ?? 1;
+
+    this.donationService.query(req).subscribe(
+      (res: HttpResponse<IDonation[]>) => {
+        this.isLoading = false;
+        this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+      },
+      () => {
+        this.isLoading = false;
+        this.onError();
+      }
+    );
+  }
+
   ngOnInit(): void {
     this.handleNavigation();
+  }
+
+  onEnterPressed(event: any, fieldName: string): void {
+    if (event.keyCode === 13) {
+      const searchValue = event.target.value;
+      const searchField = fieldName + '.contains';
+      const pageToLoad: number = this.page ?? 1;
+      const giverId = this.activatedRoute.snapshot.params['giverId'];
+      const req = {
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        'giverId.equals': giverId,
+      };
+      req[searchField] = searchValue;
+      this.loadPageWithReq(undefined, undefined, req);
+    }
   }
 
   trackId(index: number, item: IDonation): number {

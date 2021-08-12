@@ -32,62 +32,63 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col" jhiSortBy="id">
-            <span jhiTranslate="global.field.id">ID</span>
-            <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="id">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'id')" />
           </th>
           <th scope="col">
             <div jhiSortBy="name">
               <span jhiTranslate="autismApp.giver.name">Name</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" (keydown)="onEnterPressed($event, 'name')" />
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'name')" />
           </th>
           <th scope="col">
             <div jhiSortBy="family">
               <span jhiTranslate="autismApp.giver.family">Family</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" (keydown)="onEnterPressed($event, 'family')" />
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'family')" />
           </th>
           <th scope="col">
             <div jhiSortBy="phoneNumber">
               <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
           </th>
           <th scope="col">
-            <div jhiSortBy="code">
-              <span jhiTranslate="autismApp.giver.code">Code</span>
+            <div jhiSortBy="absorbDate">
+              <span jhiTranslate="autismApp.giver.absorbDate">Absorb Date</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" (keydown)="onEnterPressed($event, 'code')" />
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'absorbDate')" />
           </th>
-          <th scope="col" jhiSortBy="address">
-            <span jhiTranslate="autismApp.giver.address">Address</span>
-            <fa-icon icon="sort"></fa-icon>
+          <th scope="col" jhiSortBy="">
+            <div jhiSortBy="province.id">
+              <span jhiTranslate="autismApp.giver.province">Province</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'provinceName')" />
           </th>
-          <th scope="col" jhiSortBy="absorbDate">
-            <span jhiTranslate="autismApp.giver.absorbDate">Absorb Date</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="province.id">
-            <span jhiTranslate="autismApp.giver.province">Province</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="city.id">
-            <span jhiTranslate="autismApp.giver.city">City</span>
-            <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="city.id">
+              <span jhiTranslate="autismApp.giver.city">City</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'cityName')" />
           </th>
           <!--<th scope="col" jhiSortBy="absorbant.id">
-          <span jhiTranslate="autismApp.giver.absorbant">Absorbant</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>
-        <th scope="col" jhiSortBy="supporter.id">
-          <span jhiTranslate="autismApp.giver.supporter">Supporter</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>-->
+        <span jhiTranslate="autismApp.giver.absorbant">Absorbant</span>
+        <fa-icon icon="sort"></fa-icon>
+      </th>
+      <th scope="col" jhiSortBy="supporter.id">
+        <span jhiTranslate="autismApp.giver.supporter">Supporter</span>
+        <fa-icon icon="sort"></fa-icon>
+      </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -99,8 +100,6 @@
           <td>{{ giver.name }}</td>
           <td>{{ giver.family }}</td>
           <td>{{ giver.phoneNumber }}</td>
-          <td>{{ giver.code }}</td>
-          <td>{{ giver.address }}</td>
           <td>{{ giver.absorbDate | jalali }}</td>
           <td>
             <div *ngIf="giver.province">
@@ -113,11 +112,11 @@
             </div>
           </td>
           <!--<td>
-          {{ giver.absorbant?.id }}
-        </td>
-        <td>
-          {{ giver.supporter?.id }}
-        </td>-->
+        {{ giver.absorbant?.id }}
+      </td>
+      <td>
+        {{ giver.supporter?.id }}
+      </td>-->
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/giver', giver.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

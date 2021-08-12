@@ -83,7 +83,6 @@ class GiverResourceIT {
             .name(DEFAULT_NAME)
             .family(DEFAULT_FAMILY)
             .phoneNumber(DEFAULT_PHONE_NUMBER)
-            .code(DEFAULT_CODE)
             .address(DEFAULT_ADDRESS)
             .absorbDate(DEFAULT_ABSORB_DATE);
         return giver;
@@ -100,7 +99,6 @@ class GiverResourceIT {
             .name(UPDATED_NAME)
             .family(UPDATED_FAMILY)
             .phoneNumber(UPDATED_PHONE_NUMBER)
-            .code(UPDATED_CODE)
             .address(UPDATED_ADDRESS)
             .absorbDate(UPDATED_ABSORB_DATE);
         return giver;
@@ -127,7 +125,6 @@ class GiverResourceIT {
         assertThat(testGiver.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testGiver.getFamily()).isEqualTo(DEFAULT_FAMILY);
         assertThat(testGiver.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
-        assertThat(testGiver.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testGiver.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(DEFAULT_ABSORB_DATE);
     }
@@ -205,8 +202,6 @@ class GiverResourceIT {
     @Transactional
     void checkCodeIsRequired() throws Exception {
         int databaseSizeBeforeTest = giverRepository.findAll().size();
-        // set the field null
-        giver.setCode(null);
 
         // Create the Giver, which fails.
 
@@ -898,7 +893,6 @@ class GiverResourceIT {
             .name(UPDATED_NAME)
             .family(UPDATED_FAMILY)
             .phoneNumber(UPDATED_PHONE_NUMBER)
-            .code(UPDATED_CODE)
             .address(UPDATED_ADDRESS)
             .absorbDate(UPDATED_ABSORB_DATE);
 
@@ -917,7 +911,6 @@ class GiverResourceIT {
         assertThat(testGiver.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testGiver.getFamily()).isEqualTo(UPDATED_FAMILY);
         assertThat(testGiver.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
-        assertThat(testGiver.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testGiver.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
     }
@@ -990,7 +983,7 @@ class GiverResourceIT {
         Giver partialUpdatedGiver = new Giver();
         partialUpdatedGiver.setId(giver.getId());
 
-        partialUpdatedGiver.name(UPDATED_NAME).phoneNumber(UPDATED_PHONE_NUMBER).code(UPDATED_CODE).absorbDate(UPDATED_ABSORB_DATE);
+        partialUpdatedGiver.name(UPDATED_NAME).phoneNumber(UPDATED_PHONE_NUMBER).absorbDate(UPDATED_ABSORB_DATE);
 
         restGiverMockMvc
             .perform(
@@ -1007,7 +1000,6 @@ class GiverResourceIT {
         assertThat(testGiver.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testGiver.getFamily()).isEqualTo(DEFAULT_FAMILY);
         assertThat(testGiver.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
-        assertThat(testGiver.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testGiver.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
     }
@@ -1028,7 +1020,6 @@ class GiverResourceIT {
             .name(UPDATED_NAME)
             .family(UPDATED_FAMILY)
             .phoneNumber(UPDATED_PHONE_NUMBER)
-            .code(UPDATED_CODE)
             .address(UPDATED_ADDRESS)
             .absorbDate(UPDATED_ABSORB_DATE);
 
@@ -1047,7 +1038,6 @@ class GiverResourceIT {
         assertThat(testGiver.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testGiver.getFamily()).isEqualTo(UPDATED_FAMILY);
         assertThat(testGiver.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
-        assertThat(testGiver.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testGiver.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
     }

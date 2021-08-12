@@ -26,10 +26,6 @@
         <dd>
           <span>{{ giver.phoneNumber }}</span>
         </dd>
-        <dt><span jhiTranslate="autismApp.giver.code">Code</span></dt>
-        <dd>
-          <span>{{ giver.code }}</span>
-        </dd>
         <dt><span jhiTranslate="autismApp.giver.address">Address</span></dt>
         <dd>
           <span>{{ giver.address }}</span>
@@ -50,14 +46,14 @@
             <a [routerLink]="['/city', giver.city?.id, 'view']">{{ giver.city?.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="autismApp.giver.absorbant">Absorbant</span></dt>
+        <!--<dt><span jhiTranslate="autismApp.giver.absorbant">Absorbant</span></dt>
         <dd>
           <span>{{ giver.absorbant?.id }}</span>
         </dd>
         <dt><span jhiTranslate="autismApp.giver.supporter">Supporter</span></dt>
         <dd>
           <span>{{ giver.supporter?.id }}</span>
-        </dd>
+        </dd>-->
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

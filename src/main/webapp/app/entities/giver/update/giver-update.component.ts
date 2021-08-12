@@ -32,8 +32,7 @@ export class GiverUpdateComponent implements OnInit {
     id: [],
     name: [null, [Validators.required]],
     family: [null, [Validators.required]],
-    phoneNumber: [null, [Validators.required]],
-    code: [null, [Validators.required]],
+    phoneNumber: [null, [Validators.required, Validators.pattern('^(\\+98|0098|98|0)?9\\d{9}$')]],
     address: [],
     absorbDate: [],
     province: [],
@@ -126,7 +125,6 @@ export class GiverUpdateComponent implements OnInit {
       name: giver.name,
       family: giver.family,
       phoneNumber: giver.phoneNumber,
-      code: giver.code,
       address: giver.address,
       absorbDate: giver.absorbDate ? giver.absorbDate.format(DATE_TIME_FORMAT) : null,
       province: giver.province,
@@ -155,7 +153,7 @@ export class GiverUpdateComponent implements OnInit {
       )
       .subscribe((provinces: IProvince[]) => (this.provincesCollection = provinces));
 
-    /*this.cityService
+    /* this.cityService
       .query({
         'size': '40',
         'provinceId.equals': this.editForm.get('province')!.value ? this.editForm.get('province')!.value.id : 0
@@ -182,7 +180,6 @@ export class GiverUpdateComponent implements OnInit {
       name: this.editForm.get(['name'])!.value,
       family: this.editForm.get(['family'])!.value,
       phoneNumber: this.editForm.get(['phoneNumber'])!.value,
-      code: this.editForm.get(['code'])!.value,
       address: this.editForm.get(['address'])!.value,
       absorbDate: this.editForm.get(['absorbDate'])!.value ? dayjs(this.editForm.get(['absorbDate'])!.value, DATE_TIME_FORMAT) : undefined,
       province: this.editForm.get(['province'])!.value,

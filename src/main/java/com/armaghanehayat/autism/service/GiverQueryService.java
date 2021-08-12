@@ -90,9 +90,6 @@ public class GiverQueryService extends QueryService<Giver> {
             if (criteria.getPhoneNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPhoneNumber(), Giver_.phoneNumber));
             }
-            if (criteria.getCode() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCode(), Giver_.code));
-            }
             if (criteria.getAddress() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAddress(), Giver_.address));
             }
@@ -105,10 +102,25 @@ public class GiverQueryService extends QueryService<Giver> {
                         buildSpecification(criteria.getProvinceId(), root -> root.join(Giver_.province, JoinType.LEFT).get(Province_.id))
                     );
             }
+            if (criteria.getProvinceName() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getProvinceName(),
+                            root -> root.join(Giver_.province, JoinType.LEFT).get(Province_.NAME)
+                        )
+                    );
+            }
             if (criteria.getCityId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(criteria.getCityId(), root -> root.join(Giver_.city, JoinType.LEFT).get(City_.id))
+                    );
+            }
+            if (criteria.getCityName() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getCityName(), root -> root.join(Giver_.city, JoinType.LEFT).get(City_.name))
                     );
             }
             if (criteria.getDonationId() != null) {

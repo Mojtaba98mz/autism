@@ -33,15 +33,17 @@ public class GiverCriteria implements Serializable, Criteria {
 
     private StringFilter phoneNumber;
 
-    private StringFilter code;
-
     private StringFilter address;
 
     private InstantFilter absorbDate;
 
     private LongFilter provinceId;
 
+    private StringFilter provinceName;
+
     private LongFilter cityId;
+
+    private StringFilter cityName;
 
     private LongFilter donationId;
 
@@ -58,11 +60,12 @@ public class GiverCriteria implements Serializable, Criteria {
         this.name = other.name == null ? null : other.name.copy();
         this.family = other.family == null ? null : other.family.copy();
         this.phoneNumber = other.phoneNumber == null ? null : other.phoneNumber.copy();
-        this.code = other.code == null ? null : other.code.copy();
         this.address = other.address == null ? null : other.address.copy();
         this.absorbDate = other.absorbDate == null ? null : other.absorbDate.copy();
         this.provinceId = other.provinceId == null ? null : other.provinceId.copy();
+        this.provinceName = other.provinceId == null ? null : other.provinceName.copy();
         this.cityId = other.cityId == null ? null : other.cityId.copy();
+        this.cityName = other.cityId == null ? null : other.cityName.copy();
         this.donationId = other.donationId == null ? null : other.donationId.copy();
         this.giverauditorId = other.giverauditorId == null ? null : other.giverauditorId.copy();
         this.absorbantId = other.absorbantId == null ? null : other.absorbantId.copy();
@@ -134,21 +137,6 @@ public class GiverCriteria implements Serializable, Criteria {
         this.phoneNumber = phoneNumber;
     }
 
-    public StringFilter getCode() {
-        return code;
-    }
-
-    public StringFilter code() {
-        if (code == null) {
-            code = new StringFilter();
-        }
-        return code;
-    }
-
-    public void setCode(StringFilter code) {
-        this.code = code;
-    }
-
     public StringFilter getAddress() {
         return address;
     }
@@ -183,11 +171,41 @@ public class GiverCriteria implements Serializable, Criteria {
         return provinceId;
     }
 
+    public StringFilter getProvinceName() {
+        return provinceName;
+    }
+
+    public StringFilter getCityName() {
+        return cityName;
+    }
+
+    public void setProvinceName(StringFilter provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public void setCityName(StringFilter cityName) {
+        this.cityName = cityName;
+    }
+
     public LongFilter provinceId() {
         if (provinceId == null) {
             provinceId = new LongFilter();
         }
         return provinceId;
+    }
+
+    public StringFilter provinceName() {
+        if (provinceName == null) {
+            provinceName = new StringFilter();
+        }
+        return provinceName;
+    }
+
+    public StringFilter cityName() {
+        if (cityName == null) {
+            cityName = new StringFilter();
+        }
+        return cityName;
     }
 
     public void setProvinceId(LongFilter provinceId) {
@@ -283,7 +301,6 @@ public class GiverCriteria implements Serializable, Criteria {
             Objects.equals(name, that.name) &&
             Objects.equals(family, that.family) &&
             Objects.equals(phoneNumber, that.phoneNumber) &&
-            Objects.equals(code, that.code) &&
             Objects.equals(address, that.address) &&
             Objects.equals(absorbDate, that.absorbDate) &&
             Objects.equals(provinceId, that.provinceId) &&
@@ -302,7 +319,6 @@ public class GiverCriteria implements Serializable, Criteria {
             name,
             family,
             phoneNumber,
-            code,
             address,
             absorbDate,
             provinceId,
@@ -322,7 +338,6 @@ public class GiverCriteria implements Serializable, Criteria {
             (name != null ? "name=" + name + ", " : "") +
             (family != null ? "family=" + family + ", " : "") +
             (phoneNumber != null ? "phoneNumber=" + phoneNumber + ", " : "") +
-            (code != null ? "code=" + code + ", " : "") +
             (address != null ? "address=" + address + ", " : "") +
             (absorbDate != null ? "absorbDate=" + absorbDate + ", " : "") +
             (provinceId != null ? "provinceId=" + provinceId + ", " : "") +

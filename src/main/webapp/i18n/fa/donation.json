@@ -19,7 +19,7 @@
       },
       "id": "شناسه",
       "isCash": "نقدی",
-      "amount": "مبلغ",
+      "amount": "مبلغ/ارزش کالا",
       "donationDate": "تاریخ کمک",
       "helpType": "نوع کمک",
       "description": "توضیحات",

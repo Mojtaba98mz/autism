@@ -12,7 +12,7 @@
       "updated": "خیر {{ param }} ویرایش شد",
       "deleted": "خیر {{ param }} حذف شد",
       "delete": {
-        "question": "آیا از حذف خیر {{ param }} اطمینان دارید؟"
+        "question": "آیا از حذف اطمینان دارید؟"
       },
       "detail": {
         "title": "خیر"
@@ -21,7 +21,6 @@
       "name": "نام",
       "family": "نام خانوادگی",
       "phoneNumber": "شماره همراه",
-      "code": "کد",
       "address": "نشانی",
       "absorbDate": "تاریخ جذب",
       "province": "استان",
@@ -30,7 +29,10 @@
       "giverauditor": "Giverauditor",
       "absorbant": "جذب کننده",
       "supporter": "پشتیبان",
-      "viewDonation": "مشاهده کمک ها"
+      "viewDonation": "مشاهده کمک ها",
+      "validation": {
+        "phoneNumberPattern": "فرمت شماره تلفن اشتباه است"
+      }
     }
   }
 }

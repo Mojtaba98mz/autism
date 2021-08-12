@@ -32,27 +32,48 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col">
+            <div jhiSortBy="id">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'id')" />
+          </th>
           <th scope="col" jhiSortBy="isCash">
-            <span jhiTranslate="autismApp.donation.isCash">Is Cash</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="autismApp.donation.isCash">Is Cash</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="amount">
-            <span jhiTranslate="autismApp.donation.amount">Amount</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="amount">
+              <span jhiTranslate="autismApp.donation.amount">Amount</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'amount')" />
           </th>
-          <th scope="col" jhiSortBy="donationDate">
-            <span jhiTranslate="autismApp.donation.donationDate">Donation Date</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="donationDate">
+              <span jhiTranslate="autismApp.donation.donationDate">Donation Date</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'donationDate')" />
           </th>
-          <th scope="col" jhiSortBy="helpType">
-            <span jhiTranslate="autismApp.donation.helpType">Help Type</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="description">
-            <span jhiTranslate="autismApp.donation.description">Description</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="helpType">
+              <span jhiTranslate="autismApp.donation.helpType">Help Type</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'helpType')" />
           </th>
           <th scope="col" jhiSortBy="receipt">
-            <span jhiTranslate="autismApp.donation.receipt">Receipt</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="autismApp.donation.receipt">Receipt</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="giver.id">
-            <span jhiTranslate="autismApp.donation.giver">Giver</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="giver.id">
+              <span jhiTranslate="autismApp.donation.giver">Giver</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'giveName')" />
           </th>
           <th scope="col"></th>
         </tr>
@@ -62,11 +83,10 @@
           <td>
             <a [routerLink]="['/donation', donation.id, 'view']">{{ donation.id }}</a>
           </td>
-          <td>{{ donation.isCash }}</td>
-          <td>{{ donation.amount }}</td>
-          <td>{{ donation.donationDate | formatMediumDatetime }}</td>
+          <td>{{ donation.isCash ? 'نقدی' : 'غیرنقدی' }}</td>
+          <td>{{ donation.amount | number: '3.0' }}</td>
+          <td>{{ donation.donationDate | jalali }}</td>
           <td jhiTranslate="{{ 'autismApp.HelpType.' + donation.helpType }}">{{ donation.helpType }}</td>
-          <td>{{ donation.description }}</td>
           <td>
             <a *ngIf="donation.receipt" (click)="openFile(donation.receipt, donation.receiptContentType)">
               <img
@@ -75,11 +95,11 @@
                 alt="donation image"
               />
             </a>
-            <span *ngIf="donation.receipt">{{ donation.receiptContentType }}, {{ byteSize(donation.receipt) }}</span>
+            <!--            <span *ngIf="donation.receipt">{{ donation.receiptContentType }}, {{ byteSize(donation.receipt) }}</span>-->
           </td>
           <td>
             <div *ngIf="donation.giver">
-              <a [routerLink]="['/giver', donation.giver?.id, 'view']">{{ donation.giver?.id }}</a>
+              {{ donation.giver?.name + ' ' + donation.giver?.family }}
             </div>
           </td>
           <td class="text-right">

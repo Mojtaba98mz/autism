@@ -37,10 +37,6 @@ public class Giver implements Serializable {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @NotNull
-    @Column(name = "code", nullable = false)
-    private String code;
-
     @Column(name = "address")
     private String address;
 
@@ -124,19 +120,6 @@ public class Giver implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getCode() {
-        return this.code;
-    }
-
-    public Giver code(String code) {
-        this.code = code;
-        return this;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getAddress() {
@@ -306,7 +289,6 @@ public class Giver implements Serializable {
             ", name='" + getName() + "'" +
             ", family='" + getFamily() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", code='" + getCode() + "'" +
             ", address='" + getAddress() + "'" +
             ", absorbDate='" + getAbsorbDate() + "'" +
             "}";

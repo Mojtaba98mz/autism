@@ -23,7 +23,16 @@
           <div class="col-6">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.donation.amount" for="field_amount">Amount</label>
-              <input type="number" class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
+              <input
+                [value]="editForm.get('amount')?.value | number: '3.3'"
+                type="number"
+                ngmod
+                class="form-control"
+                name="amount"
+                id="field_amount"
+                data-cy="amount"
+                formControlName="amount"
+              />
             </div>
           </div>
         </div>
@@ -50,14 +59,18 @@
               <label class="form-control-label" jhiTranslate="autismApp.donation.helpType" for="field_helpType">Help Type</label>
               <select class="form-control" name="helpType" formControlName="helpType" id="field_helpType" data-cy="helpType">
                 <option [ngValue]="null">{{ 'autismApp.HelpType.null' | translate }}</option>
-                <option value="BERENJ">{{ 'autismApp.HelpType.BERENJ' | translate }}</option>
-                <option value="ROGHAN">{{ 'autismApp.HelpType.ROGHAN' | translate }}</option>
-                <option value="LEBAS">{{ 'autismApp.HelpType.LEBAS' | translate }}</option>
-                <option value="DARMAN">{{ 'autismApp.HelpType.DARMAN' | translate }}</option>
-                <option value="KHEIRATENAN">{{ 'autismApp.HelpType.KHEIRATENAN' | translate }}</option>
-                <option value="KAFARE">{{ 'autismApp.HelpType.KAFARE' | translate }}</option>
-                <option value="FETRIE">{{ 'autismApp.HelpType.FETRIE' | translate }}</option>
-                <option value="GOOSHTEGHORBANI">{{ 'autismApp.HelpType.GOOSHTEGHORBANI' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == false" value="BERENJ">{{ 'autismApp.HelpType.BERENJ' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == false" value="ROGHAN">{{ 'autismApp.HelpType.ROGHAN' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == false" value="LEBAS">{{ 'autismApp.HelpType.LEBAS' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="DARMAN">{{ 'autismApp.HelpType.DARMAN' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="KHEIRATENAN">
+                  {{ 'autismApp.HelpType.KHEIRATENAN' | translate }}
+                </option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="KAFARE">{{ 'autismApp.HelpType.KAFARE' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="FETRIE">{{ 'autismApp.HelpType.FETRIE' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="GOOSHTEGHORBANI">
+                  {{ 'autismApp.HelpType.GOOSHTEGHORBANI' | translate }}
+                </option>
                 <option value="SAYER">{{ 'autismApp.HelpType.SAYER' | translate }}</option>
               </select>
             </div>

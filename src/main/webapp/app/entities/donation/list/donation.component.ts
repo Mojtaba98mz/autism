@@ -26,6 +26,10 @@ export class DonationComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  idFilter;
+  isCashFilter;
+  amountFilter;
+
   constructor(
     protected donationService: DonationService,
     protected activatedRoute: ActivatedRoute,
@@ -74,14 +78,19 @@ export class DonationComponent implements OnInit {
     );
   }
 
+  refreshPage(): void {
+    this.idFilter = '';
+    this.amountFilter = '';
+    this.isCashFilter = false;
+    this.loadPage();
+  }
+
   ngOnInit(): void {
     this.handleNavigation();
   }
 
   onEnterPressed(event: any, fieldName: string): void {
-    if (event.keyCode === 13) {
-      const searchValue = event.target.value;
-      const searchField = fieldName + '.contains';
+    if (event.keyCode === 13 || fieldName === 'isCash') {
       const pageToLoad: number = this.page ?? 1;
       const giverId = this.activatedRoute.snapshot.params['giverId'];
       const req = {
@@ -90,7 +99,17 @@ export class DonationComponent implements OnInit {
         sort: this.sort(),
         'giverId.equals': giverId,
       };
-      req[searchField] = searchValue;
+      if (event.keyCode === 13) {
+        const searchValue = event.target.value;
+        if (fieldName === 'id' || fieldName === 'amount') {
+          req[fieldName + '.equals'] = searchValue;
+        } else {
+          const searchField = fieldName + '.contains';
+          req[searchField] = searchValue;
+        }
+      } else if (fieldName === 'isCash') {
+        req['isCash.equals'] = event.target.checked;
+      }
       this.loadPageWithReq(undefined, undefined, req);
     }
   }

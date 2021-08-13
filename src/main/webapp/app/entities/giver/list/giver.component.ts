@@ -24,6 +24,13 @@ export class GiverComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  idFilter;
+  nameFilter;
+  familyFilter;
+  phoneNumberFilter;
+  provinceFilter;
+  cityFilter;
+
   constructor(
     protected giverService: GiverService,
     protected activatedRoute: ActivatedRoute,
@@ -53,6 +60,16 @@ export class GiverComponent implements OnInit {
       );
   }
 
+  refreshPage(): void {
+    this.idFilter = '';
+    this.nameFilter = '';
+    this.familyFilter = '';
+    this.phoneNumberFilter = '';
+    this.provinceFilter = '';
+    this.cityFilter = '';
+    this.loadPage();
+  }
+
   loadPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
@@ -80,13 +97,16 @@ export class GiverComponent implements OnInit {
   onEnterPressed(event: any, fieldName: string): void {
     if (event.keyCode === 13) {
       const searchValue = event.target.value;
-      const searchField = fieldName + '.contains';
+      let searchField = fieldName + '.contains';
       const pageToLoad: number = this.page ?? 1;
       const req = {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
       };
+      if (fieldName === 'id') {
+        searchField = fieldName + '.equals';
+      }
       req[searchField] = searchValue;
       this.loadPageWithReq(undefined, undefined, req);
     }

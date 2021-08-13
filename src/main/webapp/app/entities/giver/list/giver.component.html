@@ -3,7 +3,7 @@
     <span jhiTranslate="autismApp.giver.home.title">Givers</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="refreshPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="autismApp.giver.home.refreshListLabel">Refresh List</span>
       </button>
@@ -37,49 +37,49 @@
               <span jhiTranslate="global.field.id">ID</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'id')" />
+            <input type="text" [(ngModel)]="idFilter" class="filter-width" (keydown)="onEnterPressed($event, 'id')" />
           </th>
           <th scope="col">
             <div jhiSortBy="name">
               <span jhiTranslate="autismApp.giver.name">Name</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'name')" />
+            <input type="text" [(ngModel)]="nameFilter" class="filter-width" (keydown)="onEnterPressed($event, 'name')" />
           </th>
           <th scope="col">
             <div jhiSortBy="family">
               <span jhiTranslate="autismApp.giver.family">Family</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'family')" />
+            <input type="text" [(ngModel)]="familyFilter" class="filter-width" (keydown)="onEnterPressed($event, 'family')" />
           </th>
           <th scope="col">
             <div jhiSortBy="phoneNumber">
               <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+            <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
           </th>
           <th scope="col">
             <div jhiSortBy="absorbDate">
               <span jhiTranslate="autismApp.giver.absorbDate">Absorb Date</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'absorbDate')" />
+            <!--            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'absorbDate')" />-->
           </th>
           <th scope="col" jhiSortBy="">
             <div jhiSortBy="province.id">
               <span jhiTranslate="autismApp.giver.province">Province</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'provinceName')" />
+            <input type="text" [(ngModel)]="provinceFilter" class="filter-width" (keydown)="onEnterPressed($event, 'provinceName')" />
           </th>
           <th scope="col">
             <div jhiSortBy="city.id">
               <span jhiTranslate="autismApp.giver.city">City</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'cityName')" />
+            <input type="text" [(ngModel)]="cityFilter" class="filter-width" (keydown)="onEnterPressed($event, 'cityName')" />
           </th>
           <!--<th scope="col" jhiSortBy="absorbant.id">
         <span jhiTranslate="autismApp.giver.absorbant">Absorbant</span>

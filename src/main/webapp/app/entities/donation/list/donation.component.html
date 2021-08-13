@@ -3,7 +3,7 @@
     <span jhiTranslate="autismApp.donation.home.title">Donations</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="refreshPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="autismApp.donation.home.refreshListLabel">Refresh List</span>
       </button>
@@ -37,32 +37,35 @@
               <span jhiTranslate="global.field.id">ID</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'id')" />
+            <input type="text" [(ngModel)]="idFilter" class="filter-width" (keydown)="onEnterPressed($event, 'id')" />
           </th>
-          <th scope="col" jhiSortBy="isCash">
-            <span jhiTranslate="autismApp.donation.isCash">Is Cash</span>
-            <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="isCash">
+              <span jhiTranslate="autismApp.donation.isCash">Is Cash</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="checkbox" [(ngModel)]="isCashFilter" (change)="onEnterPressed($event, 'isCash')" />
           </th>
           <th scope="col">
             <div jhiSortBy="amount">
               <span jhiTranslate="autismApp.donation.amount">Amount</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'amount')" />
+            <input type="text" [(ngModel)]="amountFilter" class="filter-width" (keydown)="onEnterPressed($event, 'amount')" />
           </th>
           <th scope="col">
             <div jhiSortBy="donationDate">
               <span jhiTranslate="autismApp.donation.donationDate">Donation Date</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'donationDate')" />
+            <!--          <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'donationDate')"/>-->
           </th>
           <th scope="col">
             <div jhiSortBy="helpType">
               <span jhiTranslate="autismApp.donation.helpType">Help Type</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'helpType')" />
+            <!--          <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'helpType')"/>-->
           </th>
           <th scope="col" jhiSortBy="receipt">
             <span jhiTranslate="autismApp.donation.receipt">Receipt</span>
@@ -73,7 +76,6 @@
               <span jhiTranslate="autismApp.donation.giver">Giver</span>
               <fa-icon icon="sort"></fa-icon>
             </div>
-            <input type="text" class="filter-width" (keydown)="onEnterPressed($event, 'giveName')" />
           </th>
           <th scope="col"></th>
         </tr>

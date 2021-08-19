@@ -81,6 +81,17 @@ export class GiverAssignerComponent implements OnInit {
     const giver1 = giver;
   }
 
+  onSupporterChange(): void {
+    /* this.cityService
+      .query({
+        size: '40',
+        'provinceId.equals': this.editForm.get('province')!.value ? this.editForm.get('province')!.value.id : 0,
+      })
+      .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))
+      .pipe(map((cities: ICity[]) => this.cityService.addCityToCollectionIfMissing(cities, this.editForm.get('city')!.value)))
+      .subscribe((cities: ICity[]) => (this.citiesCollection = cities));*/
+  }
+
   ngOnInit(): void {
     this.handleNavigation();
   }

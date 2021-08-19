@@ -1,0 +1,32 @@
+{
+  "autismApp": {
+    "giverAssigner": {
+      "home": {
+        "title": "تخصیص خیرین",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Giver Auditor",
+        "createOrEditLabel": "Create or edit a Giver Auditor",
+        "notFound": "No Giver Auditors found"
+      },
+      "created": "A new Giver Auditor is created with identifier {{ param }}",
+      "updated": "A Giver Auditor is updated with identifier {{ param }}",
+      "deleted": "A Giver Auditor is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Giver Auditor {{ id }}?"
+      },
+      "detail": {
+        "title": "Giver Auditor"
+      },
+      "id": "ID",
+      "fiedlName": "Fiedl Name",
+      "oldValue": "Old Value",
+      "newValue": "New Value",
+      "changeDate": "Change Date",
+      "auditor": "Auditor",
+      "giver": "Giver",
+      "supporterName": "نام پشتیبان",
+      "supporterFamily": "نام خانوادگی پشتیبان",
+      "supporters": "پشتیبانان"
+    }
+  }
+}

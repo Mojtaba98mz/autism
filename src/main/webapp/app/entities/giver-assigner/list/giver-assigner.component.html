@@ -1,6 +1,6 @@
 <div>
   <h2 id="page-heading" data-cy="GiverHeading">
-    <span jhiTranslate="autismApp.giver.home.title">Givers</span>
+    <span jhiTranslate="autismApp.giverAssigner.home.title">Givers</span>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -9,6 +9,29 @@
 
   <div class="alert alert-warning" id="no-result" *ngIf="givers?.length === 0">
     <span jhiTranslate="autismApp.giver.home.notFound">No givers found</span>
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="autismApp.giverAssigner.supporters" for="field_supporters">Supporters</label>
+        <select
+          (change)="onSupporterChange()"
+          class="form-control"
+          id="field_supporters"
+          data-cy="province"
+          name="province"
+          formControlName="province"
+        >
+          <option [ngValue]="null"></option>
+          <!-- <option
+            [ngValue]="provinceOption.id === editForm.get('province')!.value?.id ? editForm.get('province')!.value : provinceOption"
+            *ngFor="let provinceOption of provincesCollection; trackBy: trackProvinceById"
+          >
+            {{ provinceOption.name }}
+          </option>-->
+        </select>
+      </div>
+    </div>
   </div>
   <div class="row">
     <div class="col-6">
@@ -37,14 +60,29 @@
                 </div>
                 <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
               </th>
-              <th scope="col"></th>
+              <th scope="col">
+                <div>
+                  <span jhiTranslate="autismApp.giverAssigner.supporterName">Supporter Name</span>
+                  <!--                  <fa-icon icon="sort"></fa-icon>-->
+                </div>
+                <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+              </th>
+              <th scope="col">
+                <div>
+                  <span jhiTranslate="autismApp.giverAssigner.supporterFamily">Supporter Family</span>
+                  <!--                  <fa-icon icon="sort"></fa-icon>-->
+                </div>
+                <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let giver of givers; trackBy: trackId" (click)="assign(giver)" class="hover" data-cy="entityTable">
               <td>{{ giver.name }}</td>
               <td>{{ giver.family }}</td>
-              <td>{{ giver.phoneNumber }}</td>
+              <td>{{ giver?.phoneNumber }}</td>
+              <td>{{ giver?.supporter?.firstName }}</td>
+              <td>{{ giver?.supporter?.lastName }}</td>
             </tr>
           </tbody>
         </table>

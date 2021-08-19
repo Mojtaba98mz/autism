@@ -10,60 +10,120 @@
   <div class="alert alert-warning" id="no-result" *ngIf="givers?.length === 0">
     <span jhiTranslate="autismApp.giver.home.notFound">No givers found</span>
   </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="table-responsive" id="entities" *ngIf="givers && givers.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+              <th scope="col">
+                <div jhiSortBy="name">
+                  <span jhiTranslate="autismApp.giver.name">Name</span>
+                  <fa-icon icon="sort"></fa-icon>
+                </div>
+                <input type="text" [(ngModel)]="nameFilter" class="filter-width" (keydown)="onEnterPressed($event, 'name')" />
+              </th>
+              <th scope="col">
+                <div jhiSortBy="family">
+                  <span jhiTranslate="autismApp.giver.family">Family</span>
+                  <fa-icon icon="sort"></fa-icon>
+                </div>
+                <input type="text" [(ngModel)]="familyFilter" class="filter-width" (keydown)="onEnterPressed($event, 'family')" />
+              </th>
+              <th scope="col">
+                <div jhiSortBy="phoneNumber">
+                  <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
+                  <fa-icon icon="sort"></fa-icon>
+                </div>
+                <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let giver of givers; trackBy: trackId" (click)="assign(giver)" class="hover" data-cy="entityTable">
+              <td>{{ giver.name }}</td>
+              <td>{{ giver.family }}</td>
+              <td>{{ giver.phoneNumber }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-  <div class="table-responsive" id="entities" *ngIf="givers && givers.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col">
-            <div jhiSortBy="name">
-              <span jhiTranslate="autismApp.giver.name">Name</span>
-              <fa-icon icon="sort"></fa-icon>
-            </div>
-            <input type="text" [(ngModel)]="nameFilter" class="filter-width" (keydown)="onEnterPressed($event, 'name')" />
-          </th>
-          <th scope="col">
-            <div jhiSortBy="family">
-              <span jhiTranslate="autismApp.giver.family">Family</span>
-              <fa-icon icon="sort"></fa-icon>
-            </div>
-            <input type="text" [(ngModel)]="familyFilter" class="filter-width" (keydown)="onEnterPressed($event, 'family')" />
-          </th>
-          <th scope="col">
-            <div jhiSortBy="phoneNumber">
-              <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
-              <fa-icon icon="sort"></fa-icon>
-            </div>
-            <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let giver of givers; trackBy: trackId" data-cy="entityTable">
-          <td>{{ giver.name }}</td>
-          <td>{{ giver.family }}</td>
-          <td>{{ giver.phoneNumber }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <div *ngIf="givers && givers.length > 0">
+        <div class="row justify-content-center">
+          <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+        </div>
 
-  <div *ngIf="givers && givers.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+        <div class="row justify-content-center">
+          <ngb-pagination
+            [collectionSize]="totalItems"
+            [(page)]="ngbPaginationPage"
+            [pageSize]="itemsPerPage"
+            [maxSize]="5"
+            [rotate]="true"
+            [boundaryLinks]="true"
+            (pageChange)="loadPage($event)"
+          ></ngb-pagination>
+        </div>
+      </div>
     </div>
+    <div class="col-6">
+      <div class="table-responsive" id="entities" *ngIf="givers && givers.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+              <th scope="col">
+                <div jhiSortBy="name">
+                  <span jhiTranslate="autismApp.giver.name">Name</span>
+                  <fa-icon icon="sort"></fa-icon>
+                </div>
+                <input type="text" [(ngModel)]="nameFilter" class="filter-width" (keydown)="onEnterPressed($event, 'name')" />
+              </th>
+              <th scope="col">
+                <div jhiSortBy="family">
+                  <span jhiTranslate="autismApp.giver.family">Family</span>
+                  <fa-icon icon="sort"></fa-icon>
+                </div>
+                <input type="text" [(ngModel)]="familyFilter" class="filter-width" (keydown)="onEnterPressed($event, 'family')" />
+              </th>
+              <th scope="col">
+                <div jhiSortBy="phoneNumber">
+                  <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
+                  <fa-icon icon="sort"></fa-icon>
+                </div>
+                <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let giver of givers; trackBy: trackId" (click)="unAssign(giver)" class="hover" data-cy="entityTable">
+              <td>{{ giver.name }}</td>
+              <td>{{ giver.family }}</td>
+              <td>{{ giver.phoneNumber }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
+      <div *ngIf="givers && givers.length > 0">
+        <div class="row justify-content-center">
+          <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+          <ngb-pagination
+            [collectionSize]="totalItems"
+            [(page)]="ngbPaginationPage"
+            [pageSize]="itemsPerPage"
+            [maxSize]="5"
+            [rotate]="true"
+            [boundaryLinks]="true"
+            (pageChange)="loadPage($event)"
+          ></ngb-pagination>
+        </div>
+      </div>
     </div>
   </div>
 </div>

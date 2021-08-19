@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IGiver } from '../giver-assigner.model';
+import { Giver, IGiver } from '../giver-assigner.model';
 
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { GiverService } from '../service/giver.service';
@@ -12,6 +12,7 @@ import { GiverService } from '../service/giver.service';
 @Component({
   selector: 'jhi-giver',
   templateUrl: './giver-assigner.component.html',
+  styleUrls: ['./giver-assigner.scss'],
 })
 export class GiverAssignerComponent implements OnInit {
   givers?: IGiver[];
@@ -23,12 +24,9 @@ export class GiverAssignerComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
-  idFilter;
   nameFilter;
   familyFilter;
   phoneNumberFilter;
-  provinceFilter;
-  cityFilter;
 
   constructor(
     protected giverService: GiverService,
@@ -59,16 +57,6 @@ export class GiverAssignerComponent implements OnInit {
       );
   }
 
-  refreshPage(): void {
-    this.idFilter = '';
-    this.nameFilter = '';
-    this.familyFilter = '';
-    this.phoneNumberFilter = '';
-    this.provinceFilter = '';
-    this.cityFilter = '';
-    this.loadPage();
-  }
-
   loadPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
@@ -83,6 +71,14 @@ export class GiverAssignerComponent implements OnInit {
         this.onError();
       }
     );
+  }
+
+  assign(giver: Giver): void {
+    const giver1 = giver;
+  }
+
+  unAssign(giver: Giver): void {
+    const giver1 = giver;
   }
 
   ngOnInit(): void {

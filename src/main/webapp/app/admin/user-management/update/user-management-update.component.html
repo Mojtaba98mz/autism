@@ -71,7 +71,7 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label class="form-control-label" jhiTranslate="userManagement.email">Email</label>
           <input type="email" class="form-control" name="email" formControlName="email" />
 
@@ -106,7 +106,7 @@
               Your email is invalid.
             </small>
           </div>
-        </div>
+        </div>-->
 
         <div class="form-check">
           <label class="form-check-label" for="activated">
@@ -121,13 +121,14 @@
             <span jhiTranslate="userManagement.activated">Activated</span>
           </label>
         </div>
+        <br />
 
-        <div class="form-group" *ngIf="languages && languages.length > 0">
+        <!--<div class="form-group" *ngIf="languages && languages.length > 0">
           <label jhiTranslate="userManagement.langKey">Lang Key</label>
           <select class="form-control" id="langKey" name="langKey" formControlName="langKey">
             <option *ngFor="let language of languages" [value]="language">{{ language | findLanguageFromKey }}</option>
           </select>
-        </div>
+        </div>-->
 
         <div class="form-group">
           <label jhiTranslate="userManagement.profiles">Profiles</label>

@@ -1,4 +1,5 @@
 export enum Authority {
   ADMIN = 'ROLE_ADMIN',
   USER = 'ROLE_USER',
+  FINANCIAL_MANAGER = 'ROLE_FINANCIAL_MANAGER',
 }

@@ -11,8 +11,13 @@ import { RouterModule } from '@angular/router';
       },
       {
         path: 'giver-assigner',
-        data: { pageTitle: 'autismApp.giver.home.title' },
+        data: { pageTitle: 'autismApp.giverAssigner.home.title' },
         loadChildren: () => import('./giver-assigner/giver-assigner.module').then(m => m.GiverAssignerModule),
+      },
+      {
+        path: 'excel-import',
+        data: { pageTitle: 'autismApp.excelImport.home.title' },
+        loadChildren: () => import('./excel-import/excel-import.module').then(m => m.ExcelImportModule),
       },
       {
         path: 'donation',

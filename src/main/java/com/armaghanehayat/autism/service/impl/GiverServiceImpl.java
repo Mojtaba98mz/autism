@@ -1,15 +1,20 @@
 package com.armaghanehayat.autism.service.impl;
 
+import com.armaghanehayat.autism.config.Constants;
 import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.GiverRepository;
+import com.armaghanehayat.autism.repository.UserRepository;
+import com.armaghanehayat.autism.security.AuthoritiesConstants;
 import com.armaghanehayat.autism.service.GiverService;
 import com.armaghanehayat.autism.service.UserService;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.xml.crypto.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +36,12 @@ public class GiverServiceImpl implements GiverService {
 
     private final GiverRepository giverRepository;
 
-    public GiverServiceImpl(GiverRepository giverRepository, UserService userService) {
+    private final UserRepository userRepository;
+
+    public GiverServiceImpl(GiverRepository giverRepository, UserService userService, UserRepository userRepository) {
         this.giverRepository = giverRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -96,5 +104,11 @@ public class GiverServiceImpl implements GiverService {
     public void delete(Long id) {
         log.debug("Request to delete Giver : {}", id);
         giverRepository.deleteById(id);
+    }
+
+    @Override
+    public List<User> findAllGiversSupporters() {
+        List<User> allUsers = userRepository.findAllByIdNotNullAndActivatedIsTrue();
+        return allUsers.stream().filter(item -> item.hasOnlyRole(AuthoritiesConstants.USER)).collect(Collectors.toList());
     }
 }

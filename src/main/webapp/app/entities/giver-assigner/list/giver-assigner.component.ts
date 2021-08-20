@@ -7,7 +7,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Giver, IGiver } from '../giver-assigner.model';
 
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
-import { GiverService } from '../service/giver.service';
+import { GiverAssignerService } from '../service/giver-assigner.service';
+import { IUser } from '../../user/user.model';
 
 @Component({
   selector: 'jhi-giver',
@@ -15,85 +16,152 @@ import { GiverService } from '../service/giver.service';
   styleUrls: ['./giver-assigner.scss'],
 })
 export class GiverAssignerComponent implements OnInit {
-  givers?: IGiver[];
+  assignedGivers?: IGiver[];
+  notAssignedGivers?: IGiver[];
+  supporters?: IUser[];
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
-  page?: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
+  assignedPage?: number;
+  notAssignedPage?: number;
+  assignedPredicate!: string;
+  notAssignedPredicate!: string;
+  assignedAscending!: boolean;
+  notAssignedAscending!: boolean;
+  assignedNgbPaginationPage = 1;
+  notAssignedNgbPaginationPage = 1;
+  selectedSupporter?: number;
 
   nameFilter;
   familyFilter;
   phoneNumberFilter;
 
-  constructor(
-    protected giverService: GiverService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected modalService: NgbModal
-  ) {}
+  constructor(protected giverAssignerService: GiverAssignerService, protected activatedRoute: ActivatedRoute, protected router: Router) {}
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
+  loadAssignedPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
+    const pageToLoad: number = page ?? this.assignedPage ?? 1;
 
-    this.giverService
+    this.giverAssignerService
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort(),
+        sort: this.assignedSort(),
       })
       .subscribe(
         (res: HttpResponse<IGiver[]>) => {
           this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          this.onAssignedSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
         },
         () => {
           this.isLoading = false;
-          this.onError();
+          this.onAssignedError();
         }
       );
   }
 
-  loadPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
+  loadNotAssignedPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
+    const pageToLoad: number = page ?? this.notAssignedPage ?? 1;
 
-    this.giverService.query(req).subscribe(
+    this.giverAssignerService
+      .query({
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.notAssignedSort(),
+      })
+      .subscribe(
+        (res: HttpResponse<IGiver[]>) => {
+          this.isLoading = false;
+          this.onNotAssignedSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+        },
+        () => {
+          this.isLoading = false;
+          this.onNotAssignedError();
+        }
+      );
+  }
+
+  loadAssignedPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
+    this.isLoading = true;
+    const pageToLoad: number = page ?? this.assignedPage ?? 1;
+
+    this.giverAssignerService.query(req).subscribe(
       (res: HttpResponse<IGiver[]>) => {
         this.isLoading = false;
-        this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+        this.onAssignedSuccess(res.body, res.headers, pageToLoad, false);
       },
       () => {
         this.isLoading = false;
-        this.onError();
+        this.onAssignedError();
+      }
+    );
+  }
+
+  loadNotAssignedPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
+    this.isLoading = true;
+    const pageToLoad: number = page ?? this.notAssignedPage ?? 1;
+
+    this.giverAssignerService.query(req).subscribe(
+      (res: HttpResponse<IGiver[]>) => {
+        this.isLoading = false;
+        this.onNotAssignedSuccess(res.body, res.headers, pageToLoad, false);
+      },
+      () => {
+        this.isLoading = false;
+        this.onNotAssignedError();
       }
     );
   }
 
   assign(giver: Giver): void {
-    const giver1 = giver;
+    if (this.selectedSupporter && giver.id) {
+      this.giverAssignerService.assign(this.selectedSupporter, giver.id).subscribe((res: HttpResponse<{}>) => {
+        this.onSupporterChange();
+      });
+    }
   }
 
   unAssign(giver: Giver): void {
-    const giver1 = giver;
+    if (this.selectedSupporter && giver.id) {
+      this.giverAssignerService.unAssign(this.selectedSupporter, giver.id).subscribe((res: HttpResponse<{}>) => {
+        this.onSupporterChange();
+      });
+    }
   }
 
   onSupporterChange(): void {
-    /* this.cityService
-      .query({
-        size: '40',
-        'provinceId.equals': this.editForm.get('province')!.value ? this.editForm.get('province')!.value.id : 0,
-      })
-      .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))
-      .pipe(map((cities: ICity[]) => this.cityService.addCityToCollectionIfMissing(cities, this.editForm.get('city')!.value)))
-      .subscribe((cities: ICity[]) => (this.citiesCollection = cities));*/
+    const assignedPageToLoad: number = this.assignedPage ?? 1;
+    const notAssignedPageToLoad: number = this.notAssignedPage ?? 1;
+    const assignedReq = {
+      page: assignedPageToLoad - 1,
+      size: this.itemsPerPage,
+    };
+
+    const NotAssignedReq = {
+      page: notAssignedPageToLoad - 1,
+      size: this.itemsPerPage,
+    };
+
+    assignedReq['supporterId.equals'] = this.selectedSupporter;
+    NotAssignedReq['supporterId.notEquals'] = this.selectedSupporter;
+    this.loadAssignedPageWithReq(undefined, undefined, assignedReq);
+    this.loadNotAssignedPageWithReq(undefined, undefined, NotAssignedReq);
   }
 
   ngOnInit(): void {
-    this.handleNavigation();
+    this.giverAssignerService.findAllSupporters().subscribe(
+      (res: HttpResponse<IGiver[]>) => {
+        this.isLoading = false;
+        // this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+        this.supporters = res.body ?? [];
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
+
+    //this.handleNavigation();
   }
 
   trackId(index: number, item: IGiver): number {
@@ -101,7 +169,7 @@ export class GiverAssignerComponent implements OnInit {
   }
 
   onEnterPressed(event: any, fieldName: string): void {
-    if (event.keyCode === 13) {
+    /*if (event.keyCode === 13) {
       const searchValue = event.target.value;
       let searchField = fieldName + '.contains';
       const pageToLoad: number = this.page ?? 1;
@@ -115,12 +183,20 @@ export class GiverAssignerComponent implements OnInit {
       }
       req[searchField] = searchValue;
       this.loadPageWithReq(undefined, undefined, req);
-    }
+    }*/
   }
 
-  protected sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
-    if (this.predicate !== 'id') {
+  protected assignedSort(): string[] {
+    const result = [this.assignedPredicate + ',' + (this.assignedAscending ? ASC : DESC)];
+    if (this.assignedPredicate !== 'id') {
+      result.push('id');
+    }
+    return result;
+  }
+
+  protected notAssignedSort(): string[] {
+    const result = [this.notAssignedPredicate + ',' + (this.notAssignedAscending ? ASC : DESC)];
+    if (this.notAssignedPredicate !== 'id') {
       result.push('id');
     }
     return result;
@@ -133,31 +209,57 @@ export class GiverAssignerComponent implements OnInit {
       const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === ASC;
-      if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
-        this.predicate = predicate;
-        this.ascending = ascending;
-        this.loadPage(pageNumber, true);
+      if (pageNumber !== this.assignedPage || predicate !== this.assignedPredicate || ascending !== this.assignedAscending) {
+        this.assignedPredicate = predicate;
+        this.assignedAscending = ascending;
+        this.loadAssignedPage(pageNumber, true);
+      }
+
+      if (pageNumber !== this.notAssignedPage || predicate !== this.notAssignedPredicate || ascending !== this.notAssignedAscending) {
+        this.notAssignedPredicate = predicate;
+        this.notAssignedAscending = ascending;
+        this.loadNotAssignedPage(pageNumber, true);
       }
     });
   }
 
-  protected onSuccess(data: IGiver[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
+  protected onAssignedSuccess(data: IGiver[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
+    this.assignedPage = page;
     if (navigate) {
       this.router.navigate(['/giver'], {
         queryParams: {
-          page: this.page,
+          page: this.assignedPage,
           size: this.itemsPerPage,
-          sort: this.predicate + ',' + (this.ascending ? ASC : DESC),
+          sort: this.assignedPredicate + ',' + (this.assignedAscending ? ASC : DESC),
         },
       });
     }
-    this.givers = data ?? [];
-    this.ngbPaginationPage = this.page;
+    this.assignedGivers = data ?? [];
+    this.assignedNgbPaginationPage = this.assignedPage;
   }
 
-  protected onError(): void {
-    this.ngbPaginationPage = this.page ?? 1;
+  protected onNotAssignedSuccess(data: IGiver[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
+    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.notAssignedPage = page;
+    if (navigate) {
+      this.router.navigate(['/giver'], {
+        queryParams: {
+          page: this.notAssignedPage,
+          size: this.itemsPerPage,
+          sort: this.notAssignedPredicate + ',' + (this.notAssignedAscending ? ASC : DESC),
+        },
+      });
+    }
+    this.notAssignedGivers = data ?? [];
+    this.notAssignedNgbPaginationPage = this.notAssignedPage;
+  }
+
+  protected onAssignedError(): void {
+    this.assignedNgbPaginationPage = this.assignedPage ?? 1;
+  }
+
+  protected onNotAssignedError(): void {
+    this.notAssignedNgbPaginationPage = this.notAssignedPage ?? 1;
   }
 }

@@ -3,42 +3,45 @@
     <span jhiTranslate="autismApp.giverAssigner.home.title">Givers</span>
   </h2>
 
-  <jhi-alert-error></jhi-alert-error>
+  <!--  <jhi-alert-error></jhi-alert-error>-->
 
-  <jhi-alert></jhi-alert>
+  <!--  <jhi-alert></jhi-alert>-->
 
-  <div class="alert alert-warning" id="no-result" *ngIf="givers?.length === 0">
+  <!--<div class="alert alert-warning" id="no-result" *ngIf="givers?.length === 0">
     <span jhiTranslate="autismApp.giver.home.notFound">No givers found</span>
-  </div>
+  </div>-->
   <div class="row">
     <div class="col-4">
       <div class="form-group">
         <label class="form-control-label" jhiTranslate="autismApp.giverAssigner.supporters" for="field_supporters">Supporters</label>
         <select
+          [(ngModel)]="selectedSupporter"
           (change)="onSupporterChange()"
           class="form-control"
           id="field_supporters"
           data-cy="province"
           name="province"
-          formControlName="province"
         >
           <option [ngValue]="null"></option>
-          <!-- <option
-            [ngValue]="provinceOption.id === editForm.get('province')!.value?.id ? editForm.get('province')!.value : provinceOption"
-            *ngFor="let provinceOption of provincesCollection; trackBy: trackProvinceById"
-          >
-            {{ provinceOption.name }}
-          </option>-->
+          <!--          === editForm.get('province')!.value?.id ? editForm.get('province')!.value : provinceOption-->
+          <option [ngValue]="supporter.id" *ngFor="let supporter of supporters">
+            {{ supporter.firstName + ' ' + supporter.lastName }}
+          </option>
         </select>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-6">
-      <div class="table-responsive" id="entities" *ngIf="givers && givers.length > 0">
+      <div class="table-responsive" id="notAssigned">
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+            <tr
+              jhiSort
+              [(predicate)]="notAssignedPredicate"
+              [(ascending)]="notAssignedAscending"
+              [callback]="loadNotAssignedPage.bind(this)"
+            >
               <th scope="col">
                 <div jhiSortBy="name">
                   <span jhiTranslate="autismApp.giver.name">Name</span>
@@ -77,40 +80,45 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let giver of givers; trackBy: trackId" (click)="assign(giver)" class="hover" data-cy="entityTable">
-              <td>{{ giver.name }}</td>
-              <td>{{ giver.family }}</td>
-              <td>{{ giver?.phoneNumber }}</td>
-              <td>{{ giver?.supporter?.firstName }}</td>
-              <td>{{ giver?.supporter?.lastName }}</td>
+            <tr
+              *ngFor="let notAssigned of notAssignedGivers; trackBy: trackId"
+              (click)="assign(notAssigned)"
+              class="hover"
+              data-cy="entityTable"
+            >
+              <td>{{ notAssigned.name }}</td>
+              <td>{{ notAssigned.family }}</td>
+              <td>{{ notAssigned?.phoneNumber }}</td>
+              <td>{{ notAssigned?.supporter?.firstName }}</td>
+              <td>{{ notAssigned?.supporter?.lastName }}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div *ngIf="givers && givers.length > 0">
+      <div *ngIf="notAssignedGivers && notAssignedGivers.length > 0">
         <div class="row justify-content-center">
-          <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+          <jhi-item-count [params]="{ page: notAssignedPage, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
         </div>
 
         <div class="row justify-content-center">
           <ngb-pagination
             [collectionSize]="totalItems"
-            [(page)]="ngbPaginationPage"
+            [(page)]="notAssignedNgbPaginationPage"
             [pageSize]="itemsPerPage"
             [maxSize]="5"
             [rotate]="true"
             [boundaryLinks]="true"
-            (pageChange)="loadPage($event)"
+            (pageChange)="loadNotAssignedPage($event)"
           ></ngb-pagination>
         </div>
       </div>
     </div>
     <div class="col-6">
-      <div class="table-responsive" id="entities" *ngIf="givers && givers.length > 0">
+      <div class="table-responsive" id="assigned">
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+            <tr jhiSort [(predicate)]="assignedPredicate" [(ascending)]="assignedAscending" [callback]="loadAssignedPage.bind(this)">
               <th scope="col">
                 <div jhiSortBy="name">
                   <span jhiTranslate="autismApp.giver.name">Name</span>
@@ -136,29 +144,29 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let giver of givers; trackBy: trackId" (click)="unAssign(giver)" class="hover" data-cy="entityTable">
-              <td>{{ giver.name }}</td>
-              <td>{{ giver.family }}</td>
-              <td>{{ giver.phoneNumber }}</td>
+            <tr *ngFor="let assigned of assignedGivers; trackBy: trackId" (click)="unAssign(assigned)" class="hover" data-cy="entityTable">
+              <td>{{ assigned.name }}</td>
+              <td>{{ assigned.family }}</td>
+              <td>{{ assigned.phoneNumber }}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div *ngIf="givers && givers.length > 0">
+      <div *ngIf="assignedGivers && assignedGivers.length > 0">
         <div class="row justify-content-center">
-          <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+          <jhi-item-count [params]="{ page: assignedPage, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
         </div>
 
         <div class="row justify-content-center">
           <ngb-pagination
             [collectionSize]="totalItems"
-            [(page)]="ngbPaginationPage"
+            [(page)]="assignedNgbPaginationPage"
             [pageSize]="itemsPerPage"
             [maxSize]="5"
             [rotate]="true"
             [boundaryLinks]="true"
-            (pageChange)="loadPage($event)"
+            (pageChange)="loadAssignedPage($event)"
           ></ngb-pagination>
         </div>
       </div>

@@ -8,12 +8,13 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IGiver, getGiverIdentifier } from '../giver-assigner.model';
+import { IUser } from '../../user/user.model';
 
 export type EntityResponseType = HttpResponse<IGiver>;
 export type EntityArrayResponseType = HttpResponse<IGiver[]>;
 
 @Injectable({ providedIn: 'root' })
-export class GiverService {
+export class GiverAssignerService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/givers');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
@@ -50,6 +51,18 @@ export class GiverService {
     return this.http
       .get<IGiver[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  findAllSupporters(): Observable<HttpResponse<IUser[]>> {
+    return this.http.get<IUser[]>(this.resourceUrl + '/supporters', { observe: 'response' });
+  }
+
+  assign(supporterId: number, giverId: number): Observable<HttpResponse<{}>> {
+    return this.http.get<IUser[]>(this.resourceUrl + '/assign' + `/${supporterId}/${giverId}`, { observe: 'response' });
+  }
+
+  unAssign(supporterId: number, giverId: number): Observable<HttpResponse<{}>> {
+    return this.http.get<IUser[]>(this.resourceUrl + '/unAssign' + `/${supporterId}/${giverId}`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

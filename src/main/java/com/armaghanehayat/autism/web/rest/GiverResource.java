@@ -1,9 +1,11 @@
 package com.armaghanehayat.autism.web.rest;
 
 import com.armaghanehayat.autism.domain.Giver;
+import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.GiverRepository;
 import com.armaghanehayat.autism.service.GiverQueryService;
 import com.armaghanehayat.autism.service.GiverService;
+import com.armaghanehayat.autism.service.UserService;
 import com.armaghanehayat.autism.service.criteria.GiverCriteria;
 import com.armaghanehayat.autism.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -46,10 +48,18 @@ public class GiverResource {
 
     private final GiverQueryService giverQueryService;
 
-    public GiverResource(GiverService giverService, GiverRepository giverRepository, GiverQueryService giverQueryService) {
+    private final UserService userService;
+
+    public GiverResource(
+        GiverService giverService,
+        GiverRepository giverRepository,
+        GiverQueryService giverQueryService,
+        UserService userService
+    ) {
         this.giverService = giverService;
         this.giverRepository = giverRepository;
         this.giverQueryService = giverQueryService;
+        this.userService = userService;
     }
 
     /**
@@ -75,7 +85,7 @@ public class GiverResource {
     /**
      * {@code PUT  /givers/:id} : Updates an existing giver.
      *
-     * @param id the id of the giver to save.
+     * @param id    the id of the giver to save.
      * @param giver the giver to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated giver,
      * or with status {@code 400 (Bad Request)} if the giver is not valid,
@@ -107,7 +117,7 @@ public class GiverResource {
     /**
      * {@code PATCH  /givers/:id} : Partial updates given fields of an existing giver, field will ignore if it is null
      *
-     * @param id the id of the giver to save.
+     * @param id    the id of the giver to save.
      * @param giver the giver to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated giver,
      * or with status {@code 400 (Bad Request)} if the giver is not valid,
@@ -193,6 +203,52 @@ public class GiverResource {
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    /**
+     * {@code GET  /givers/supporters} : get all the givers.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of givers in body.
+     */
+    @GetMapping("/givers/supporters")
+    public ResponseEntity<List<User>> getAllGiversSupporters() {
+        log.debug("REST request to get GiversSupporters ");
+        List<User> allGiversSupporters = giverService.findAllGiversSupporters();
+        return ResponseEntity.ok().body(allGiversSupporters);
+    }
+
+    @GetMapping("/givers/assign/{supporterId}/{giverId}")
+    public ResponseEntity<Void> assign(@PathVariable Long supporterId, @PathVariable Long giverId) {
+        log.debug("REST request to assign giver to supporter ");
+        Optional<Giver> giverOptional = giverService.findOne(giverId);
+        Optional<User> supporterOptional = userService.getById(supporterId);
+        if (giverOptional.isPresent() && supporterOptional.isPresent()) {
+            Giver giver = giverOptional.get();
+            User user = supporterOptional.get();
+            giver.setSupporter(user);
+            giverRepository.save(giver);
+        }
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, supporterId.toString()))
+            .build();
+    }
+
+    @GetMapping("/givers/unAssign/{supporterId}/{giverId}")
+    public ResponseEntity<Void> unAssign(@PathVariable Long supporterId, @PathVariable Long giverId) {
+        log.debug("REST request to unAssign giver to supporter ");
+        Optional<Giver> giverOptional = giverService.findOne(giverId);
+        Optional<User> supporterOptional = userService.getById(1l);
+        if (giverOptional.isPresent() && supporterOptional.isPresent()) {
+            Giver giver = giverOptional.get();
+            User user = supporterOptional.get();
+            giver.setSupporter(user);
+            giverRepository.save(giver);
+        }
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, supporterId.toString()))
             .build();
     }
 }

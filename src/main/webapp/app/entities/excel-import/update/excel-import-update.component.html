@@ -1,0 +1,80 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-excel-import-heading"
+        data-cy="ExcelImportCreateUpdateHeading"
+        jhiTranslate="autismApp.excelImport.home.createOrEditLabel"
+      >
+        Create or edit a Excel Import
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.excelImport.excel" for="field_excel">Excel</label>
+          <div>
+            <div *ngIf="editForm.get('excel')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-left"
+                (click)="openFile(editForm.get('excel')!.value, editForm.get('excelContentType')!.value)"
+                jhiTranslate="entity.action.open"
+                >open</a
+              ><br />
+              <span class="pull-left">{{ editForm.get('excelContentType')!.value }}, {{ byteSize(editForm.get('excel')!.value) }}</span>
+              <button
+                type="button"
+                (click)="editForm.patchValue({ excel: null }); editForm.patchValue({ excelContentType: null })"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_excel"
+              data-cy="excel"
+              (change)="setFileData($event, 'excel', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="excel" id="field_excel" data-cy="excel" formControlName="excel" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="excelContentType"
+            id="field_excelContentType"
+            formControlName="excelContentType"
+          />
+          <div *ngIf="editForm.get('excel')!.invalid && (editForm.get('excel')!.dirty || editForm.get('excel')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('excel')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

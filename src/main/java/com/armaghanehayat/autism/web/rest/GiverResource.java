@@ -85,7 +85,7 @@ public class GiverResource {
     /**
      * {@code PUT  /givers/:id} : Updates an existing giver.
      *
-     * @param id    the id of the giver to save.
+     * @param id the id of the giver to save.
      * @param giver the giver to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated giver,
      * or with status {@code 400 (Bad Request)} if the giver is not valid,
@@ -117,7 +117,7 @@ public class GiverResource {
     /**
      * {@code PATCH  /givers/:id} : Partial updates given fields of an existing giver, field will ignore if it is null
      *
-     * @param id    the id of the giver to save.
+     * @param id the id of the giver to save.
      * @param giver the giver to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated giver,
      * or with status {@code 400 (Bad Request)} if the giver is not valid,

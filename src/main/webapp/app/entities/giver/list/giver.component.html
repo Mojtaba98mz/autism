@@ -61,6 +61,13 @@
             <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
           </th>
           <th scope="col">
+            <div jhiSortBy="homeNumber">
+              <span jhiTranslate="autismApp.giver.homeNumber">Home Number</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" [(ngModel)]="homeNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'homeNumber')" />
+          </th>
+          <th scope="col">
             <div jhiSortBy="absorbDate">
               <span jhiTranslate="autismApp.giver.absorbDate">Absorb Date</span>
               <fa-icon icon="sort"></fa-icon>
@@ -100,6 +107,7 @@
           <td>{{ giver.name }}</td>
           <td>{{ giver.family }}</td>
           <td>{{ giver.phoneNumber }}</td>
+          <td>{{ giver.homeNumber }}</td>
           <td>{{ giver.absorbDate | jalali }}</td>
           <td>
             <div *ngIf="giver.province">
@@ -129,18 +137,19 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(giver)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <!--<button type="submit" (click)="delete(giver)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
+              </button>-->
 
               <button
                 type="submit"
                 [routerLink]="['/donation', giver.id, 'viewGiverDonate']"
-                class="btn btn-primary btn-sm"
+                class="btn btn-danger btn-sm"
                 data-cy="entityEditButton"
               >
                 <fa-icon icon="eye"></fa-icon>
+                <br />
                 <span class="d-none d-md-inline" jhiTranslate="autismApp.giver.viewDonation">Edit</span>
               </button>
             </div>

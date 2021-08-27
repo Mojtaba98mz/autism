@@ -34,8 +34,11 @@ public class Giver implements Serializable {
     private String family;
 
     @NotNull
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
+
+    @Column(name = "home_number")
+    private String homeNumber;
 
     @Column(name = "address")
     private String address;
@@ -118,6 +121,19 @@ public class Giver implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getHomeNumber() {
+        return this.homeNumber;
+    }
+
+    public Giver homeNumber(String homeNumber) {
+        this.homeNumber = homeNumber;
+        return this;
+    }
+
+    public void setHomeNumber(String homeNumber) {
+        this.homeNumber = homeNumber;
     }
 
     public String getAddress() {
@@ -287,6 +303,7 @@ public class Giver implements Serializable {
             ", name='" + getName() + "'" +
             ", family='" + getFamily() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", homeNumber='" + getHomeNumber() + "'" +
             ", address='" + getAddress() + "'" +
             ", absorbDate='" + getAbsorbDate() + "'" +
             "}";

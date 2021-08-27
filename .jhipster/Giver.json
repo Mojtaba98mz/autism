@@ -14,7 +14,11 @@
     {
       "fieldName": "phoneNumber",
       "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "homeNumber",
+      "fieldType": "String"
     },
     {
       "fieldName": "address",

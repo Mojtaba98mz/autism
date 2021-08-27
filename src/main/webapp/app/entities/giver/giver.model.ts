@@ -10,6 +10,7 @@ export interface IGiver {
   name?: string;
   family?: string;
   phoneNumber?: string;
+  homeNumber?: string | null;
   address?: string | null;
   absorbDate?: dayjs.Dayjs | null;
   donations?: IDonation[] | null;
@@ -26,6 +27,7 @@ export class Giver implements IGiver {
     public name?: string,
     public family?: string,
     public phoneNumber?: string,
+    public homeNumber?: string | null,
     public address?: string | null,
     public absorbDate?: dayjs.Dayjs | null,
     public donations?: IDonation[] | null,

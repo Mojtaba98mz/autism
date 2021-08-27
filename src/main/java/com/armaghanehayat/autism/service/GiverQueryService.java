@@ -90,6 +90,9 @@ public class GiverQueryService extends QueryService<Giver> {
             if (criteria.getPhoneNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPhoneNumber(), Giver_.phoneNumber));
             }
+            if (criteria.getHomeNumber() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getHomeNumber(), Giver_.homeNumber));
+            }
             if (criteria.getAddress() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAddress(), Giver_.address));
             }

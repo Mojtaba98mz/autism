@@ -28,6 +28,7 @@ export class GiverComponent implements OnInit {
   nameFilter;
   familyFilter;
   phoneNumberFilter;
+  homeNumberFilter;
   provinceFilter;
   cityFilter;
 

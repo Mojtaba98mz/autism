@@ -1,7 +1,8 @@
 entity Giver {
 	name String required
     family String required
-    phoneNumber String required
+    phoneNumber String required unique
+    homeNumber String
     address String
     absorbDate Instant
 }

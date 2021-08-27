@@ -32,7 +32,8 @@
       "supporter": "پشتیبان",
       "viewDonation": "کمک ها",
       "validation": {
-        "phoneNumberPattern": "فرمت شماره تلفن اشتباه است"
+        "phoneNumberPattern": "فرمت شماره تلفن اشتباه است",
+        "homeNumberPattern": "فرمت شماره تلفن اشتباه است"
       }
     }
   }

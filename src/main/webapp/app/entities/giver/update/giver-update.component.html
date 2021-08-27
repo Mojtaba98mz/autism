@@ -90,6 +90,17 @@
                 data-cy="homeNumber"
                 formControlName="homeNumber"
               />
+              <div
+                *ngIf="editForm.get('homeNumber')!.invalid && (editForm.get('homeNumber')!.dirty || editForm.get('homeNumber')!.touched)"
+              >
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('homeNumber')?.errors?.pattern"
+                  jhiTranslate="autismApp.giver.validation.homeNumberPattern"
+                >
+                  Format is incorrect.
+                </small>
+              </div>
             </div>
           </div>
         </div>

@@ -75,7 +75,12 @@ public class GiverResource {
         if (giver.getId() != null) {
             throw new BadRequestAlertException("A new giver cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Giver result = giverService.save(giver);
+        Giver result = new Giver();
+        try {
+            result = giverService.save(giver);
+        } catch (Exception DataIntegrityViolationException) {
+            throw new BadRequestAlertException("A new giver cannot has duplicate phoneNumber", ENTITY_NAME, "duplicate_phone_number");
+        }
         return ResponseEntity
             .created(new URI("/api/givers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

@@ -139,7 +139,8 @@
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
-    }
+    },
+    "duplicate_phone_number": "شماره همراه تکراری است"
   },
   "footer": "این پاورقی است"
 }

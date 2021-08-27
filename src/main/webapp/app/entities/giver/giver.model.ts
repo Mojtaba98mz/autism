@@ -1,9 +1,9 @@
 import * as dayjs from 'dayjs';
-import { IProvince } from 'app/entities/province/province.model';
-import { ICity } from 'app/entities/city/city.model';
 import { IDonation } from 'app/entities/donation/donation.model';
 import { IGiverAuditor } from 'app/entities/giver-auditor/giver-auditor.model';
 import { IUser } from 'app/entities/user/user.model';
+import { IProvince } from 'app/entities/province/province.model';
+import { ICity } from 'app/entities/city/city.model';
 
 export interface IGiver {
   id?: number;
@@ -12,12 +12,12 @@ export interface IGiver {
   phoneNumber?: string;
   address?: string | null;
   absorbDate?: dayjs.Dayjs | null;
-  province?: IProvince | null;
-  city?: ICity | null;
   donations?: IDonation[] | null;
   giverauditors?: IGiverAuditor[] | null;
   absorbant?: IUser | null;
   supporter?: IUser | null;
+  province?: IProvince | null;
+  city?: ICity | null;
 }
 
 export class Giver implements IGiver {
@@ -28,12 +28,12 @@ export class Giver implements IGiver {
     public phoneNumber?: string,
     public address?: string | null,
     public absorbDate?: dayjs.Dayjs | null,
-    public province?: IProvince | null,
-    public city?: ICity | null,
     public donations?: IDonation[] | null,
     public giverauditors?: IGiverAuditor[] | null,
     public absorbant?: IUser | null,
-    public supporter?: IUser | null
+    public supporter?: IUser | null,
+    public province?: IProvince | null,
+    public city?: ICity | null
   ) {}
 }
 

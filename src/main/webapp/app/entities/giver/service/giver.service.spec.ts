@@ -29,7 +29,6 @@ describe('Service Tests', () => {
         name: 'AAAAAAA',
         family: 'AAAAAAA',
         phoneNumber: 'AAAAAAA',
-        code: 'AAAAAAA',
         address: 'AAAAAAA',
         absorbDate: currentDate,
       };
@@ -81,7 +80,6 @@ describe('Service Tests', () => {
             name: 'BBBBBB',
             family: 'BBBBBB',
             phoneNumber: 'BBBBBB',
-            code: 'BBBBBB',
             address: 'BBBBBB',
             absorbDate: currentDate.format(DATE_TIME_FORMAT),
           },
@@ -133,7 +131,6 @@ describe('Service Tests', () => {
             name: 'BBBBBB',
             family: 'BBBBBB',
             phoneNumber: 'BBBBBB',
-            code: 'BBBBBB',
             address: 'BBBBBB',
             absorbDate: currentDate.format(DATE_TIME_FORMAT),
           },
@@ -192,7 +189,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Giver to an array', () => {
-          const giverArray: IGiver[] = [{ id: 123 }, { id: 456 }, { id: 39849 }];
+          const giverArray: IGiver[] = [{ id: 123 }, { id: 456 }, { id: 5699 }];
           const giverCollection: IGiver[] = [{ id: 123 }];
           expectedResult = service.addGiverToCollectionIfMissing(giverCollection, ...giverArray);
           expect(expectedResult).toHaveLength(3);

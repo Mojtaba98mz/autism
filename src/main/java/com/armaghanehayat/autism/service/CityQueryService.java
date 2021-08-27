@@ -90,7 +90,7 @@ public class CityQueryService extends QueryService<City> {
             if (criteria.getGiverId() != null) {
                 specification =
                     specification.and(
-                        buildSpecification(criteria.getGiverId(), root -> root.join(City_.giver, JoinType.LEFT).get(Giver_.id))
+                        buildSpecification(criteria.getGiverId(), root -> root.join(City_.givers, JoinType.LEFT).get(Giver_.id))
                     );
             }
             if (criteria.getProvinceId() != null) {

@@ -150,6 +150,18 @@ public class GiverQueryService extends QueryService<Giver> {
                         buildSpecification(criteria.getSupporterId(), root -> root.join(Giver_.supporter, JoinType.LEFT).get(User_.id))
                     );
             }
+            if (criteria.getProvinceId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getProvinceId(), root -> root.join(Giver_.province, JoinType.LEFT).get(Province_.id))
+                    );
+            }
+            if (criteria.getCityId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getCityId(), root -> root.join(Giver_.city, JoinType.LEFT).get(City_.id))
+                    );
+            }
         }
         return specification;
     }

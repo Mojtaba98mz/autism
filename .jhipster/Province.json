@@ -20,11 +20,10 @@
       "relationshipName": "city"
     },
     {
-      "relationshipType": "one-to-one",
+      "relationshipType": "one-to-many",
       "otherEntityName": "giver",
       "otherEntityRelationshipName": "province",
-      "relationshipName": "giver",
-      "ownerSide": false
+      "relationshipName": "giver"
     }
   ],
   "entityTableName": "province",

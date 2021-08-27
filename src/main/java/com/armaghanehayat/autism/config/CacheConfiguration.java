@@ -56,6 +56,8 @@ public class CacheConfiguration {
             createCache(cm, com.armaghanehayat.autism.domain.Province.class.getName());
             createCache(cm, com.armaghanehayat.autism.domain.Province.class.getName() + ".cities");
             createCache(cm, com.armaghanehayat.autism.domain.City.class.getName());
+            createCache(cm, com.armaghanehayat.autism.domain.Province.class.getName() + ".givers");
+            createCache(cm, com.armaghanehayat.autism.domain.City.class.getName() + ".givers");
             // jhipster-needle-ehcache-add-entry
         };
     }

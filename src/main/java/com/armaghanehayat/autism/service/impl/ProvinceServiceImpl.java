@@ -67,14 +67,14 @@ public class ProvinceServiceImpl implements ProvinceService {
      *  Get all the provinces where Giver is {@code null}.
      *  @return the list of entities.
      */
-    @Transactional(readOnly = true)
+    /* @Transactional(readOnly = true)
     public List<Province> findAllWhereGiverIsNull() {
         log.debug("Request to get all provinces where Giver is null");
         return StreamSupport
             .stream(provinceRepository.findAll().spliterator(), false)
             .filter(province -> province.getGiver() == null)
             .collect(Collectors.toList());
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = true)

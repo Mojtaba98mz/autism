@@ -96,7 +96,7 @@ public class ProvinceQueryService extends QueryService<Province> {
             if (criteria.getGiverId() != null) {
                 specification =
                     specification.and(
-                        buildSpecification(criteria.getGiverId(), root -> root.join(Province_.giver, JoinType.LEFT).get(Giver_.id))
+                        buildSpecification(criteria.getGiverId(), root -> root.join(Province_.givers, JoinType.LEFT).get(Giver_.id))
                     );
             }
         }

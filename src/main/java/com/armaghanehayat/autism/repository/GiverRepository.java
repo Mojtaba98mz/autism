@@ -1,7 +1,6 @@
 package com.armaghanehayat.autism.repository;
 
 import com.armaghanehayat.autism.domain.Giver;
-import com.armaghanehayat.autism.domain.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;

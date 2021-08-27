@@ -6,7 +6,7 @@ export interface IProvince {
   name?: string;
   enName?: string;
   cities?: ICity[] | null;
-  giver?: IGiver | null;
+  givers?: IGiver[] | null;
 }
 
 export class Province implements IProvince {
@@ -15,7 +15,7 @@ export class Province implements IProvince {
     public name?: string,
     public enName?: string,
     public cities?: ICity[] | null,
-    public giver?: IGiver | null
+    public givers?: IGiver[] | null
   ) {}
 }
 

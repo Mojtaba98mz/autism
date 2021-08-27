@@ -365,8 +365,7 @@ class CityResourceIT {
         Giver giver = GiverResourceIT.createEntity(em);
         em.persist(giver);
         em.flush();
-        city.setGiver(giver);
-        giver.setCity(city);
+        city.addGiver(giver);
         cityRepository.saveAndFlush(city);
         Long giverId = giver.getId();
 

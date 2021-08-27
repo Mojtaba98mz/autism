@@ -38,7 +38,7 @@ public interface ProvinceService {
      *
      * @return the {@link List} of entities.
      */
-    List<Province> findAllWhereGiverIsNull();
+    //    List<Province> findAllWhereGiverIsNull();
 
     /**
      * Get the "id" province.

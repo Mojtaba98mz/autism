@@ -29,16 +29,16 @@
             <column name="absorb_date" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <column name="province_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_giver__province_id" />
-            </column>
-            <column name="city_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_giver__city_id" />
-            </column>
             <column name="absorbant_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="supporter_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="province_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="city_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

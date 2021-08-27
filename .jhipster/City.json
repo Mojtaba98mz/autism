@@ -14,11 +14,10 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-one",
+      "relationshipType": "one-to-many",
       "otherEntityName": "giver",
       "otherEntityRelationshipName": "city",
-      "relationshipName": "giver",
-      "ownerSide": false
+      "relationshipName": "giver"
     },
     {
       "relationshipType": "many-to-one",

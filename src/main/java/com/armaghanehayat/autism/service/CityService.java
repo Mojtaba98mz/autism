@@ -38,7 +38,7 @@ public interface CityService {
      *
      * @return the {@link List} of entities.
      */
-    List<City> findAllWhereGiverIsNull();
+    //    List<City> findAllWhereGiverIsNull();
 
     /**
      * Get the "id" city.

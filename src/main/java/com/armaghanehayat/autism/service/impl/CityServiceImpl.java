@@ -67,14 +67,14 @@ public class CityServiceImpl implements CityService {
      *  Get all the cities where Giver is {@code null}.
      *  @return the list of entities.
      */
-    @Transactional(readOnly = true)
+    /* @Transactional(readOnly = true)
     public List<City> findAllWhereGiverIsNull() {
         log.debug("Request to get all cities where Giver is null");
         return StreamSupport
             .stream(cityRepository.findAll().spliterator(), false)
             .filter(city -> city.getGiver() == null)
             .collect(Collectors.toList());
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = true)

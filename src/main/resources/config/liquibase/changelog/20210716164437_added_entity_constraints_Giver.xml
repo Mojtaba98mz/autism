@@ -8,18 +8,6 @@
     -->
     <changeSet id="20210716164437-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="province_id"
-                                 baseTableName="giver"
-                                 constraintName="fk_giver__province_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="province"/>
-
-        <addForeignKeyConstraint baseColumnNames="city_id"
-                                 baseTableName="giver"
-                                 constraintName="fk_giver__city_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="city"/>
-
         <addForeignKeyConstraint baseColumnNames="absorbant_id"
                                  baseTableName="giver"
                                  constraintName="fk_giver__absorbant_id"
@@ -31,5 +19,17 @@
                                  constraintName="fk_giver__supporter_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="province_id"
+                                 baseTableName="giver"
+                                 constraintName="fk_giver__province_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="province"/>
+
+        <addForeignKeyConstraint baseColumnNames="city_id"
+                                 baseTableName="giver"
+                                 constraintName="fk_giver__city_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="city"/>
     </changeSet>
 </databaseChangeLog>

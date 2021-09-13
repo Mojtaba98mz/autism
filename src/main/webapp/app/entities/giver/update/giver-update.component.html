@@ -79,9 +79,29 @@
               </div>
             </div>
           </div>
-
           <div class="col-6">
-            <div class="form-group"></div>
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.giver.homeNumber" for="field_homeNumber">Home Number</label>
+              <input
+                type="text"
+                class="form-control"
+                name="homeNumber"
+                id="field_homeNumber"
+                data-cy="homeNumber"
+                formControlName="homeNumber"
+              />
+              <div
+                *ngIf="editForm.get('homeNumber')!.invalid && (editForm.get('homeNumber')!.dirty || editForm.get('homeNumber')!.touched)"
+              >
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('homeNumber')?.errors?.pattern"
+                  jhiTranslate="autismApp.giver.validation.homeNumberPattern"
+                >
+                  Format is incorrect.
+                </small>
+              </div>
+            </div>
           </div>
         </div>
 

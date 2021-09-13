@@ -1,8 +1,8 @@
 entity Giver {
 	name String required
     family String required
-    phoneNumber String required
-    code String required
+    phoneNumber String required unique
+    homeNumber String
     address String
     absorbDate Instant
 }
@@ -49,11 +49,8 @@ relationship OneToMany {
 	Giver{donation} to Donation{giver}
     Giver{giverauditor} to GiverAuditor{giver}
     Province{city} to City{province}
-}
-
-relationship OneToOne {
-	Giver{province} to Province{giver}
-    Giver{city} to City{giver}
+    Province{giver} to Giver{province}
+    City{giver} to Giver{city}
 }
 
 relationship ManyToOne {

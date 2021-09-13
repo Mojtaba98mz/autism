@@ -384,8 +384,7 @@ class ProvinceResourceIT {
         Giver giver = GiverResourceIT.createEntity(em);
         em.persist(giver);
         em.flush();
-        province.setGiver(giver);
-        giver.setProvince(province);
+        province.addGiver(giver);
         provinceRepository.saveAndFlush(province);
         Long giverId = giver.getId();
 

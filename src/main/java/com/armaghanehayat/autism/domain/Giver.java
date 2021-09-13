@@ -34,24 +34,17 @@ public class Giver implements Serializable {
     private String family;
 
     @NotNull
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
+
+    @Column(name = "home_number")
+    private String homeNumber;
 
     @Column(name = "address")
     private String address;
 
     @Column(name = "absorb_date")
     private Instant absorbDate;
-
-    @JsonIgnoreProperties(value = { "cities", "giver" }, allowSetters = true)
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Province province;
-
-    @JsonIgnoreProperties(value = { "giver", "province" }, allowSetters = true)
-    @OneToOne
-    @JoinColumn(unique = true)
-    private City city;
 
     @OneToMany(mappedBy = "giver")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -68,6 +61,14 @@ public class Giver implements Serializable {
 
     @ManyToOne
     private User supporter;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "cities", "givers" }, allowSetters = true)
+    private Province province;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "givers", "province" }, allowSetters = true)
+    private City city;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -122,6 +123,19 @@ public class Giver implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getHomeNumber() {
+        return this.homeNumber;
+    }
+
+    public Giver homeNumber(String homeNumber) {
+        this.homeNumber = homeNumber;
+        return this;
+    }
+
+    public void setHomeNumber(String homeNumber) {
+        this.homeNumber = homeNumber;
+    }
+
     public String getAddress() {
         return this.address;
     }
@@ -146,32 +160,6 @@ public class Giver implements Serializable {
 
     public void setAbsorbDate(Instant absorbDate) {
         this.absorbDate = absorbDate;
-    }
-
-    public Province getProvince() {
-        return this.province;
-    }
-
-    public Giver province(Province province) {
-        this.setProvince(province);
-        return this;
-    }
-
-    public void setProvince(Province province) {
-        this.province = province;
-    }
-
-    public City getCity() {
-        return this.city;
-    }
-
-    public Giver city(City city) {
-        this.setCity(city);
-        return this;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
     }
 
     public Set<Donation> getDonations() {
@@ -262,6 +250,32 @@ public class Giver implements Serializable {
         this.supporter = user;
     }
 
+    public Province getProvince() {
+        return this.province;
+    }
+
+    public Giver province(Province province) {
+        this.setProvince(province);
+        return this;
+    }
+
+    public void setProvince(Province province) {
+        this.province = province;
+    }
+
+    public City getCity() {
+        return this.city;
+    }
+
+    public Giver city(City city) {
+        this.setCity(city);
+        return this;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -289,6 +303,7 @@ public class Giver implements Serializable {
             ", name='" + getName() + "'" +
             ", family='" + getFamily() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", homeNumber='" + getHomeNumber() + "'" +
             ", address='" + getAddress() + "'" +
             ", absorbDate='" + getAbsorbDate() + "'" +
             "}";

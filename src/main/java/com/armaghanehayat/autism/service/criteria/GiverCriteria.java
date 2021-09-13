@@ -33,6 +33,8 @@ public class GiverCriteria implements Serializable, Criteria {
 
     private StringFilter phoneNumber;
 
+    private StringFilter homeNumber;
+
     private StringFilter address;
 
     private InstantFilter absorbDate;
@@ -60,6 +62,7 @@ public class GiverCriteria implements Serializable, Criteria {
         this.name = other.name == null ? null : other.name.copy();
         this.family = other.family == null ? null : other.family.copy();
         this.phoneNumber = other.phoneNumber == null ? null : other.phoneNumber.copy();
+        this.homeNumber = other.homeNumber == null ? null : other.homeNumber.copy();
         this.address = other.address == null ? null : other.address.copy();
         this.absorbDate = other.absorbDate == null ? null : other.absorbDate.copy();
         this.provinceId = other.provinceId == null ? null : other.provinceId.copy();
@@ -135,6 +138,21 @@ public class GiverCriteria implements Serializable, Criteria {
 
     public void setPhoneNumber(StringFilter phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public StringFilter getHomeNumber() {
+        return homeNumber;
+    }
+
+    public StringFilter homeNumber() {
+        if (homeNumber == null) {
+            homeNumber = new StringFilter();
+        }
+        return homeNumber;
+    }
+
+    public void setHomeNumber(StringFilter homeNumber) {
+        this.homeNumber = homeNumber;
     }
 
     public StringFilter getAddress() {
@@ -301,6 +319,7 @@ public class GiverCriteria implements Serializable, Criteria {
             Objects.equals(name, that.name) &&
             Objects.equals(family, that.family) &&
             Objects.equals(phoneNumber, that.phoneNumber) &&
+            Objects.equals(homeNumber, that.homeNumber) &&
             Objects.equals(address, that.address) &&
             Objects.equals(absorbDate, that.absorbDate) &&
             Objects.equals(provinceId, that.provinceId) &&
@@ -319,6 +338,7 @@ public class GiverCriteria implements Serializable, Criteria {
             name,
             family,
             phoneNumber,
+            homeNumber,
             address,
             absorbDate,
             provinceId,
@@ -338,6 +358,7 @@ public class GiverCriteria implements Serializable, Criteria {
             (name != null ? "name=" + name + ", " : "") +
             (family != null ? "family=" + family + ", " : "") +
             (phoneNumber != null ? "phoneNumber=" + phoneNumber + ", " : "") +
+            (homeNumber != null ? "homeNumber=" + homeNumber + ", " : "") +
             (address != null ? "address=" + address + ", " : "") +
             (absorbDate != null ? "absorbDate=" + absorbDate + ", " : "") +
             (provinceId != null ? "provinceId=" + provinceId + ", " : "") +

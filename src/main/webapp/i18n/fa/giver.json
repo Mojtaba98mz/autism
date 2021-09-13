@@ -21,6 +21,7 @@
       "name": "نام",
       "family": "نام خانوادگی",
       "phoneNumber": "شماره همراه",
+      "homeNumber": "تلفن ثابت(به همراه پیش شماره)",
       "address": "نشانی",
       "absorbDate": "تاریخ جذب",
       "province": "استان",
@@ -29,9 +30,10 @@
       "giverauditor": "Giverauditor",
       "absorbant": "جذب کننده",
       "supporter": "پشتیبان",
-      "viewDonation": "مشاهده کمک ها",
+      "viewDonation": "کمک ها",
       "validation": {
-        "phoneNumberPattern": "فرمت شماره تلفن اشتباه است"
+        "phoneNumberPattern": "فرمت شماره تلفن اشتباه است",
+        "homeNumberPattern": "فرمت شماره تلفن اشتباه است"
       }
     }
   }

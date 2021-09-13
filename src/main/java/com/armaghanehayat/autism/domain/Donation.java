@@ -47,7 +47,7 @@ public class Donation implements Serializable {
     private String receiptContentType;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "province", "city", "donations", "giverauditors", "absorbant", "supporter" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "donations", "giverauditors", "absorbant", "supporter", "province", "city" }, allowSetters = true)
     private Giver giver;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

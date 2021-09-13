@@ -34,12 +34,13 @@ public class Province implements Serializable {
 
     @OneToMany(mappedBy = "province")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "giver", "province" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "givers", "province" }, allowSetters = true)
     private Set<City> cities = new HashSet<>();
 
-    @JsonIgnoreProperties(value = { "province", "city", "donations", "giverauditors", "absorbant", "supporter" }, allowSetters = true)
-    @OneToOne(mappedBy = "province")
-    private Giver giver;
+    @OneToMany(mappedBy = "province")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "donations", "giverauditors", "absorbant", "supporter", "province", "city" }, allowSetters = true)
+    private Set<Giver> givers = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -112,23 +113,35 @@ public class Province implements Serializable {
         this.cities = cities;
     }
 
-    public Giver getGiver() {
-        return this.giver;
+    public Set<Giver> getGivers() {
+        return this.givers;
     }
 
-    public Province giver(Giver giver) {
-        this.setGiver(giver);
+    public Province givers(Set<Giver> givers) {
+        this.setGivers(givers);
         return this;
     }
 
-    public void setGiver(Giver giver) {
-        if (this.giver != null) {
-            this.giver.setProvince(null);
+    public Province addGiver(Giver giver) {
+        this.givers.add(giver);
+        giver.setProvince(this);
+        return this;
+    }
+
+    public Province removeGiver(Giver giver) {
+        this.givers.remove(giver);
+        giver.setProvince(null);
+        return this;
+    }
+
+    public void setGivers(Set<Giver> givers) {
+        if (this.givers != null) {
+            this.givers.forEach(i -> i.setProvince(null));
         }
-        if (giver != null) {
-            giver.setProvince(this);
+        if (givers != null) {
+            givers.forEach(i -> i.setProvince(this));
         }
-        this.giver = giver;
+        this.givers = givers;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

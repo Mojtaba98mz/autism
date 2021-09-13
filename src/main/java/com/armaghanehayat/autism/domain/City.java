@@ -2,6 +2,8 @@ package com.armaghanehayat.autism.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -30,12 +32,13 @@ public class City implements Serializable {
     @Column(name = "en_name", nullable = false)
     private String enName;
 
-    @JsonIgnoreProperties(value = { "province", "city", "donations", "giverauditors", "absorbant", "supporter" }, allowSetters = true)
-    @OneToOne(mappedBy = "city")
-    private Giver giver;
+    @OneToMany(mappedBy = "city")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "donations", "giverauditors", "absorbant", "supporter", "province", "city" }, allowSetters = true)
+    private Set<Giver> givers = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "cities", "giver" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "cities", "givers" }, allowSetters = true)
     private Province province;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -78,23 +81,35 @@ public class City implements Serializable {
         this.enName = enName;
     }
 
-    public Giver getGiver() {
-        return this.giver;
+    public Set<Giver> getGivers() {
+        return this.givers;
     }
 
-    public City giver(Giver giver) {
-        this.setGiver(giver);
+    public City givers(Set<Giver> givers) {
+        this.setGivers(givers);
         return this;
     }
 
-    public void setGiver(Giver giver) {
-        if (this.giver != null) {
-            this.giver.setCity(null);
+    public City addGiver(Giver giver) {
+        this.givers.add(giver);
+        giver.setCity(this);
+        return this;
+    }
+
+    public City removeGiver(Giver giver) {
+        this.givers.remove(giver);
+        giver.setCity(null);
+        return this;
+    }
+
+    public void setGivers(Set<Giver> givers) {
+        if (this.givers != null) {
+            this.givers.forEach(i -> i.setCity(null));
         }
-        if (giver != null) {
-            giver.setCity(this);
+        if (givers != null) {
+            givers.forEach(i -> i.setCity(this));
         }
-        this.giver = giver;
+        this.givers = givers;
     }
 
     public Province getProvince() {

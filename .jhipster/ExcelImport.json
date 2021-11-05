@@ -1,0 +1,18 @@
+{
+  "fields": [
+    {
+      "fieldName": "excel",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [],
+  "service": "serviceImpl",
+  "dto": "no",
+  "jpaMetamodelFiltering": false,
+  "readOnly": false,
+  "pagination": "no",
+  "name": "ExcelImport",
+  "changelogDate": "20210821033021"
+}

@@ -4,6 +4,7 @@ import com.armaghanehayat.autism.domain.Donation;
 import com.armaghanehayat.autism.repository.DonationRepository;
 import com.armaghanehayat.autism.service.DonationQueryService;
 import com.armaghanehayat.autism.service.DonationService;
+import com.armaghanehayat.autism.service.SMSService;
 import com.armaghanehayat.autism.service.criteria.DonationCriteria;
 import com.armaghanehayat.autism.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -45,14 +46,18 @@ public class DonationResource {
 
     private final DonationQueryService donationQueryService;
 
+    private final SMSService smsService;
+
     public DonationResource(
         DonationService donationService,
         DonationRepository donationRepository,
-        DonationQueryService donationQueryService
+        DonationQueryService donationQueryService,
+        SMSService smsService
     ) {
         this.donationService = donationService;
         this.donationRepository = donationRepository;
         this.donationQueryService = donationQueryService;
+        this.smsService = smsService;
     }
 
     /**
@@ -69,6 +74,10 @@ public class DonationResource {
             throw new BadRequestAlertException("A new donation cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Donation result = donationService.save(donation);
+        smsService.sendSmsToGiver(
+            donation.getGiver().getPhoneNumber(),
+            "نیکوکار گرامی مبلغ " + donation.getAmount() + " ریال کمک شما در سامانه موسسه خیریه ارمغان حیات شکوفه ها ثبت شد."
+        );
         return ResponseEntity
             .created(new URI("/api/donations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -78,7 +87,7 @@ public class DonationResource {
     /**
      * {@code PUT  /donations/:id} : Updates an existing donation.
      *
-     * @param id the id of the donation to save.
+     * @param id       the id of the donation to save.
      * @param donation the donation to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated donation,
      * or with status {@code 400 (Bad Request)} if the donation is not valid,
@@ -112,7 +121,7 @@ public class DonationResource {
     /**
      * {@code PATCH  /donations/:id} : Partial updates given fields of an existing donation, field will ignore if it is null
      *
-     * @param id the id of the donation to save.
+     * @param id       the id of the donation to save.
      * @param donation the donation to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated donation,
      * or with status {@code 400 (Bad Request)} if the donation is not valid,

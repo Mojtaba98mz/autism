@@ -124,3 +124,10 @@ jhipster:
 # ===================================================================
 
 # application:
+application:
+  sms:
+    enable: false
+    sendSmsUrl: 'https://rest.payamak-panel.com/api/SendSMS/'
+    username: '09102709481'
+    password: 'Armaghan@123'
+    from: '50004001709481'

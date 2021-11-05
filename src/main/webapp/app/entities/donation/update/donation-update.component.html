@@ -24,6 +24,15 @@
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.donation.amount" for="field_amount">Amount</label>
               <input type="number" ngmod class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
+              <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('amount')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+              </div>
             </div>
           </div>
         </div>

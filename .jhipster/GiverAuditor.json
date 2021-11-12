@@ -2,7 +2,7 @@
   "name": "GiverAuditor",
   "fields": [
     {
-      "fieldName": "fiedlName",
+      "fieldName": "fieldName",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },

@@ -27,7 +27,7 @@ export class GiverAuditorUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    fiedlName: [null, [Validators.required]],
+    fieldName: [null, [Validators.required]],
     oldValue: [null, [Validators.required]],
     newValue: [null, [Validators.required]],
     changeDate: [null, [Validators.required]],
@@ -100,7 +100,7 @@ export class GiverAuditorUpdateComponent implements OnInit {
   protected updateForm(giverAuditor: IGiverAuditor): void {
     this.editForm.patchValue({
       id: giverAuditor.id,
-      fiedlName: giverAuditor.fiedlName,
+      fieldName: giverAuditor.fieldName,
       oldValue: giverAuditor.oldValue,
       newValue: giverAuditor.newValue,
       changeDate: giverAuditor.changeDate ? giverAuditor.changeDate.format(DATE_TIME_FORMAT) : null,
@@ -130,7 +130,7 @@ export class GiverAuditorUpdateComponent implements OnInit {
     return {
       ...new GiverAuditor(),
       id: this.editForm.get(['id'])!.value,
-      fiedlName: this.editForm.get(['fiedlName'])!.value,
+      fieldName: this.editForm.get(['fieldName'])!.value,
       oldValue: this.editForm.get(['oldValue'])!.value,
       newValue: this.editForm.get(['newValue'])!.value,
       changeDate: this.editForm.get(['changeDate'])!.value ? dayjs(this.editForm.get(['changeDate'])!.value, DATE_TIME_FORMAT) : undefined,

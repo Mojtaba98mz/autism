@@ -2,11 +2,11 @@
   "autismApp": {
     "giverAuditor": {
       "home": {
-        "title": "Giver Auditors",
-        "refreshListLabel": "Refresh list",
+        "title": "اطلاعات ویرایش خیرین",
+        "refreshListLabel": "تازه سازی",
         "createLabel": "Create a new Giver Auditor",
         "createOrEditLabel": "Create or edit a Giver Auditor",
-        "notFound": "No Giver Auditors found"
+        "notFound": "تا کنون اطلاعات خیرین ویرایش نشده است"
       },
       "created": "A new Giver Auditor is created with identifier {{ param }}",
       "updated": "A Giver Auditor is updated with identifier {{ param }}",
@@ -18,12 +18,12 @@
         "title": "Giver Auditor"
       },
       "id": "ID",
-      "fiedlName": "Fiedl Name",
-      "oldValue": "Old Value",
-      "newValue": "New Value",
-      "changeDate": "Change Date",
-      "auditor": "Auditor",
-      "giver": "Giver"
+      "fieldName": "نام فیلد",
+      "oldValue": "مقدار پیشین",
+      "newValue": "مقدار جدید",
+      "changeDate": "تاریخ تغییر",
+      "auditor": "تغییر دهنده",
+      "giver": "خیر"
     }
   }
 }

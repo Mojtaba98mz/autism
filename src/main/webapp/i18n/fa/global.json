@@ -8,8 +8,9 @@
       "entities": {
         "main": "ماهیت ها",
         "giver": "خیرین",
+        "excel-import": "ورود اطلاعات از اکسل",
         "donation": "Donation",
-        "giverAuditor": "Giver Auditor",
+        "giverAuditor": "اطلاعات ویرایش خیرین",
         "province": "Province",
         "city": "City",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
@@ -21,7 +22,8 @@
         "sessions": "نشست ها",
         "login": "ورود",
         "logout": "خروج",
-        "register": "ثبت نام"
+        "register": "ثبت نام",
+        "changePassword": "بازنشانی کلمه عبور به 1234"
       },
       "admin": {
         "main": "مدیریت برتر",

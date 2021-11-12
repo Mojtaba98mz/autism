@@ -27,7 +27,7 @@ public class GiverAuditorCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
-    private StringFilter fiedlName;
+    private StringFilter fieldName;
 
     private StringFilter oldValue;
 
@@ -43,7 +43,7 @@ public class GiverAuditorCriteria implements Serializable, Criteria {
 
     public GiverAuditorCriteria(GiverAuditorCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.fiedlName = other.fiedlName == null ? null : other.fiedlName.copy();
+        this.fieldName = other.fieldName == null ? null : other.fieldName.copy();
         this.oldValue = other.oldValue == null ? null : other.oldValue.copy();
         this.newValue = other.newValue == null ? null : other.newValue.copy();
         this.changeDate = other.changeDate == null ? null : other.changeDate.copy();
@@ -71,19 +71,19 @@ public class GiverAuditorCriteria implements Serializable, Criteria {
         this.id = id;
     }
 
-    public StringFilter getFiedlName() {
-        return fiedlName;
+    public StringFilter getFieldName() {
+        return fieldName;
     }
 
-    public StringFilter fiedlName() {
-        if (fiedlName == null) {
-            fiedlName = new StringFilter();
+    public StringFilter fieldName() {
+        if (fieldName == null) {
+            fieldName = new StringFilter();
         }
-        return fiedlName;
+        return fieldName;
     }
 
-    public void setFiedlName(StringFilter fiedlName) {
-        this.fiedlName = fiedlName;
+    public void setFieldName(StringFilter fieldName) {
+        this.fieldName = fieldName;
     }
 
     public StringFilter getOldValue() {
@@ -172,7 +172,7 @@ public class GiverAuditorCriteria implements Serializable, Criteria {
         final GiverAuditorCriteria that = (GiverAuditorCriteria) o;
         return (
             Objects.equals(id, that.id) &&
-            Objects.equals(fiedlName, that.fiedlName) &&
+            Objects.equals(fieldName, that.fieldName) &&
             Objects.equals(oldValue, that.oldValue) &&
             Objects.equals(newValue, that.newValue) &&
             Objects.equals(changeDate, that.changeDate) &&
@@ -183,7 +183,7 @@ public class GiverAuditorCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fiedlName, oldValue, newValue, changeDate, auditorId, giverId);
+        return Objects.hash(id, fieldName, oldValue, newValue, changeDate, auditorId, giverId);
     }
 
     // prettier-ignore
@@ -191,7 +191,7 @@ public class GiverAuditorCriteria implements Serializable, Criteria {
     public String toString() {
         return "GiverAuditorCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
-            (fiedlName != null ? "fiedlName=" + fiedlName + ", " : "") +
+            (fieldName != null ? "fieldName=" + fieldName + ", " : "") +
             (oldValue != null ? "oldValue=" + oldValue + ", " : "") +
             (newValue != null ? "newValue=" + newValue + ", " : "") +
             (changeDate != null ? "changeDate=" + changeDate + ", " : "") +

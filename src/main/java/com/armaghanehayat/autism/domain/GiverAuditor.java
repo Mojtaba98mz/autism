@@ -24,8 +24,8 @@ public class GiverAuditor implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "fiedl_name", nullable = false)
-    private String fiedlName;
+    @Column(name = "field_name", nullable = false)
+    private String fieldName;
 
     @NotNull
     @Column(name = "old_value", nullable = false)
@@ -60,17 +60,17 @@ public class GiverAuditor implements Serializable {
         return this;
     }
 
-    public String getFiedlName() {
-        return this.fiedlName;
+    public String getFieldName() {
+        return this.fieldName;
     }
 
-    public GiverAuditor fiedlName(String fiedlName) {
-        this.fiedlName = fiedlName;
+    public GiverAuditor fieldName(String fieldName) {
+        this.fieldName = fieldName;
         return this;
     }
 
-    public void setFiedlName(String fiedlName) {
-        this.fiedlName = fiedlName;
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
 
     public String getOldValue() {
@@ -162,7 +162,7 @@ public class GiverAuditor implements Serializable {
     public String toString() {
         return "GiverAuditor{" +
             "id=" + getId() +
-            ", fiedlName='" + getFiedlName() + "'" +
+            ", fieldName='" + getFieldName() + "'" +
             ", oldValue='" + getOldValue() + "'" +
             ", newValue='" + getNewValue() + "'" +
             ", changeDate='" + getChangeDate() + "'" +

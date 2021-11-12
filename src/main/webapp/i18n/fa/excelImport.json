@@ -18,15 +18,16 @@
         "title": "Giver Auditor"
       },
       "id": "ID",
-      "fiedlName": "Fiedl Name",
+      "fieldName": "Field Name",
       "oldValue": "Old Value",
       "newValue": "New Value",
       "changeDate": "Change Date",
       "auditor": "Auditor",
-      "giver": "Giver",
+      "excel": "آپلود فایل اکسل",
       "supporterName": "نام پشتیبان",
       "supporterFamily": "نام خانوادگی پشتیبان",
-      "supporters": "پشتیبانان"
+      "supporters": "پشتیبانان",
+      "upload": "بارگزاری"
     }
   }
 }

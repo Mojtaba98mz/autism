@@ -34,8 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class GiverAuditorResourceIT {
 
-    private static final String DEFAULT_FIEDL_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_FIEDL_NAME = "BBBBBBBBBB";
+    private static final String DEFAULT_FIELD_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FIELD_NAME = "BBBBBBBBBB";
 
     private static final String DEFAULT_OLD_VALUE = "AAAAAAAAAA";
     private static final String UPDATED_OLD_VALUE = "BBBBBBBBBB";
@@ -71,7 +71,7 @@ class GiverAuditorResourceIT {
      */
     public static GiverAuditor createEntity(EntityManager em) {
         GiverAuditor giverAuditor = new GiverAuditor()
-            .fiedlName(DEFAULT_FIEDL_NAME)
+            .fieldName(DEFAULT_FIELD_NAME)
             .oldValue(DEFAULT_OLD_VALUE)
             .newValue(DEFAULT_NEW_VALUE)
             .changeDate(DEFAULT_CHANGE_DATE);
@@ -86,7 +86,7 @@ class GiverAuditorResourceIT {
      */
     public static GiverAuditor createUpdatedEntity(EntityManager em) {
         GiverAuditor giverAuditor = new GiverAuditor()
-            .fiedlName(UPDATED_FIEDL_NAME)
+            .fieldName(UPDATED_FIELD_NAME)
             .oldValue(UPDATED_OLD_VALUE)
             .newValue(UPDATED_NEW_VALUE)
             .changeDate(UPDATED_CHANGE_DATE);
@@ -111,7 +111,7 @@ class GiverAuditorResourceIT {
         List<GiverAuditor> giverAuditorList = giverAuditorRepository.findAll();
         assertThat(giverAuditorList).hasSize(databaseSizeBeforeCreate + 1);
         GiverAuditor testGiverAuditor = giverAuditorList.get(giverAuditorList.size() - 1);
-        assertThat(testGiverAuditor.getFiedlName()).isEqualTo(DEFAULT_FIEDL_NAME);
+        assertThat(testGiverAuditor.getFieldName()).isEqualTo(DEFAULT_FIELD_NAME);
         assertThat(testGiverAuditor.getOldValue()).isEqualTo(DEFAULT_OLD_VALUE);
         assertThat(testGiverAuditor.getNewValue()).isEqualTo(DEFAULT_NEW_VALUE);
         assertThat(testGiverAuditor.getChangeDate()).isEqualTo(DEFAULT_CHANGE_DATE);
@@ -137,10 +137,10 @@ class GiverAuditorResourceIT {
 
     @Test
     @Transactional
-    void checkFiedlNameIsRequired() throws Exception {
+    void checkFieldNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = giverAuditorRepository.findAll().size();
         // set the field null
-        giverAuditor.setFiedlName(null);
+        giverAuditor.setFieldName(null);
 
         // Create the GiverAuditor, which fails.
 
@@ -215,7 +215,7 @@ class GiverAuditorResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(giverAuditor.getId().intValue())))
-            .andExpect(jsonPath("$.[*].fiedlName").value(hasItem(DEFAULT_FIEDL_NAME)))
+            .andExpect(jsonPath("$.[*].fieldName").value(hasItem(DEFAULT_FIELD_NAME)))
             .andExpect(jsonPath("$.[*].oldValue").value(hasItem(DEFAULT_OLD_VALUE)))
             .andExpect(jsonPath("$.[*].newValue").value(hasItem(DEFAULT_NEW_VALUE)))
             .andExpect(jsonPath("$.[*].changeDate").value(hasItem(DEFAULT_CHANGE_DATE.toString())));
@@ -233,7 +233,7 @@ class GiverAuditorResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(giverAuditor.getId().intValue()))
-            .andExpect(jsonPath("$.fiedlName").value(DEFAULT_FIEDL_NAME))
+            .andExpect(jsonPath("$.fieldName").value(DEFAULT_FIELD_NAME))
             .andExpect(jsonPath("$.oldValue").value(DEFAULT_OLD_VALUE))
             .andExpect(jsonPath("$.newValue").value(DEFAULT_NEW_VALUE))
             .andExpect(jsonPath("$.changeDate").value(DEFAULT_CHANGE_DATE.toString()));
@@ -259,80 +259,80 @@ class GiverAuditorResourceIT {
 
     @Test
     @Transactional
-    void getAllGiverAuditorsByFiedlNameIsEqualToSomething() throws Exception {
+    void getAllGiverAuditorsByFieldNameIsEqualToSomething() throws Exception {
         // Initialize the database
         giverAuditorRepository.saveAndFlush(giverAuditor);
 
-        // Get all the giverAuditorList where fiedlName equals to DEFAULT_FIEDL_NAME
-        defaultGiverAuditorShouldBeFound("fiedlName.equals=" + DEFAULT_FIEDL_NAME);
+        // Get all the giverAuditorList where fieldName equals to DEFAULT_field_NAME
+        defaultGiverAuditorShouldBeFound("fieldName.equals=" + DEFAULT_FIELD_NAME);
 
-        // Get all the giverAuditorList where fiedlName equals to UPDATED_FIEDL_NAME
-        defaultGiverAuditorShouldNotBeFound("fiedlName.equals=" + UPDATED_FIEDL_NAME);
+        // Get all the giverAuditorList where fieldName equals to UPDATED_field_NAME
+        defaultGiverAuditorShouldNotBeFound("fieldName.equals=" + UPDATED_FIELD_NAME);
     }
 
     @Test
     @Transactional
-    void getAllGiverAuditorsByFiedlNameIsNotEqualToSomething() throws Exception {
+    void getAllGiverAuditorsByFieldNameIsNotEqualToSomething() throws Exception {
         // Initialize the database
         giverAuditorRepository.saveAndFlush(giverAuditor);
 
         // Get all the giverAuditorList where fiedlName not equals to DEFAULT_FIEDL_NAME
-        defaultGiverAuditorShouldNotBeFound("fiedlName.notEquals=" + DEFAULT_FIEDL_NAME);
+        defaultGiverAuditorShouldNotBeFound("fieldName.notEquals=" + DEFAULT_FIELD_NAME);
 
         // Get all the giverAuditorList where fiedlName not equals to UPDATED_FIEDL_NAME
-        defaultGiverAuditorShouldBeFound("fiedlName.notEquals=" + UPDATED_FIEDL_NAME);
+        defaultGiverAuditorShouldBeFound("fieldName.notEquals=" + UPDATED_FIELD_NAME);
     }
 
     @Test
     @Transactional
-    void getAllGiverAuditorsByFiedlNameIsInShouldWork() throws Exception {
+    void getAllGiverAuditorsByFieldNameIsInShouldWork() throws Exception {
         // Initialize the database
         giverAuditorRepository.saveAndFlush(giverAuditor);
 
         // Get all the giverAuditorList where fiedlName in DEFAULT_FIEDL_NAME or UPDATED_FIEDL_NAME
-        defaultGiverAuditorShouldBeFound("fiedlName.in=" + DEFAULT_FIEDL_NAME + "," + UPDATED_FIEDL_NAME);
+        defaultGiverAuditorShouldBeFound("fieldName.in=" + DEFAULT_FIELD_NAME + "," + UPDATED_FIELD_NAME);
 
         // Get all the giverAuditorList where fiedlName equals to UPDATED_FIEDL_NAME
-        defaultGiverAuditorShouldNotBeFound("fiedlName.in=" + UPDATED_FIEDL_NAME);
+        defaultGiverAuditorShouldNotBeFound("fieldName.in=" + UPDATED_FIELD_NAME);
     }
 
     @Test
     @Transactional
-    void getAllGiverAuditorsByFiedlNameIsNullOrNotNull() throws Exception {
+    void getAllGiverAuditorsByFieldNameIsNullOrNotNull() throws Exception {
         // Initialize the database
         giverAuditorRepository.saveAndFlush(giverAuditor);
 
         // Get all the giverAuditorList where fiedlName is not null
-        defaultGiverAuditorShouldBeFound("fiedlName.specified=true");
+        defaultGiverAuditorShouldBeFound("fieldName.specified=true");
 
         // Get all the giverAuditorList where fiedlName is null
-        defaultGiverAuditorShouldNotBeFound("fiedlName.specified=false");
+        defaultGiverAuditorShouldNotBeFound("fieldName.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllGiverAuditorsByFiedlNameContainsSomething() throws Exception {
+    void getAllGiverAuditorsByFieldNameContainsSomething() throws Exception {
         // Initialize the database
         giverAuditorRepository.saveAndFlush(giverAuditor);
 
         // Get all the giverAuditorList where fiedlName contains DEFAULT_FIEDL_NAME
-        defaultGiverAuditorShouldBeFound("fiedlName.contains=" + DEFAULT_FIEDL_NAME);
+        defaultGiverAuditorShouldBeFound("fieldName.contains=" + DEFAULT_FIELD_NAME);
 
         // Get all the giverAuditorList where fiedlName contains UPDATED_FIEDL_NAME
-        defaultGiverAuditorShouldNotBeFound("fiedlName.contains=" + UPDATED_FIEDL_NAME);
+        defaultGiverAuditorShouldNotBeFound("fieldName.contains=" + UPDATED_FIELD_NAME);
     }
 
     @Test
     @Transactional
-    void getAllGiverAuditorsByFiedlNameNotContainsSomething() throws Exception {
+    void getAllGiverAuditorsByFieldNameNotContainsSomething() throws Exception {
         // Initialize the database
         giverAuditorRepository.saveAndFlush(giverAuditor);
 
         // Get all the giverAuditorList where fiedlName does not contain DEFAULT_FIEDL_NAME
-        defaultGiverAuditorShouldNotBeFound("fiedlName.doesNotContain=" + DEFAULT_FIEDL_NAME);
+        defaultGiverAuditorShouldNotBeFound("fieldName.doesNotContain=" + UPDATED_FIELD_NAME);
 
         // Get all the giverAuditorList where fiedlName does not contain UPDATED_FIEDL_NAME
-        defaultGiverAuditorShouldBeFound("fiedlName.doesNotContain=" + UPDATED_FIEDL_NAME);
+        defaultGiverAuditorShouldBeFound("fieldName.doesNotContain=" + UPDATED_FIELD_NAME);
     }
 
     @Test
@@ -590,7 +590,7 @@ class GiverAuditorResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(giverAuditor.getId().intValue())))
-            .andExpect(jsonPath("$.[*].fiedlName").value(hasItem(DEFAULT_FIEDL_NAME)))
+            .andExpect(jsonPath("$.[*].fieldName").value(hasItem(DEFAULT_FIELD_NAME)))
             .andExpect(jsonPath("$.[*].oldValue").value(hasItem(DEFAULT_OLD_VALUE)))
             .andExpect(jsonPath("$.[*].newValue").value(hasItem(DEFAULT_NEW_VALUE)))
             .andExpect(jsonPath("$.[*].changeDate").value(hasItem(DEFAULT_CHANGE_DATE.toString())));
@@ -642,7 +642,7 @@ class GiverAuditorResourceIT {
         // Disconnect from session so that the updates on updatedGiverAuditor are not directly saved in db
         em.detach(updatedGiverAuditor);
         updatedGiverAuditor
-            .fiedlName(UPDATED_FIEDL_NAME)
+            .fieldName(UPDATED_FIELD_NAME)
             .oldValue(UPDATED_OLD_VALUE)
             .newValue(UPDATED_NEW_VALUE)
             .changeDate(UPDATED_CHANGE_DATE);
@@ -659,7 +659,7 @@ class GiverAuditorResourceIT {
         List<GiverAuditor> giverAuditorList = giverAuditorRepository.findAll();
         assertThat(giverAuditorList).hasSize(databaseSizeBeforeUpdate);
         GiverAuditor testGiverAuditor = giverAuditorList.get(giverAuditorList.size() - 1);
-        assertThat(testGiverAuditor.getFiedlName()).isEqualTo(UPDATED_FIEDL_NAME);
+        assertThat(testGiverAuditor.getFieldName()).isEqualTo(UPDATED_FIELD_NAME);
         assertThat(testGiverAuditor.getOldValue()).isEqualTo(UPDATED_OLD_VALUE);
         assertThat(testGiverAuditor.getNewValue()).isEqualTo(UPDATED_NEW_VALUE);
         assertThat(testGiverAuditor.getChangeDate()).isEqualTo(UPDATED_CHANGE_DATE);
@@ -747,7 +747,7 @@ class GiverAuditorResourceIT {
         List<GiverAuditor> giverAuditorList = giverAuditorRepository.findAll();
         assertThat(giverAuditorList).hasSize(databaseSizeBeforeUpdate);
         GiverAuditor testGiverAuditor = giverAuditorList.get(giverAuditorList.size() - 1);
-        assertThat(testGiverAuditor.getFiedlName()).isEqualTo(DEFAULT_FIEDL_NAME);
+        assertThat(testGiverAuditor.getFieldName()).isEqualTo(DEFAULT_FIELD_NAME);
         assertThat(testGiverAuditor.getOldValue()).isEqualTo(UPDATED_OLD_VALUE);
         assertThat(testGiverAuditor.getNewValue()).isEqualTo(UPDATED_NEW_VALUE);
         assertThat(testGiverAuditor.getChangeDate()).isEqualTo(DEFAULT_CHANGE_DATE);
@@ -766,7 +766,7 @@ class GiverAuditorResourceIT {
         partialUpdatedGiverAuditor.setId(giverAuditor.getId());
 
         partialUpdatedGiverAuditor
-            .fiedlName(UPDATED_FIEDL_NAME)
+            .fieldName(UPDATED_FIELD_NAME)
             .oldValue(UPDATED_OLD_VALUE)
             .newValue(UPDATED_NEW_VALUE)
             .changeDate(UPDATED_CHANGE_DATE);
@@ -783,7 +783,7 @@ class GiverAuditorResourceIT {
         List<GiverAuditor> giverAuditorList = giverAuditorRepository.findAll();
         assertThat(giverAuditorList).hasSize(databaseSizeBeforeUpdate);
         GiverAuditor testGiverAuditor = giverAuditorList.get(giverAuditorList.size() - 1);
-        assertThat(testGiverAuditor.getFiedlName()).isEqualTo(UPDATED_FIEDL_NAME);
+        assertThat(testGiverAuditor.getFieldName()).isEqualTo(UPDATED_FIELD_NAME);
         assertThat(testGiverAuditor.getOldValue()).isEqualTo(UPDATED_OLD_VALUE);
         assertThat(testGiverAuditor.getNewValue()).isEqualTo(UPDATED_NEW_VALUE);
         assertThat(testGiverAuditor.getChangeDate()).isEqualTo(UPDATED_CHANGE_DATE);

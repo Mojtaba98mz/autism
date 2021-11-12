@@ -346,4 +346,15 @@ public class UserService {
     public Optional<User> getById(Long userId) {
         return userRepository.findById(userId);
     }
+
+    public void resetPassword(Long userId) {
+        Optional<User> byId = userRepository.findById(userId);
+        byId.ifPresent(
+            user -> {
+                String encryptedPassword = passwordEncoder.encode("1234");
+                user.setPassword(encryptedPassword);
+                this.clearUserCaches(user);
+            }
+        );
+    }
 }

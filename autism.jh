@@ -17,7 +17,7 @@ entity Donation {
 }
 
 entity GiverAuditor{
-	fiedlName String required
+	fieldName String required
     oldValue String required
     newValue String required
     changeDate Instant required

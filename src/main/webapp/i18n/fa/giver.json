@@ -22,6 +22,7 @@
       "family": "نام خانوادگی",
       "phoneNumber": "شماره همراه",
       "homeNumber": "تلفن ثابت(به همراه پیش شماره)",
+      "homeNumberForList": "تلفن ثابت",
       "address": "نشانی",
       "absorbDate": "تاریخ جذب",
       "province": "استان",

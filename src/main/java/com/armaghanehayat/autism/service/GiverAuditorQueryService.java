@@ -81,8 +81,8 @@ public class GiverAuditorQueryService extends QueryService<GiverAuditor> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), GiverAuditor_.id));
             }
-            if (criteria.getFiedlName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getFiedlName(), GiverAuditor_.fiedlName));
+            if (criteria.getFieldName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFieldName(), GiverAuditor_.fieldName));
             }
             if (criteria.getOldValue() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getOldValue(), GiverAuditor_.oldValue));

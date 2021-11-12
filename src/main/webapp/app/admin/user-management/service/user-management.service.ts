@@ -37,4 +37,8 @@ export class UserManagementService {
   authorities(): Observable<string[]> {
     return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
   }
+
+  resetPassword(userId: number): Observable<any> {
+    return this.http.get<boolean>(this.applicationConfigService.getEndpointFor('api/account/change-password') + `/${userId}`);
+  }
 }

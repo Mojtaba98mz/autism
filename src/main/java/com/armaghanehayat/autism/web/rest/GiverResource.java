@@ -3,6 +3,7 @@ package com.armaghanehayat.autism.web.rest;
 import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.GiverRepository;
+import com.armaghanehayat.autism.service.GiverAuditorService;
 import com.armaghanehayat.autism.service.GiverQueryService;
 import com.armaghanehayat.autism.service.GiverService;
 import com.armaghanehayat.autism.service.UserService;
@@ -77,7 +78,7 @@ public class GiverResource {
         }
         Giver result = new Giver();
         try {
-            result = giverService.save(giver);
+            result = giverService.save(giver, true);
         } catch (Exception DataIntegrityViolationException) {
             throw new BadRequestAlertException("A new giver cannot has duplicate phoneNumber", ENTITY_NAME, "duplicate_phone_number");
         }
@@ -90,7 +91,7 @@ public class GiverResource {
     /**
      * {@code PUT  /givers/:id} : Updates an existing giver.
      *
-     * @param id the id of the giver to save.
+     * @param id    the id of the giver to save.
      * @param giver the giver to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated giver,
      * or with status {@code 400 (Bad Request)} if the giver is not valid,
@@ -112,7 +113,7 @@ public class GiverResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Giver result = giverService.save(giver);
+        Giver result = giverService.save(giver, false);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, giver.getId().toString()))
@@ -122,7 +123,7 @@ public class GiverResource {
     /**
      * {@code PATCH  /givers/:id} : Partial updates given fields of an existing giver, field will ignore if it is null
      *
-     * @param id the id of the giver to save.
+     * @param id    the id of the giver to save.
      * @param giver the giver to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated giver,
      * or with status {@code 400 (Bad Request)} if the giver is not valid,

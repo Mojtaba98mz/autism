@@ -18,12 +18,12 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autismApp.giverAuditor.fiedlName" for="field_fiedlName">Fiedl Name</label>
-          <input type="text" class="form-control" name="fiedlName" id="field_fiedlName" data-cy="fiedlName" formControlName="fiedlName" />
-          <div *ngIf="editForm.get('fiedlName')!.invalid && (editForm.get('fiedlName')!.dirty || editForm.get('fiedlName')!.touched)">
+          <label class="form-control-label" jhiTranslate="autismApp.giverAuditor.fieldName" for="field_fieldName">field Name</label>
+          <input type="text" class="form-control" name="fieldName" id="field_fieldName" data-cy="fieldName" formControlName="fieldName" />
+          <div *ngIf="editForm.get('fieldName')!.invalid && (editForm.get('fieldName')!.dirty || editForm.get('fieldName')!.touched)">
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('fiedlName')?.errors?.required"
+              *ngIf="editForm.get('fieldName')?.errors?.required"
               jhiTranslate="entity.validation.required"
             >
               This field is required.

@@ -1,11 +1,7 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2
-        id="jhi-excel-import-heading"
-        data-cy="ExcelImportCreateUpdateHeading"
-        jhiTranslate="autismApp.excelImport.home.createOrEditLabel"
-      >
+      <h2 id="jhi-excel-import-heading" data-cy="ExcelImportCreateUpdateHeading" jhiTranslate="autismApp.excelImport.home.title">
         Create or edit a Excel Import
       </h2>
 
@@ -72,7 +68,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="autismApp.excelImport.upload">Save</span>
         </button>
       </div>
     </form>

@@ -84,6 +84,10 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
+  resetPassword(userId: number): void {
+    this.userService.resetPassword(userId).subscribe();
+  }
+
   private handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');

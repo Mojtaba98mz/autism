@@ -4,7 +4,7 @@ import { IGiver } from 'app/entities/giver/giver.model';
 
 export interface IGiverAuditor {
   id?: number;
-  fiedlName?: string;
+  fieldName?: string;
   oldValue?: string;
   newValue?: string;
   changeDate?: dayjs.Dayjs;
@@ -15,7 +15,7 @@ export interface IGiverAuditor {
 export class GiverAuditor implements IGiverAuditor {
   constructor(
     public id?: number,
-    public fiedlName?: string,
+    public fieldName?: string,
     public oldValue?: string,
     public newValue?: string,
     public changeDate?: dayjs.Dayjs,

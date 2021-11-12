@@ -6,6 +6,7 @@ import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.GiverRepository;
 import com.armaghanehayat.autism.repository.UserRepository;
 import com.armaghanehayat.autism.security.AuthoritiesConstants;
+import com.armaghanehayat.autism.service.GiverAuditorService;
 import com.armaghanehayat.autism.service.GiverService;
 import com.armaghanehayat.autism.service.UserService;
 import java.time.Instant;
@@ -38,14 +39,27 @@ public class GiverServiceImpl implements GiverService {
 
     private final UserRepository userRepository;
 
-    public GiverServiceImpl(GiverRepository giverRepository, UserService userService, UserRepository userRepository) {
+    private final GiverAuditorService giverAuditorService;
+
+    public GiverServiceImpl(
+        GiverRepository giverRepository,
+        UserService userService,
+        UserRepository userRepository,
+        GiverAuditorService giverAuditorService
+    ) {
         this.giverRepository = giverRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.giverAuditorService = giverAuditorService;
     }
 
     @Override
-    public Giver save(Giver giver) {
+    @Transactional
+    public Giver save(Giver giver, Boolean isNew) {
+        if (!isNew) {
+            Optional<Giver> byId = giverRepository.findById(giver.getId());
+            if (byId.isPresent()) giverAuditorService.giverUpdated(byId.get(), giver);
+        }
         if (userService.getUserWithAuthorities().isPresent()) {
             User currentUser = userService.getUserWithAuthorities().get();
             giver.setAbsorbant(currentUser);

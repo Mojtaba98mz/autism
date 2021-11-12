@@ -8,7 +8,7 @@
         <span jhiTranslate="autismApp.giverAuditor.home.refreshListLabel">Refresh List</span>
       </button>
 
-      <button
+      <!--<button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-giver-auditor"
@@ -16,7 +16,7 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="autismApp.giverAuditor.home.createLabel"> Create a new Giver Auditor </span>
-      </button>
+      </button>-->
     </div>
   </h2>
 
@@ -32,24 +32,42 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="fiedlName">
-            <span jhiTranslate="autismApp.giverAuditor.fiedlName">Fiedl Name</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col" jhiSortBy="id">
+            <span jhiTranslate="global.field.id">ID</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="oldValue">
-            <span jhiTranslate="autismApp.giverAuditor.oldValue">Old Value</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="name">
+              <span jhiTranslate="autismApp.giverAuditor.fieldName">Field Name</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" [(ngModel)]="fieldNameFilter" class="filter-width" (keydown)="onEnterPressed($event, 'fieldName')" />
           </th>
-          <th scope="col" jhiSortBy="newValue">
-            <span jhiTranslate="autismApp.giverAuditor.newValue">New Value</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="oldValue">
+              <span jhiTranslate="autismApp.giverAuditor.oldValue">Old Value</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" [(ngModel)]="oldValueFilter" class="filter-width" (keydown)="onEnterPressed($event, 'oldValue')" />
+          </th>
+          <th scope="col">
+            <div jhiSortBy="newValue">
+              <span jhiTranslate="autismApp.giverAuditor.newValue">New Value</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" [(ngModel)]="newValueFilter" class="filter-width" (keydown)="onEnterPressed($event, 'newValue')" />
           </th>
           <th scope="col" jhiSortBy="changeDate">
-            <span jhiTranslate="autismApp.giverAuditor.changeDate">Change Date</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="autismApp.giverAuditor.changeDate">Change Date</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="auditor.id">
-            <span jhiTranslate="autismApp.giverAuditor.auditor">Auditor</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="autismApp.giverAuditor.auditor">Auditor</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="giver.id">
-            <span jhiTranslate="autismApp.giverAuditor.giver">Giver</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="autismApp.giverAuditor.giver">Giver</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>
         </tr>
@@ -59,46 +77,49 @@
           <td>
             <a [routerLink]="['/giver-auditor', giverAuditor.id, 'view']">{{ giverAuditor.id }}</a>
           </td>
-          <td>{{ giverAuditor.fiedlName }}</td>
+          <td>{{ giverAuditor.fieldName }}</td>
           <td>{{ giverAuditor.oldValue }}</td>
           <td>{{ giverAuditor.newValue }}</td>
-          <td>{{ giverAuditor.changeDate | formatMediumDatetime }}</td>
+          <td>{{ giverAuditor.changeDate | jalali }}</td>
           <td>
-            {{ giverAuditor.auditor?.id }}
+            {{ giverAuditor.auditor?.firstName }}
+            {{ giverAuditor.auditor?.lastName }}
           </td>
           <td>
             <div *ngIf="giverAuditor.giver">
-              <a [routerLink]="['/giver', giverAuditor.giver?.id, 'view']">{{ giverAuditor.giver?.id }}</a>
+              <a [routerLink]="['/giver', giverAuditor.giver?.id, 'view']"
+                >{{ giverAuditor.giver?.name }} {{ giverAuditor.giver?.family }}</a
+              >
             </div>
           </td>
-          <td class="text-right">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/giver-auditor', giverAuditor.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
+          <!--<td class="text-right">
+          <div class="btn-group">
+            <button
+              type="submit"
+              [routerLink]="['/giver-auditor', giverAuditor.id, 'view']"
+              class="btn btn-info btn-sm"
+              data-cy="entityDetailsButton"
+            >
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+            </button>
 
-              <button
-                type="submit"
-                [routerLink]="['/giver-auditor', giverAuditor.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
+            <button
+              type="submit"
+              [routerLink]="['/giver-auditor', giverAuditor.id, 'edit']"
+              class="btn btn-primary btn-sm"
+              data-cy="entityEditButton"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+            </button>
 
-              <button type="submit" (click)="delete(giverAuditor)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
+            <button type="submit" (click)="delete(giverAuditor)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+            </button>
+          </div>
+        </td>-->
         </tr>
       </tbody>
     </table>

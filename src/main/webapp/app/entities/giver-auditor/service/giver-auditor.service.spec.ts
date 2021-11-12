@@ -26,7 +26,7 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
-        fiedlName: 'AAAAAAA',
+        fieldName: 'AAAAAAA',
         oldValue: 'AAAAAAA',
         newValue: 'AAAAAAA',
         changeDate: currentDate,
@@ -76,7 +76,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            fiedlName: 'BBBBBB',
+            fieldName: 'BBBBBB',
             oldValue: 'BBBBBB',
             newValue: 'BBBBBB',
             changeDate: currentDate.format(DATE_TIME_FORMAT),
@@ -128,7 +128,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            fiedlName: 'BBBBBB',
+            fieldName: 'BBBBBB',
             oldValue: 'BBBBBB',
             newValue: 'BBBBBB',
             changeDate: currentDate.format(DATE_TIME_FORMAT),

@@ -1,14 +1,23 @@
 package com.armaghanehayat.autism.service.impl;
 
+import com.armaghanehayat.autism.domain.Donation;
 import com.armaghanehayat.autism.domain.ExcelImport;
+import com.armaghanehayat.autism.domain.Giver;
+import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.ExcelImportRepository;
 import com.armaghanehayat.autism.service.ExcelImportService;
+import com.armaghanehayat.autism.service.GiverService;
+import com.armaghanehayat.autism.service.UserService;
+import com.armaghanehayat.autism.util.JalaliDateTime;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -32,40 +41,43 @@ public class ExcelImportServiceImpl implements ExcelImportService {
 
     private final ExcelImportRepository excelImportRepository;
 
-    public ExcelImportServiceImpl(ExcelImportRepository excelImportRepository) {
+    private final GiverService giverService;
+
+    private final UserService userService;
+
+    public ExcelImportServiceImpl(ExcelImportRepository excelImportRepository, GiverService giverService, UserService userService) {
         this.excelImportRepository = excelImportRepository;
+        this.giverService = giverService;
+        this.userService = userService;
     }
 
     @Override
+    @Transactional
     public ExcelImport save(ExcelImport excelImport) {
         log.debug("Request to save ExcelImport : {}", excelImport);
         InputStream fis = new ByteArrayInputStream(excelImport.getExcel());
-        //creating workbook instance that refers to .xls file
-        XSSFWorkbook wb = null;
+        HSSFWorkbook wb = null;
         try {
-            wb = new XSSFWorkbook(fis);
+            wb = new HSSFWorkbook(fis);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //creating a Sheet object to retrieve the object
-        XSSFSheet sheet = wb.getSheetAt(0);
-        //evaluating cell type
-        FormulaEvaluator formulaEvaluator = wb.getCreationHelper().createFormulaEvaluator();
-        for (Row row : sheet) { //iteration over row using for each loop
-            for (Cell cell : row) { //iteration over cell using for each loop
-                /* switch (formulaEvaluator.evaluateInCell(cell).getCellType()) {
-                    case Cell.CELL_TYPE_NUMERIC:   //field that represents numeric cell type
-//getting the value of the cell as a number
-                        System.out.print(cell.getNumericCellValue() + "\t\t");
-                        break;
-                    case Cell.CELL_TYPE_STRING:    //field that represents string cell type
-//getting the value of the cell as a string
-                        System.out.print(cell.getStringCellValue() + "\t\t");
-                        break;
-                }*/
-                System.out.println();
+        HSSFSheet sheet = wb.getSheetAt(0);
+        for (Row row : sheet) {
+            if (row.getRowNum() < 2) continue;
+            Giver giver = new Giver();
+            Donation donation = new Donation();
+            giver.setName(row.getCell(2).getStringCellValue());
+            giver.setFamily(row.getCell(3).getStringCellValue());
+            giver.setPhoneNumber(row.getCell(4).getStringCellValue());
+            if (row.getCell(5) != null) {
+                donation.setAmount(Long.valueOf(row.getCell(5).getStringCellValue()));
+                donation.setDonationDate(JalaliDateTime.jalaliToGregorianWithoutTime(row.getCell(6).getStringCellValue()));
+                Set<Donation> donations = new HashSet<>();
+                donations.add(donation);
+                giver.setDonations(donations);
             }
-            System.out.println();
+            giverService.save(giver, true);
         }
         return excelImportRepository.save(excelImport);
     }

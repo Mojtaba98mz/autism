@@ -17,7 +17,7 @@ public interface GiverService {
      * @param giver the entity to save.
      * @return the persisted entity.
      */
-    Giver save(Giver giver);
+    Giver save(Giver giver, Boolean isNew);
 
     /**
      * Partially updates a giver.

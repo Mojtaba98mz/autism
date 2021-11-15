@@ -63,8 +63,19 @@
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="collapseNavbar()"
             >
-              <!--              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
               <span jhiTranslate="global.menu.entities.excel-import">excel-import</span>
+            </a>
+          </li>
+
+          <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <a
+              class="dropdown-item"
+              routerLink="giver-assigner"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <span jhiTranslate="global.menu.entities.giver-assigner">giver-assigner</span>
             </a>
           </li>
           <!--<li>

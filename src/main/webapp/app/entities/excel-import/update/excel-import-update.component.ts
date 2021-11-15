@@ -10,6 +10,7 @@ import { ExcelImportService } from '../service/excel-import.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { AlertService } from '../../../core/util/alert.service';
 
 @Component({
   selector: 'jhi-excel-import-update',
@@ -17,6 +18,9 @@ import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 })
 export class ExcelImportUpdateComponent implements OnInit {
   isSaving = false;
+
+  message;
+  type = 'info';
 
   editForm = this.fb.group({
     id: [],
@@ -29,7 +33,8 @@ export class ExcelImportUpdateComponent implements OnInit {
     protected eventManager: EventManager,
     protected excelImportService: ExcelImportService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    protected alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +54,12 @@ export class ExcelImportUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('autismApp.error', { ...err, key: 'error.file.' + err.key })),
+        this.eventManager.broadcast(
+          new EventWithContent<AlertError>('autismApp.error', {
+            ...err,
+            key: 'error.file.' + err.key,
+          })
+        ),
     });
   }
 
@@ -59,6 +69,7 @@ export class ExcelImportUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
+    this.message = 'اکسل در حال بارگذاری میباشد....';
     const excelImport = this.createFromForm();
     if (excelImport.id !== undefined) {
       this.subscribeToSaveResponse(this.excelImportService.update(excelImport));
@@ -75,7 +86,8 @@ export class ExcelImportUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    this.message = 'بارگذاری اکسل با موفقیت انجام شد';
+    this.type = 'success';
   }
 
   protected onSaveError(): void {

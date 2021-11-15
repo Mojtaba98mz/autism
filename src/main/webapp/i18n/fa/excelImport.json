@@ -8,6 +8,7 @@
         "createOrEditLabel": "Create or edit a Giver Auditor",
         "notFound": "No Giver Auditors found"
       },
+      "successImport": "بارگذاری اکسل با موفقیت انجام شد",
       "created": "A new Giver Auditor is created with identifier {{ param }}",
       "updated": "A Giver Auditor is updated with identifier {{ param }}",
       "deleted": "A Giver Auditor is deleted with identifier {{ param }}",

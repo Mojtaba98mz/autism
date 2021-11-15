@@ -128,4 +128,9 @@ public class GiverServiceImpl implements GiverService {
         List<User> allUsers = userRepository.findAllByIdNotNullAndActivatedIsTrue();
         return allUsers.stream().filter(item -> item.hasOnlyRole(AuthoritiesConstants.USER)).collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<Giver> findByPhoneNumber(String phoneNumber) {
+        return giverRepository.findFirstByPhoneNumber(phoneNumber);
+    }
 }

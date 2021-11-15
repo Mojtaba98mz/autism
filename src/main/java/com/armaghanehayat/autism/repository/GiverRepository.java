@@ -2,6 +2,7 @@ package com.armaghanehayat.autism.repository;
 
 import com.armaghanehayat.autism.domain.Giver;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,6 @@ public interface GiverRepository extends JpaRepository<Giver, Long>, JpaSpecific
 
     @Query("select giver from Giver giver where giver.supporter.login = ?#{principal.username}")
     List<Giver> findBySupporterIsCurrentUser();
+
+    Optional<Giver> findFirstByPhoneNumber(String phoneNumber);
 }

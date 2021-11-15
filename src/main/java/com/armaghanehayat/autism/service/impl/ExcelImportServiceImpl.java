@@ -77,7 +77,8 @@ public class ExcelImportServiceImpl implements ExcelImportService {
                 donations.add(donation);
                 giver.setDonations(donations);
             }
-            giverService.save(giver, true);
+            Optional<Giver> byPhoneNumber = giverService.findByPhoneNumber(giver.getPhoneNumber());
+            if (byPhoneNumber.isEmpty()) giverService.save(giver, true);
         }
         return excelImportRepository.save(excelImport);
     }

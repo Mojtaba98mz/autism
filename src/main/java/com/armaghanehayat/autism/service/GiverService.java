@@ -56,4 +56,6 @@ public interface GiverService {
      * @return the list of entities.
      */
     List<User> findAllGiversSupporters();
+
+    Optional<Giver> findByPhoneNumber(String phoneNumber);
 }

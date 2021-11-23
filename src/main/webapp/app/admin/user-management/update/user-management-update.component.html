@@ -32,7 +32,8 @@
             <small
               class="form-text text-danger"
               *ngIf="editForm.get('login')?.errors?.pattern"
-              jhiTranslate="entity.validation.patternLogin"
+              jhiTranslate="entity.validation.pattern"
+              [translateValues]="{ pattern: 'انگلیسی یا اعداد یا ایمیل' }"
             >
               This field can only contain letters, digits and e-mail addresses.
             </small>

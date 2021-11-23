@@ -119,7 +119,8 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } */else {
             User newUser = userService.createUser(userDTO);
-            mailService.sendCreationEmail(newUser);
+            //mailService.sendCreationEmail(newUser);
+            userService.resetPassword(newUser.getId());
             return ResponseEntity
                 .created(new URI("/api/admin/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert(applicationName, "userManagement.created", newUser.getLogin()))

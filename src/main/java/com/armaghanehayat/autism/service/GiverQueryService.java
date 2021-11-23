@@ -3,8 +3,10 @@ package com.armaghanehayat.autism.service;
 import com.armaghanehayat.autism.domain.*; // for static metamodels
 import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.repository.GiverRepository;
+import com.armaghanehayat.autism.security.SecurityUtils;
 import com.armaghanehayat.autism.service.criteria.GiverCriteria;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
+import tech.jhipster.service.filter.LongFilter;
 
 /**
  * Service for executing complex queries for {@link Giver} entities in the database.
@@ -29,12 +32,16 @@ public class GiverQueryService extends QueryService<Giver> {
 
     private final GiverRepository giverRepository;
 
-    public GiverQueryService(GiverRepository giverRepository) {
+    private final UserService userService;
+
+    public GiverQueryService(GiverRepository giverRepository, UserService userService) {
         this.giverRepository = giverRepository;
+        this.userService = userService;
     }
 
     /**
      * Return a {@link List} of {@link Giver} which matches the criteria from the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -47,8 +54,9 @@ public class GiverQueryService extends QueryService<Giver> {
 
     /**
      * Return a {@link Page} of {@link Giver} which matches the criteria from the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
-     * @param page The page, which should be returned.
+     * @param page     The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -60,6 +68,7 @@ public class GiverQueryService extends QueryService<Giver> {
 
     /**
      * Return the number of matching entities in the database.
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the number of matching entities.
      */
@@ -72,6 +81,7 @@ public class GiverQueryService extends QueryService<Giver> {
 
     /**
      * Function to convert {@link GiverCriteria} to a {@link Specification}
+     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
@@ -146,6 +156,13 @@ public class GiverQueryService extends QueryService<Giver> {
                     specification.and(
                         buildSpecification(criteria.getAbsorbantId(), root -> root.join(Giver_.absorbant, JoinType.LEFT).get(User_.id))
                     );
+            }
+            Optional<User> userWithAuthorities = userService.getUserWithAuthorities();
+            if (userWithAuthorities.isPresent()) if (!userWithAuthorities.get().hasRole("ROLE_ADMIN")) {
+                LongFilter longFilter = new LongFilter();
+                longFilter.setEquals(userWithAuthorities.get().getId());
+                specification =
+                    specification.and(buildSpecification(longFilter, root -> root.join(Giver_.supporter, JoinType.LEFT).get(User_.id)));
             }
             if (criteria.getSupporterId() != null) {
                 specification =

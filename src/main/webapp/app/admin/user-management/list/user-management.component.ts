@@ -10,6 +10,7 @@ import { Account } from 'app/core/auth/account.model';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
+import { IGiver } from '../../../entities/giver/giver.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -86,6 +87,39 @@ export class UserManagementComponent implements OnInit {
 
   resetPassword(userId: number): void {
     this.userService.resetPassword(userId).subscribe();
+  }
+
+  loadPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
+    this.isLoading = true;
+    const pageToLoad: number = page ?? this.page ?? 1;
+
+    this.userService.query(req).subscribe(
+      (res: HttpResponse<IGiver[]>) => {
+        this.isLoading = false;
+        this.onSuccess(res.body, res.headers);
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
+  }
+
+  onEnterPressed(event: any, fieldName: string): void {
+    if (event.keyCode === 13) {
+      const searchValue = event.target.value;
+      let searchField = fieldName + '.contains';
+      const pageToLoad: number = this.page ?? 1;
+      const req = {
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      };
+      if (fieldName === 'id') {
+        searchField = fieldName + '.equals';
+      }
+      req[searchField] = searchValue;
+      this.loadPageWithReq(undefined, undefined, req);
+    }
   }
 
   private handleNavigation(): void {

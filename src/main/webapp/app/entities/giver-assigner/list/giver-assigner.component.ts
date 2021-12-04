@@ -35,6 +35,8 @@ export class GiverAssignerComponent implements OnInit {
   nameFilter;
   familyFilter;
   phoneNumberFilter;
+  supporterNameFilter;
+  supporterFamilyFilter;
 
   constructor(protected giverAssignerService: GiverAssignerService, protected activatedRoute: ActivatedRoute, protected router: Router) {}
 

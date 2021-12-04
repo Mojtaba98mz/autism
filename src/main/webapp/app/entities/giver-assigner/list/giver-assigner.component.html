@@ -68,14 +68,24 @@
                   <span jhiTranslate="autismApp.giverAssigner.supporterName">Supporter Name</span>
                   <!--                  <fa-icon icon="sort"></fa-icon>-->
                 </div>
-                <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+                <input
+                  type="text"
+                  [(ngModel)]="supporterNameFilter"
+                  class="filter-width"
+                  (keydown)="onEnterPressed($event, 'supporterName')"
+                />
               </th>
               <th scope="col">
                 <div>
                   <span jhiTranslate="autismApp.giverAssigner.supporterFamily">Supporter Family</span>
                   <!--                  <fa-icon icon="sort"></fa-icon>-->
                 </div>
-                <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+                <input
+                  type="text"
+                  [(ngModel)]="supporterFamilyFilter"
+                  class="filter-width"
+                  (keydown)="onEnterPressed($event, 'supporterFamily')"
+                />
               </th>
             </tr>
           </thead>

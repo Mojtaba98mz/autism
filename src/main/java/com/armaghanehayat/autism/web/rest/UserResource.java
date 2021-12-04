@@ -5,7 +5,10 @@ import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.UserRepository;
 import com.armaghanehayat.autism.security.AuthoritiesConstants;
 import com.armaghanehayat.autism.service.MailService;
+import com.armaghanehayat.autism.service.UserQueryService;
 import com.armaghanehayat.autism.service.UserService;
+import com.armaghanehayat.autism.service.criteria.GiverCriteria;
+import com.armaghanehayat.autism.service.criteria.UserCriteria;
 import com.armaghanehayat.autism.service.dto.AdminUserDTO;
 import com.armaghanehayat.autism.web.rest.errors.BadRequestAlertException;
 import com.armaghanehayat.autism.web.rest.errors.EmailAlreadyUsedException;
@@ -87,10 +90,18 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    private final UserQueryService userQueryService;
+
+    public UserResource(
+        UserService userService,
+        UserRepository userRepository,
+        MailService mailService,
+        UserQueryService userQueryService
+    ) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.userQueryService = userQueryService;
     }
 
     /**
@@ -164,15 +175,16 @@ public class UserResource {
      */
     @GetMapping("/users")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<List<AdminUserDTO>> getAllUsers(Pageable pageable) {
+    public ResponseEntity<List<User>> getAllUsers(UserCriteria criteria, Pageable pageable) {
         log.debug("REST request to get all User for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
             return ResponseEntity.badRequest().build();
         }
 
         final Page<AdminUserDTO> page = userService.getAllManagedUsers(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        final Page<User> page1 = this.userQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page1);
+        return new ResponseEntity<>(page1.getContent(), headers, HttpStatus.OK);
     }
 
     private boolean onlyContainsAllowedProperties(Pageable pageable) {

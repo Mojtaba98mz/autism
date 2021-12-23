@@ -47,21 +47,26 @@
                   <span jhiTranslate="autismApp.giver.name">Name</span>
                   <fa-icon icon="sort"></fa-icon>
                 </div>
-                <input type="text" [(ngModel)]="nameFilter" class="filter-width" (keydown)="onEnterPressed($event, 'name')" />
+                <input type="text" [(ngModel)]="rNameFilter" class="filter-width" (keydown)="onRightEnterPressed($event, 'name')" />
               </th>
               <th scope="col">
                 <div jhiSortBy="family">
                   <span jhiTranslate="autismApp.giver.family">Family</span>
                   <fa-icon icon="sort"></fa-icon>
                 </div>
-                <input type="text" [(ngModel)]="familyFilter" class="filter-width" (keydown)="onEnterPressed($event, 'family')" />
+                <input type="text" [(ngModel)]="rFamilyFilter" class="filter-width" (keydown)="onRightEnterPressed($event, 'family')" />
               </th>
               <th scope="col">
                 <div jhiSortBy="phoneNumber">
                   <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
                   <fa-icon icon="sort"></fa-icon>
                 </div>
-                <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+                <input
+                  type="text"
+                  [(ngModel)]="rPhoneNumberFilter"
+                  class="filter-width"
+                  (keydown)="onRightEnterPressed($event, 'phoneNumber')"
+                />
               </th>
               <th scope="col">
                 <div>
@@ -72,7 +77,7 @@
                   type="text"
                   [(ngModel)]="supporterNameFilter"
                   class="filter-width"
-                  (keydown)="onEnterPressed($event, 'supporterName')"
+                  (keydown)="onRightEnterPressed($event, 'supporterName')"
                 />
               </th>
               <th scope="col">
@@ -84,7 +89,7 @@
                   type="text"
                   [(ngModel)]="supporterFamilyFilter"
                   class="filter-width"
-                  (keydown)="onEnterPressed($event, 'supporterFamily')"
+                  (keydown)="onRightEnterPressed($event, 'supporterFamily')"
                 />
               </th>
             </tr>
@@ -108,12 +113,14 @@
 
       <div *ngIf="notAssignedGivers && notAssignedGivers.length > 0">
         <div class="row justify-content-center">
-          <jhi-item-count [params]="{ page: notAssignedPage, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+          <jhi-item-count
+            [params]="{ page: notAssignedPage, totalItems: notAssignTotalItems, itemsPerPage: itemsPerPage }"
+          ></jhi-item-count>
         </div>
 
         <div class="row justify-content-center">
           <ngb-pagination
-            [collectionSize]="totalItems"
+            [collectionSize]="notAssignTotalItems"
             [(page)]="notAssignedNgbPaginationPage"
             [pageSize]="itemsPerPage"
             [maxSize]="5"
@@ -134,21 +141,26 @@
                   <span jhiTranslate="autismApp.giver.name">Name</span>
                   <fa-icon icon="sort"></fa-icon>
                 </div>
-                <input type="text" [(ngModel)]="nameFilter" class="filter-width" (keydown)="onEnterPressed($event, 'name')" />
+                <input type="text" [(ngModel)]="lNameFilter" class="filter-width" (keydown)="onLeftEnterPressed($event, 'name')" />
               </th>
               <th scope="col">
                 <div jhiSortBy="family">
                   <span jhiTranslate="autismApp.giver.family">Family</span>
                   <fa-icon icon="sort"></fa-icon>
                 </div>
-                <input type="text" [(ngModel)]="familyFilter" class="filter-width" (keydown)="onEnterPressed($event, 'family')" />
+                <input type="text" [(ngModel)]="lFamilyFilter" class="filter-width" (keydown)="onLeftEnterPressed($event, 'family')" />
               </th>
               <th scope="col">
                 <div jhiSortBy="phoneNumber">
                   <span jhiTranslate="autismApp.giver.phoneNumber">Phone Number</span>
                   <fa-icon icon="sort"></fa-icon>
                 </div>
-                <input type="text" [(ngModel)]="phoneNumberFilter" class="filter-width" (keydown)="onEnterPressed($event, 'phoneNumber')" />
+                <input
+                  type="text"
+                  [(ngModel)]="lPhoneNumberFilter"
+                  class="filter-width"
+                  (keydown)="onLeftEnterPressed($event, 'phoneNumber')"
+                />
               </th>
               <th scope="col"></th>
             </tr>
@@ -165,13 +177,13 @@
 
       <div *ngIf="assignedGivers && assignedGivers.length > 0">
         <div class="row justify-content-center">
-          <jhi-item-count [params]="{ page: assignedPage, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+          <jhi-item-count [params]="{ page: notAssignedPage, totalItems: assignTotalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
         </div>
 
         <div class="row justify-content-center">
           <ngb-pagination
-            [collectionSize]="totalItems"
-            [(page)]="assignedNgbPaginationPage"
+            [collectionSize]="assignTotalItems"
+            [(page)]="notAssignedNgbPaginationPage"
             [pageSize]="itemsPerPage"
             [maxSize]="5"
             [rotate]="true"

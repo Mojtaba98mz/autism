@@ -20,7 +20,8 @@ export class GiverAssignerComponent implements OnInit {
   notAssignedGivers?: IGiver[];
   supporters?: IUser[];
   isLoading = false;
-  totalItems = 0;
+  assignTotalItems = 0;
+  notAssignTotalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
   assignedPage?: number;
   notAssignedPage?: number;
@@ -32,9 +33,12 @@ export class GiverAssignerComponent implements OnInit {
   notAssignedNgbPaginationPage = 1;
   selectedSupporter?: number;
 
-  nameFilter;
-  familyFilter;
-  phoneNumberFilter;
+  rNameFilter;
+  lNameFilter;
+  rFamilyFilter;
+  lFamilyFilter;
+  rPhoneNumberFilter;
+  lPhoneNumberFilter;
   supporterNameFilter;
   supporterFamilyFilter;
 
@@ -170,22 +174,34 @@ export class GiverAssignerComponent implements OnInit {
     return item.id!;
   }
 
-  onEnterPressed(event: any, fieldName: string): void {
-    /*if (event.keyCode === 13) {
+  onRightEnterPressed(event: any, fieldName: string): void {
+    if (event.keyCode === 13) {
       const searchValue = event.target.value;
-      let searchField = fieldName + '.contains';
-      const pageToLoad: number = this.page ?? 1;
-      const req = {
-        page: pageToLoad - 1,
+      const searchField = fieldName + '.contains';
+      const notAssignedPageToLoad: number = this.notAssignedPage ?? 1;
+      const NotAssignedReq = {
+        page: notAssignedPageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort(),
       };
-      if (fieldName === 'id') {
-        searchField = fieldName + '.equals';
-      }
-      req[searchField] = searchValue;
-      this.loadPageWithReq(undefined, undefined, req);
-    }*/
+      NotAssignedReq['supporterId.notEquals'] = this.selectedSupporter;
+      NotAssignedReq[searchField] = searchValue;
+      this.loadNotAssignedPageWithReq(undefined, undefined, NotAssignedReq);
+    }
+  }
+
+  onLeftEnterPressed(event: any, fieldName: string): void {
+    if (event.keyCode === 13) {
+      const searchValue = event.target.value;
+      const searchField = fieldName + '.contains';
+      const notAssignedPageToLoad: number = this.notAssignedPage ?? 1;
+      const NotAssignedReq = {
+        page: notAssignedPageToLoad - 1,
+        size: this.itemsPerPage,
+      };
+      NotAssignedReq['supporterId.equals'] = this.selectedSupporter;
+      NotAssignedReq[searchField] = searchValue;
+      this.loadAssignedPageWithReq(undefined, undefined, NotAssignedReq);
+    }
   }
 
   protected assignedSort(): string[] {
@@ -226,7 +242,7 @@ export class GiverAssignerComponent implements OnInit {
   }
 
   protected onAssignedSuccess(data: IGiver[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.assignTotalItems = Number(headers.get('X-Total-Count'));
     this.assignedPage = page;
     if (navigate) {
       this.router.navigate(['/giver'], {
@@ -242,7 +258,7 @@ export class GiverAssignerComponent implements OnInit {
   }
 
   protected onNotAssignedSuccess(data: IGiver[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
+    this.notAssignTotalItems = Number(headers.get('X-Total-Count'));
     this.notAssignedPage = page;
     if (navigate) {
       this.router.navigate(['/giver'], {

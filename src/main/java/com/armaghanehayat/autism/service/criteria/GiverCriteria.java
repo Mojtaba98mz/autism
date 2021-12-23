@@ -55,6 +55,10 @@ public class GiverCriteria implements Serializable, Criteria {
 
     private LongFilter supporterId;
 
+    private StringFilter supporterName;
+
+    private StringFilter supporterFamily;
+
     public GiverCriteria() {}
 
     public GiverCriteria(GiverCriteria other) {
@@ -73,6 +77,8 @@ public class GiverCriteria implements Serializable, Criteria {
         this.giverauditorId = other.giverauditorId == null ? null : other.giverauditorId.copy();
         this.absorbantId = other.absorbantId == null ? null : other.absorbantId.copy();
         this.supporterId = other.supporterId == null ? null : other.supporterId.copy();
+        this.supporterName = other.supporterName == null ? null : other.supporterName.copy();
+        this.supporterFamily = other.supporterFamily == null ? null : other.supporterFamily.copy();
     }
 
     @Override
@@ -305,6 +311,36 @@ public class GiverCriteria implements Serializable, Criteria {
         this.supporterId = supporterId;
     }
 
+    public void setSupporterName(StringFilter supporterName) {
+        this.supporterName = supporterName;
+    }
+
+    public StringFilter getSupporterName() {
+        return supporterName;
+    }
+
+    public StringFilter supporterName() {
+        if (supporterName == null) {
+            supporterName = new StringFilter();
+        }
+        return supporterName;
+    }
+
+    public void setSupporterFamily(StringFilter supporterFamily) {
+        this.supporterFamily = supporterFamily;
+    }
+
+    public StringFilter getSupporterFamily() {
+        return supporterFamily;
+    }
+
+    public StringFilter supporterFamily() {
+        if (supporterFamily == null) {
+            supporterFamily = new StringFilter();
+        }
+        return supporterFamily;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -327,7 +363,9 @@ public class GiverCriteria implements Serializable, Criteria {
             Objects.equals(donationId, that.donationId) &&
             Objects.equals(giverauditorId, that.giverauditorId) &&
             Objects.equals(absorbantId, that.absorbantId) &&
-            Objects.equals(supporterId, that.supporterId)
+            Objects.equals(supporterId, that.supporterId) &&
+            Objects.equals(supporterName, that.supporterName) &&
+            Objects.equals(supporterFamily, that.supporterFamily)
         );
     }
 
@@ -346,7 +384,9 @@ public class GiverCriteria implements Serializable, Criteria {
             donationId,
             giverauditorId,
             absorbantId,
-            supporterId
+            supporterId,
+            supporterName,
+            supporterFamily
         );
     }
 
@@ -367,6 +407,8 @@ public class GiverCriteria implements Serializable, Criteria {
             (giverauditorId != null ? "giverauditorId=" + giverauditorId + ", " : "") +
             (absorbantId != null ? "absorbantId=" + absorbantId + ", " : "") +
             (supporterId != null ? "supporterId=" + supporterId + ", " : "") +
+            (supporterName != null ? "supporterName=" + supporterName + ", " : "") +
+            (supporterFamily != null ? "supporterFamily=" + supporterFamily + ", " : "") +
             "}";
     }
 }

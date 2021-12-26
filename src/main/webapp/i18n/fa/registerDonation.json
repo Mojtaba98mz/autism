@@ -1,0 +1,30 @@
+{
+  "autismApp": {
+    "registerDonation": {
+      "home": {
+        "title": "ثبت کمک",
+        "refreshListLabel": "تازه سازی",
+        "createLabel": "افزودن کمک",
+        "createOrEditLabel": "ایجاد یا ویرایش کمک",
+        "notFound": "کمکی پیدا نشد"
+      },
+      "created": "کمک {{ param }} ایجاد شد",
+      "updated": "کمک {{ param }} ویرایش شد",
+      "deleted": "کمک {{ param }} حذف شد",
+      "delete": {
+        "question": "آیا از حذف کمک {{ param }} اطمینان دارید؟"
+      },
+      "detail": {
+        "title": "کمک خیر"
+      },
+      "id": "شناسه",
+      "isCash": "نقدی",
+      "amount": "مبلغ/ارزش کالا(ریال)",
+      "donationDate": "تاریخ کمک",
+      "helpType": "نوع کمک",
+      "description": "توضیحات",
+      "receipt": "تصویر رسید",
+      "giver": "خیر"
+    }
+  }
+}

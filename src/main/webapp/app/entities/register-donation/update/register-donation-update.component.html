@@ -1,0 +1,158 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-donation-heading" data-cy="DonationCreateUpdateHeading" jhiTranslate="autismApp.donation.home.createOrEditLabel">
+        Create or edit a Donation
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.donation.isCash" for="field_isCash">Is Cash</label>
+              <input type="checkbox" class="form-check" name="isCash" id="field_isCash" data-cy="isCash" formControlName="isCash" />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.donation.amount" for="field_amount">Amount</label>
+              <input type="number" ngmod class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
+              <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('amount')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.donation.donationDate" for="field_donationDate">Donation
+            Date</label>
+          <div class="d-flex">
+            <input
+              id="field_donationDate"
+              data-cy="donationDate"
+              type="datetime-local"
+              class="form-control"
+              name="donationDate"
+              formControlName="donationDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>-->
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.donation.helpType" for="field_helpType">Help Type</label>
+              <select class="form-control" name="helpType" formControlName="helpType" id="field_helpType" data-cy="helpType">
+                <option [ngValue]="null">{{ 'autismApp.HelpType.null' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == false" value="BERENJ">{{ 'autismApp.HelpType.BERENJ' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == false" value="ROGHAN">{{ 'autismApp.HelpType.ROGHAN' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == false" value="LEBAS">{{ 'autismApp.HelpType.LEBAS' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="DARMAN">{{ 'autismApp.HelpType.DARMAN' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="KHEIRATENAN">
+                  {{ 'autismApp.HelpType.KHEIRATENAN' | translate }}
+                </option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="KAFARE">{{ 'autismApp.HelpType.KAFARE' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="FETRIE">{{ 'autismApp.HelpType.FETRIE' | translate }}</option>
+                <option *ngIf="editForm.get('isCash')!.value == true" value="GOOSHTEGHORBANI">
+                  {{ 'autismApp.HelpType.GOOSHTEGHORBANI' | translate }}
+                </option>
+                <option value="SAYER">{{ 'autismApp.HelpType.SAYER' | translate }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.donation.receipt" for="field_receipt">Receipt</label>
+              <div>
+                <img
+                  [src]="'data:' + editForm.get('receiptContentType')!.value + ';base64,' + editForm.get('receipt')!.value"
+                  style="max-height: 100px"
+                  *ngIf="editForm.get('receipt')!.value"
+                  alt="donation image"
+                />
+                <div *ngIf="editForm.get('receipt')!.value" class="form-text text-danger clearfix">
+                  <span class="pull-left"
+                    >{{ editForm.get('receiptContentType')!.value }} , {{ byteSize(editForm.get('receipt')!.value) }}</span
+                  >
+                  <button
+                    type="button"
+                    (click)="clearInputImage('receipt', 'receiptContentType', 'file_receipt')"
+                    class="btn btn-secondary btn-xs pull-right"
+                  >
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+                <input
+                  type="file"
+                  id="file_receipt"
+                  data-cy="receipt"
+                  (change)="setFileData($event, 'receipt', true)"
+                  accept="image/*"
+                  data-buttonText="Your label here."
+                  jhiTranslate="entity.action.addimage"
+                />
+              </div>
+              <input type="hidden" class="form-control" name="receipt" id="field_receipt" data-cy="receipt" formControlName="receipt" />
+              <input
+                type="hidden"
+                class="form-control"
+                name="receiptContentType"
+                id="field_receiptContentType"
+                formControlName="receiptContentType"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.donation.description" for="field_description">Description</label>
+          <textarea id="field_description" name="description" rows="4" cols="50" maxlength="255" class="form-control"></textarea>
+        </div>
+
+        <!-- <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.donation.giver" for="field_giver">Giver</label>
+          <select class="form-control" id="field_giver" data-cy="giver" name="giver" formControlName="giver">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="giverOption.id === editForm.get('giver')!.value?.id ? editForm.get('giver')!.value : giverOption"
+              *ngFor="let giverOption of giversSharedCollection; trackBy: trackGiverById"
+            >
+              {{ giverOption.id }}
+            </option>
+          </select>
+        </div>-->
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

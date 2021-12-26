@@ -55,6 +55,19 @@
             </a>
           </li>
 
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="register-donation"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <!--              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+              <span jhiTranslate="global.menu.entities.register-donation">Register Giver</span>
+            </a>
+          </li>
+
           <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <a
               class="dropdown-item"

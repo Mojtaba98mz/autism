@@ -1,6 +1,7 @@
 import * as dayjs from 'dayjs';
 import { IGiver } from 'app/entities/giver/giver.model';
 import { HelpType } from 'app/entities/enumerations/help-type.model';
+import { Account } from 'app/entities/enumerations/account.model';
 
 export interface IDonation {
   id?: number;
@@ -11,6 +12,7 @@ export interface IDonation {
   description?: string | null;
   receiptContentType?: string | null;
   receipt?: string | null;
+  account?: Account | null;
   giver?: IGiver | null;
 }
 
@@ -24,6 +26,7 @@ export class Donation implements IDonation {
     public description?: string | null,
     public receiptContentType?: string | null,
     public receipt?: string | null,
+    public account?: Account | null,
     public giver?: IGiver | null
   ) {
     this.isCash = this.isCash ?? false;

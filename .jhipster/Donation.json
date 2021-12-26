@@ -26,6 +26,11 @@
       "fieldName": "receipt",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "account",
+      "fieldType": "Account",
+      "fieldValues": "MELLI (ملی),GHAVAMIN (قوامین),SADERAT (صادرات)"
     }
   ],
   "relationships": [

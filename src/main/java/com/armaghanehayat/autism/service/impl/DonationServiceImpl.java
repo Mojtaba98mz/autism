@@ -61,6 +61,9 @@ public class DonationServiceImpl implements DonationService {
                     if (donation.getReceiptContentType() != null) {
                         existingDonation.setReceiptContentType(donation.getReceiptContentType());
                     }
+                    if (donation.getAccount() != null) {
+                        existingDonation.setAccount(donation.getAccount());
+                    }
 
                     return existingDonation;
                 }

@@ -72,6 +72,12 @@
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col">
+            <div jhiSortBy="account">
+              <span jhiTranslate="autismApp.donation.account">Account</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col">
             <div jhiSortBy="giver.id">
               <span jhiTranslate="autismApp.donation.giver">Giver</span>
               <fa-icon icon="sort"></fa-icon>
@@ -99,6 +105,7 @@
             </a>
             <!--            <span *ngIf="donation.receipt">{{ donation.receiptContentType }}, {{ byteSize(donation.receipt) }}</span>-->
           </td>
+          <td jhiTranslate="{{ 'autismApp.Account.' + donation.account }}">{{ donation.account }}</td>
           <td>
             <div *ngIf="donation.giver">
               {{ donation.giver?.name + ' ' + donation.giver?.family }}

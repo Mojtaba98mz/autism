@@ -47,6 +47,10 @@
             {{ donation.receiptContentType }}, {{ byteSize(donation.receipt) }}
           </div>
         </dd>
+        <dt><span jhiTranslate="autismApp.donation.account">Account</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'autismApp.Account.' + donation.account }}">{{ donation.account }}</span>
+        </dd>
         <dt><span jhiTranslate="autismApp.donation.giver">Giver</span></dt>
         <dd>
           <div *ngIf="donation.giver">

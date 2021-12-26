@@ -34,6 +34,7 @@ export class RegisterDonationUpdateComponent implements OnInit {
     description: [],
     receipt: [],
     receiptContentType: [],
+    account: [],
     giver: [],
   });
 
@@ -132,6 +133,7 @@ export class RegisterDonationUpdateComponent implements OnInit {
       description: donation.description,
       receipt: donation.receipt,
       receiptContentType: donation.receiptContentType,
+      account: donation.account,
       giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
     });
 
@@ -159,6 +161,7 @@ export class RegisterDonationUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       receiptContentType: this.editForm.get(['receiptContentType'])!.value,
       receipt: this.editForm.get(['receipt'])!.value,
+      account: this.editForm.get(['account'])!.value,
       giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
     };
   }

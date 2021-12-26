@@ -1,5 +1,6 @@
 package com.armaghanehayat.autism.domain;
 
+import com.armaghanehayat.autism.domain.enumeration.Account;
 import com.armaghanehayat.autism.domain.enumeration.HelpType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
@@ -45,6 +46,10 @@ public class Donation implements Serializable {
 
     @Column(name = "receipt_content_type")
     private String receiptContentType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account")
+    private Account account;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "donations", "giverauditors", "absorbant", "supporter", "province", "city" }, allowSetters = true)
@@ -155,6 +160,19 @@ public class Donation implements Serializable {
         this.receiptContentType = receiptContentType;
     }
 
+    public Account getAccount() {
+        return this.account;
+    }
+
+    public Donation account(Account account) {
+        this.account = account;
+        return this;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     public Giver getGiver() {
         return this.giver;
     }
@@ -199,6 +217,7 @@ public class Donation implements Serializable {
             ", description='" + getDescription() + "'" +
             ", receipt='" + getReceipt() + "'" +
             ", receiptContentType='" + getReceiptContentType() + "'" +
+            ", account='" + getAccount() + "'" +
             "}";
     }
 }

@@ -14,13 +14,23 @@
         </div>
 
         <div class="row">
-          <div class="col-6">
+          <div class="col-2">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.donation.isCash" for="field_isCash">Is Cash</label>
               <input type="checkbox" class="form-check" name="isCash" id="field_isCash" data-cy="isCash" formControlName="isCash" />
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-5" *ngIf="editForm.get('isCash')!.value == true">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.donation.account" for="field_account">Account</label>
+              <select class="form-control" name="account" formControlName="account" id="field_account" data-cy="account">
+                <option value="MELLI">{{ 'autismApp.Account.MELLI' | translate }}</option>
+                <option value="GHAVAMIN">{{ 'autismApp.Account.GHAVAMIN' | translate }}</option>
+                <option value="SADERAT">{{ 'autismApp.Account.SADERAT' | translate }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-5">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.donation.amount" for="field_amount">Amount</label>
               <input type="number" ngmod class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />

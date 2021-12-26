@@ -1,5 +1,6 @@
 package com.armaghanehayat.autism.service.criteria;
 
+import com.armaghanehayat.autism.domain.enumeration.Account;
 import com.armaghanehayat.autism.domain.enumeration.HelpType;
 import java.io.Serializable;
 import java.util.Objects;
@@ -41,6 +42,23 @@ public class DonationCriteria implements Serializable, Criteria {
         }
     }
 
+    /**
+     * Class for filtering Account
+     */
+    public static class AccountFilter extends Filter<Account> {
+
+        public AccountFilter() {}
+
+        public AccountFilter(AccountFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public AccountFilter copy() {
+            return new AccountFilter(this);
+        }
+    }
+
     private static final long serialVersionUID = 1L;
 
     private LongFilter id;
@@ -55,6 +73,8 @@ public class DonationCriteria implements Serializable, Criteria {
 
     private StringFilter description;
 
+    private AccountFilter account;
+
     private LongFilter giverId;
 
     public DonationCriteria() {}
@@ -66,6 +86,7 @@ public class DonationCriteria implements Serializable, Criteria {
         this.donationDate = other.donationDate == null ? null : other.donationDate.copy();
         this.helpType = other.helpType == null ? null : other.helpType.copy();
         this.description = other.description == null ? null : other.description.copy();
+        this.account = other.account == null ? null : other.account.copy();
         this.giverId = other.giverId == null ? null : other.giverId.copy();
     }
 
@@ -164,6 +185,21 @@ public class DonationCriteria implements Serializable, Criteria {
         this.description = description;
     }
 
+    public AccountFilter getAccount() {
+        return account;
+    }
+
+    public AccountFilter account() {
+        if (account == null) {
+            account = new AccountFilter();
+        }
+        return account;
+    }
+
+    public void setAccount(AccountFilter account) {
+        this.account = account;
+    }
+
     public LongFilter getGiverId() {
         return giverId;
     }
@@ -195,13 +231,14 @@ public class DonationCriteria implements Serializable, Criteria {
             Objects.equals(donationDate, that.donationDate) &&
             Objects.equals(helpType, that.helpType) &&
             Objects.equals(description, that.description) &&
+            Objects.equals(account, that.account) &&
             Objects.equals(giverId, that.giverId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isCash, amount, donationDate, helpType, description, giverId);
+        return Objects.hash(id, isCash, amount, donationDate, helpType, description, account, giverId);
     }
 
     // prettier-ignore
@@ -214,6 +251,7 @@ public class DonationCriteria implements Serializable, Criteria {
             (donationDate != null ? "donationDate=" + donationDate + ", " : "") +
             (helpType != null ? "helpType=" + helpType + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
+            (account != null ? "account=" + account + ", " : "") +
             (giverId != null ? "giverId=" + giverId + ", " : "") +
             "}";
     }

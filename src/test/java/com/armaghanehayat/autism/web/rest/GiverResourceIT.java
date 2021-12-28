@@ -55,6 +55,9 @@ class GiverResourceIT {
     private static final Instant DEFAULT_ABSORB_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_ABSORB_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final Boolean DEFAULT_DISABLED = false;
+    private static final Boolean UPDATED_DISABLED = true;
+
     private static final String ENTITY_API_URL = "/api/givers";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -85,7 +88,8 @@ class GiverResourceIT {
             .phoneNumber(DEFAULT_PHONE_NUMBER)
             .homeNumber(DEFAULT_HOME_NUMBER)
             .address(DEFAULT_ADDRESS)
-            .absorbDate(DEFAULT_ABSORB_DATE);
+            .absorbDate(DEFAULT_ABSORB_DATE)
+            .disabled(DEFAULT_DISABLED);
         return giver;
     }
 
@@ -102,7 +106,8 @@ class GiverResourceIT {
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .homeNumber(UPDATED_HOME_NUMBER)
             .address(UPDATED_ADDRESS)
-            .absorbDate(UPDATED_ABSORB_DATE);
+            .absorbDate(UPDATED_ABSORB_DATE)
+            .disabled(UPDATED_DISABLED);
         return giver;
     }
 
@@ -130,6 +135,7 @@ class GiverResourceIT {
         assertThat(testGiver.getHomeNumber()).isEqualTo(DEFAULT_HOME_NUMBER);
         assertThat(testGiver.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(DEFAULT_ABSORB_DATE);
+        assertThat(testGiver.getDisabled()).isEqualTo(DEFAULT_DISABLED);
     }
 
     @Test
@@ -218,7 +224,8 @@ class GiverResourceIT {
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].homeNumber").value(hasItem(DEFAULT_HOME_NUMBER)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
-            .andExpect(jsonPath("$.[*].absorbDate").value(hasItem(DEFAULT_ABSORB_DATE.toString())));
+            .andExpect(jsonPath("$.[*].absorbDate").value(hasItem(DEFAULT_ABSORB_DATE.toString())))
+            .andExpect(jsonPath("$.[*].disabled").value(hasItem(DEFAULT_DISABLED.booleanValue())));
     }
 
     @Test
@@ -238,7 +245,8 @@ class GiverResourceIT {
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
             .andExpect(jsonPath("$.homeNumber").value(DEFAULT_HOME_NUMBER))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
-            .andExpect(jsonPath("$.absorbDate").value(DEFAULT_ABSORB_DATE.toString()));
+            .andExpect(jsonPath("$.absorbDate").value(DEFAULT_ABSORB_DATE.toString()))
+            .andExpect(jsonPath("$.disabled").value(DEFAULT_DISABLED.booleanValue()));
     }
 
     @Test
@@ -703,6 +711,58 @@ class GiverResourceIT {
 
     @Test
     @Transactional
+    void getAllGiversByDisabledIsEqualToSomething() throws Exception {
+        // Initialize the database
+        giverRepository.saveAndFlush(giver);
+
+        // Get all the giverList where disabled equals to DEFAULT_DISABLED
+        defaultGiverShouldBeFound("disabled.equals=" + DEFAULT_DISABLED);
+
+        // Get all the giverList where disabled equals to UPDATED_DISABLED
+        defaultGiverShouldNotBeFound("disabled.equals=" + UPDATED_DISABLED);
+    }
+
+    @Test
+    @Transactional
+    void getAllGiversByDisabledIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        giverRepository.saveAndFlush(giver);
+
+        // Get all the giverList where disabled not equals to DEFAULT_DISABLED
+        defaultGiverShouldNotBeFound("disabled.notEquals=" + DEFAULT_DISABLED);
+
+        // Get all the giverList where disabled not equals to UPDATED_DISABLED
+        defaultGiverShouldBeFound("disabled.notEquals=" + UPDATED_DISABLED);
+    }
+
+    @Test
+    @Transactional
+    void getAllGiversByDisabledIsInShouldWork() throws Exception {
+        // Initialize the database
+        giverRepository.saveAndFlush(giver);
+
+        // Get all the giverList where disabled in DEFAULT_DISABLED or UPDATED_DISABLED
+        defaultGiverShouldBeFound("disabled.in=" + DEFAULT_DISABLED + "," + UPDATED_DISABLED);
+
+        // Get all the giverList where disabled equals to UPDATED_DISABLED
+        defaultGiverShouldNotBeFound("disabled.in=" + UPDATED_DISABLED);
+    }
+
+    @Test
+    @Transactional
+    void getAllGiversByDisabledIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        giverRepository.saveAndFlush(giver);
+
+        // Get all the giverList where disabled is not null
+        defaultGiverShouldBeFound("disabled.specified=true");
+
+        // Get all the giverList where disabled is null
+        defaultGiverShouldNotBeFound("disabled.specified=false");
+    }
+
+    @Test
+    @Transactional
     void getAllGiversByDonationIsEqualToSomething() throws Exception {
         // Initialize the database
         giverRepository.saveAndFlush(giver);
@@ -829,7 +889,8 @@ class GiverResourceIT {
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].homeNumber").value(hasItem(DEFAULT_HOME_NUMBER)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
-            .andExpect(jsonPath("$.[*].absorbDate").value(hasItem(DEFAULT_ABSORB_DATE.toString())));
+            .andExpect(jsonPath("$.[*].absorbDate").value(hasItem(DEFAULT_ABSORB_DATE.toString())))
+            .andExpect(jsonPath("$.[*].disabled").value(hasItem(DEFAULT_DISABLED.booleanValue())));
 
         // Check, that the count call also returns 1
         restGiverMockMvc
@@ -883,7 +944,8 @@ class GiverResourceIT {
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .homeNumber(UPDATED_HOME_NUMBER)
             .address(UPDATED_ADDRESS)
-            .absorbDate(UPDATED_ABSORB_DATE);
+            .absorbDate(UPDATED_ABSORB_DATE)
+            .disabled(UPDATED_DISABLED);
 
         restGiverMockMvc
             .perform(
@@ -903,6 +965,7 @@ class GiverResourceIT {
         assertThat(testGiver.getHomeNumber()).isEqualTo(UPDATED_HOME_NUMBER);
         assertThat(testGiver.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
+        assertThat(testGiver.getDisabled()).isEqualTo(UPDATED_DISABLED);
     }
 
     @Test
@@ -977,7 +1040,8 @@ class GiverResourceIT {
             .name(UPDATED_NAME)
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .homeNumber(UPDATED_HOME_NUMBER)
-            .absorbDate(UPDATED_ABSORB_DATE);
+            .absorbDate(UPDATED_ABSORB_DATE)
+            .disabled(UPDATED_DISABLED);
 
         restGiverMockMvc
             .perform(
@@ -997,6 +1061,7 @@ class GiverResourceIT {
         assertThat(testGiver.getHomeNumber()).isEqualTo(UPDATED_HOME_NUMBER);
         assertThat(testGiver.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
+        assertThat(testGiver.getDisabled()).isEqualTo(UPDATED_DISABLED);
     }
 
     @Test
@@ -1017,7 +1082,8 @@ class GiverResourceIT {
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .homeNumber(UPDATED_HOME_NUMBER)
             .address(UPDATED_ADDRESS)
-            .absorbDate(UPDATED_ABSORB_DATE);
+            .absorbDate(UPDATED_ABSORB_DATE)
+            .disabled(UPDATED_DISABLED);
 
         restGiverMockMvc
             .perform(
@@ -1037,6 +1103,7 @@ class GiverResourceIT {
         assertThat(testGiver.getHomeNumber()).isEqualTo(UPDATED_HOME_NUMBER);
         assertThat(testGiver.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testGiver.getAbsorbDate()).isEqualTo(UPDATED_ABSORB_DATE);
+        assertThat(testGiver.getDisabled()).isEqualTo(UPDATED_DISABLED);
     }
 
     @Test

@@ -9,6 +9,7 @@ import { IGiver } from '../giver.model';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { GiverService } from '../service/giver.service';
 import { GiverDeleteDialogComponent } from '../delete/giver-delete-dialog.component';
+import { AlertService } from '../../../core/util/alert.service';
 
 @Component({
   selector: 'jhi-giver',
@@ -36,7 +37,8 @@ export class GiverComponent implements OnInit {
     protected giverService: GiverService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected alertService: AlertService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -122,6 +124,14 @@ export class GiverComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  disable(giver: IGiver): void {
+    if (giver.id) {
+      this.giverService.disableEnable(giver.id).subscribe(() => {
+        giver.disabled = !giver.disabled;
+      });
+    }
   }
 
   protected sort(): string[] {

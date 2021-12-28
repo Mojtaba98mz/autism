@@ -11,6 +11,8 @@
       "created": "خیر {{ param }} ایجاد شد",
       "updated": "خیر {{ param }} ویرایش شد",
       "deleted": "خیر {{ param }} حذف شد",
+      "disabled": "خیر {{ param }} غیر فعال شد",
+      "enabled": "خیر {{ param }} فعال شد",
       "delete": {
         "question": "آیا از حذف اطمینان دارید؟"
       },
@@ -27,6 +29,8 @@
       "absorbDate": "تاریخ جذب",
       "province": "استان",
       "city": "شهر",
+      "disable": "غیر فعال کردن",
+      "enable": "فعال کردن",
       "donation": "کمک خیر",
       "giverauditor": "Giverauditor",
       "absorbant": "جذب کننده",

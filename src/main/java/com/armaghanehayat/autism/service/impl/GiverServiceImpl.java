@@ -124,6 +124,19 @@ public class GiverServiceImpl implements GiverService {
     }
 
     @Override
+    public boolean disableEnable(Long id) {
+        log.debug("Request to delete Giver : {}", id);
+        Optional<Giver> byId = giverRepository.findById(id);
+        if (byId.isPresent()) {
+            Giver giver = byId.get();
+            giver.setDisabled(!giver.getDisabled());
+            giverRepository.save(giver);
+            return giver.getDisabled();
+        }
+        return false;
+    }
+
+    @Override
     public List<User> findAllGiversSupporters() {
         List<User> allUsers = userRepository.findAllByIdNotNullAndActivatedIsTrue();
         return allUsers.stream().filter(item -> item.hasOnlyRole(AuthoritiesConstants.USER)).collect(Collectors.toList());

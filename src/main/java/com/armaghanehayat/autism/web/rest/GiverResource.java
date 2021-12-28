@@ -9,8 +9,11 @@ import com.armaghanehayat.autism.service.GiverService;
 import com.armaghanehayat.autism.service.UserService;
 import com.armaghanehayat.autism.service.criteria.GiverCriteria;
 import com.armaghanehayat.autism.web.rest.errors.BadRequestAlertException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -210,6 +213,19 @@ public class GiverResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/givers/disableEnable/{id}")
+    public ResponseEntity<Void> disableEnable(@PathVariable Long id) {
+        boolean isDisabled = giverService.disableEnable(id);
+        String message;
+        HttpHeaders headers = new HttpHeaders();
+        if (isDisabled) message = "autismApp.giver.disabled"; else message = "autismApp.giver.enabled";
+        headers.add("X-" + applicationName + "-alert", message);
+        try {
+            headers.add("X-" + applicationName + "-params", URLEncoder.encode(id.toString(), StandardCharsets.UTF_8.toString()));
+        } catch (UnsupportedEncodingException e) {}
+        return ResponseEntity.noContent().headers(headers).build();
     }
 
     /**

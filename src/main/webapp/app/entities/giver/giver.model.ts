@@ -13,6 +13,7 @@ export interface IGiver {
   homeNumber?: string | null;
   address?: string | null;
   absorbDate?: dayjs.Dayjs | null;
+  disabled?: boolean | null;
   donations?: IDonation[] | null;
   giverauditors?: IGiverAuditor[] | null;
   absorbant?: IUser | null;
@@ -30,13 +31,16 @@ export class Giver implements IGiver {
     public homeNumber?: string | null,
     public address?: string | null,
     public absorbDate?: dayjs.Dayjs | null,
+    public disabled?: boolean | null,
     public donations?: IDonation[] | null,
     public giverauditors?: IGiverAuditor[] | null,
     public absorbant?: IUser | null,
     public supporter?: IUser | null,
     public province?: IProvince | null,
     public city?: ICity | null
-  ) {}
+  ) {
+    this.disabled = this.disabled ?? false;
+  }
 }
 
 export function getGiverIdentifier(giver: IGiver): number | undefined {

@@ -32,6 +32,7 @@ describe('Service Tests', () => {
         homeNumber: 'AAAAAAA',
         address: 'AAAAAAA',
         absorbDate: currentDate,
+        disabled: false,
       };
     });
 
@@ -84,6 +85,7 @@ describe('Service Tests', () => {
             homeNumber: 'BBBBBB',
             address: 'BBBBBB',
             absorbDate: currentDate.format(DATE_TIME_FORMAT),
+            disabled: true,
           },
           elemDefault
         );
@@ -136,6 +138,7 @@ describe('Service Tests', () => {
             homeNumber: 'BBBBBB',
             address: 'BBBBBB',
             absorbDate: currentDate.format(DATE_TIME_FORMAT),
+            disabled: true,
           },
           elemDefault
         );
@@ -192,7 +195,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Giver to an array', () => {
-          const giverArray: IGiver[] = [{ id: 123 }, { id: 456 }, { id: 39849 }];
+          const giverArray: IGiver[] = [{ id: 123 }, { id: 456 }, { id: 95269 }];
           const giverCollection: IGiver[] = [{ id: 123 }];
           expectedResult = service.addGiverToCollectionIfMissing(giverCollection, ...giverArray);
           expect(expectedResult).toHaveLength(3);

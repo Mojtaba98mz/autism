@@ -38,6 +38,10 @@
         <dd>
           <span>{{ giver.absorbDate | formatMediumDatetime }}</span>
         </dd>
+        <dt><span jhiTranslate="autismApp.giver.disabled">Disabled</span></dt>
+        <dd>
+          <span>{{ giver.disabled }}</span>
+        </dd>
         <dt><span jhiTranslate="autismApp.giver.province">Province</span></dt>
         <dd>
           <div *ngIf="giver.province">

@@ -137,11 +137,6 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <!--<button type="submit" (click)="delete(giver)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>-->
-
               <button
                 type="submit"
                 [routerLink]="['/donation', giver.id, 'viewGiverDonate']"
@@ -151,6 +146,23 @@
                 <fa-icon icon="eye"></fa-icon>
                 <br />
                 <span class="d-none d-md-inline" jhiTranslate="autismApp.giver.viewDonation">Edit</span>
+              </button>
+
+              <button
+                type="submit"
+                (click)="disable(giver)"
+                [ngClass]="{ 'btn-success': giver.disabled, 'btn-danger': !giver.disabled }"
+                class="btn btn-sm"
+                data-cy="entityDeleteButton"
+              >
+                <fa-icon *ngIf="!giver.disabled" icon="times"></fa-icon>
+                <fa-icon *ngIf="giver.disabled" icon="check"></fa-icon>
+                <div *ngIf="giver.disabled; else enabled">
+                  <span class="d-none d-md-inline" jhiTranslate="autismApp.giver.enable">Enable</span>
+                </div>
+                <ng-template #enabled>
+                  <span class="d-none d-md-inline" jhiTranslate="autismApp.giver.disable">Disable</span>
+                </ng-template>
               </button>
             </div>
           </td>

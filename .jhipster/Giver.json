@@ -27,6 +27,10 @@
     {
       "fieldName": "absorbDate",
       "fieldType": "Instant"
+    },
+    {
+      "fieldName": "disabled",
+      "fieldType": "Boolean"
     }
   ],
   "relationships": [

@@ -40,6 +40,7 @@ export class GiverUpdateComponent implements OnInit {
     city: [],
     absorbant: [],
     supporter: [],
+    disabled: [],
   });
 
   constructor(
@@ -133,6 +134,7 @@ export class GiverUpdateComponent implements OnInit {
       city: giver.city,
       absorbant: giver.absorbant,
       supporter: giver.supporter,
+      disabled: giver.disabled,
     });
 
     this.provincesCollection = this.provinceService.addProvinceToCollectionIfMissing(this.provincesCollection, giver.province);
@@ -189,6 +191,7 @@ export class GiverUpdateComponent implements OnInit {
       city: this.editForm.get(['city'])!.value,
       absorbant: this.editForm.get(['absorbant'])!.value,
       supporter: this.editForm.get(['supporter'])!.value,
+      disabled: this.editForm.get(['disabled'])!.value,
     };
   }
 }

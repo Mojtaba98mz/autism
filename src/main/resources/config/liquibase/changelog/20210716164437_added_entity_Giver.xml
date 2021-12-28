@@ -32,6 +32,9 @@
             <column name="absorb_date" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
+            <column name="disabled" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="absorbant_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -71,6 +74,7 @@
             <column name="home_number" type="string"/>
             <column name="address" type="string"/>
             <column name="absorb_date" type="${datetimeType}"/>
+            <column name="disabled" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -59,6 +59,8 @@ public class GiverCriteria implements Serializable, Criteria {
 
     private StringFilter supporterFamily;
 
+    private BooleanFilter disabled;
+
     public GiverCriteria() {}
 
     public GiverCriteria(GiverCriteria other) {
@@ -79,6 +81,7 @@ public class GiverCriteria implements Serializable, Criteria {
         this.supporterId = other.supporterId == null ? null : other.supporterId.copy();
         this.supporterName = other.supporterName == null ? null : other.supporterName.copy();
         this.supporterFamily = other.supporterFamily == null ? null : other.supporterFamily.copy();
+        this.disabled = other.disabled == null ? null : other.disabled.copy();
     }
 
     @Override
@@ -341,6 +344,21 @@ public class GiverCriteria implements Serializable, Criteria {
         return supporterFamily;
     }
 
+    public BooleanFilter getDisabled() {
+        return disabled;
+    }
+
+    public BooleanFilter disabled() {
+        if (disabled == null) {
+            disabled = new BooleanFilter();
+        }
+        return disabled;
+    }
+
+    public void setDisabled(BooleanFilter disabled) {
+        this.disabled = disabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -364,6 +382,7 @@ public class GiverCriteria implements Serializable, Criteria {
             Objects.equals(giverauditorId, that.giverauditorId) &&
             Objects.equals(absorbantId, that.absorbantId) &&
             Objects.equals(supporterId, that.supporterId) &&
+            Objects.equals(disabled, that.disabled) &&
             Objects.equals(supporterName, that.supporterName) &&
             Objects.equals(supporterFamily, that.supporterFamily)
         );
@@ -386,6 +405,7 @@ public class GiverCriteria implements Serializable, Criteria {
             absorbantId,
             supporterId,
             supporterName,
+            disabled,
             supporterFamily
         );
     }
@@ -403,6 +423,7 @@ public class GiverCriteria implements Serializable, Criteria {
             (absorbDate != null ? "absorbDate=" + absorbDate + ", " : "") +
             (provinceId != null ? "provinceId=" + provinceId + ", " : "") +
             (cityId != null ? "cityId=" + cityId + ", " : "") +
+            (disabled != null ? "disabled=" + disabled + ", " : "") +
             (donationId != null ? "donationId=" + donationId + ", " : "") +
             (giverauditorId != null ? "giverauditorId=" + giverauditorId + ", " : "") +
             (absorbantId != null ? "absorbantId=" + absorbantId + ", " : "") +

@@ -46,6 +46,9 @@ public class Giver implements Serializable {
     @Column(name = "absorb_date")
     private Instant absorbDate;
 
+    @Column(name = "disabled")
+    private Boolean disabled;
+
     @OneToMany(mappedBy = "giver")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "giver" }, allowSetters = true)
@@ -160,6 +163,19 @@ public class Giver implements Serializable {
 
     public void setAbsorbDate(Instant absorbDate) {
         this.absorbDate = absorbDate;
+    }
+
+    public Boolean getDisabled() {
+        return this.disabled;
+    }
+
+    public Giver disabled(Boolean disabled) {
+        this.disabled = disabled;
+        return this;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
     public Set<Donation> getDonations() {
@@ -306,6 +322,7 @@ public class Giver implements Serializable {
             ", homeNumber='" + getHomeNumber() + "'" +
             ", address='" + getAddress() + "'" +
             ", absorbDate='" + getAbsorbDate() + "'" +
+            ", disabled='" + getDisabled() + "'" +
             "}";
     }
 }

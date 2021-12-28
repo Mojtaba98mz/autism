@@ -124,6 +124,9 @@ public class GiverQueryService extends QueryService<Giver> {
                         )
                     );
             }
+            if (criteria.getDisabled() != null) {
+                specification = specification.and(buildSpecification(criteria.getDisabled(), Giver_.disabled));
+            }
             if (criteria.getCityId() != null) {
                 specification =
                     specification.and(

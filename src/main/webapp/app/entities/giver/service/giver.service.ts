@@ -56,6 +56,10 @@ export class GiverService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  disableEnable(id: number): Observable<HttpResponse<{}>> {
+    return this.http.get(`${this.resourceUrl}/disableEnable/${id}`, { observe: 'response' });
+  }
+
   addGiverToCollectionIfMissing(giverCollection: IGiver[], ...giversToCheck: (IGiver | null | undefined)[]): IGiver[] {
     const givers: IGiver[] = giversToCheck.filter(isPresent);
     if (givers.length > 0) {

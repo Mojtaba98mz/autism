@@ -50,6 +50,8 @@ public interface GiverService {
      */
     void delete(Long id);
 
+    boolean disableEnable(Long id);
+
     /**
      * Get all the givers supporter.
      *

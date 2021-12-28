@@ -149,6 +149,7 @@
               </button>
 
               <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
                 type="submit"
                 (click)="disable(giver)"
                 [ngClass]="{ 'btn-success': giver.disabled, 'btn-danger': !giver.disabled }"

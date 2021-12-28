@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
+import tech.jhipster.service.filter.BooleanFilter;
 import tech.jhipster.service.filter.LongFilter;
 
 /**
@@ -124,9 +125,9 @@ public class GiverQueryService extends QueryService<Giver> {
                         )
                     );
             }
-            if (criteria.getDisabled() != null) {
+            /* if (criteria.getDisabled() != null) {
                 specification = specification.and(buildSpecification(criteria.getDisabled(), Giver_.disabled));
-            }
+            }*/
             if (criteria.getCityId() != null) {
                 specification =
                     specification.and(
@@ -166,6 +167,9 @@ public class GiverQueryService extends QueryService<Giver> {
                 longFilter.setEquals(userWithAuthorities.get().getId());
                 specification =
                     specification.and(buildSpecification(longFilter, root -> root.join(Giver_.supporter, JoinType.LEFT).get(User_.id)));
+                BooleanFilter booleanFilter = new BooleanFilter();
+                booleanFilter.setEquals(false);
+                specification = specification.and(buildSpecification(booleanFilter, Giver_.disabled));
             }
             if (criteria.getSupporterId() != null) {
                 specification =

@@ -6,8 +6,10 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IExcelImport, getExcelImportIdentifier } from '../excel-import.model';
+import { IInvalidPhoneNumber } from '../invalid-phone-number.model';
 
 export type EntityResponseType = HttpResponse<IExcelImport>;
+export type InvalidPhoneNumberArrayResponseType = HttpResponse<IInvalidPhoneNumber[]>;
 export type EntityArrayResponseType = HttpResponse<IExcelImport[]>;
 
 @Injectable({ providedIn: 'root' })
@@ -16,12 +18,12 @@ export class ExcelImportService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(excelImport: IExcelImport): Observable<EntityResponseType> {
-    return this.http.post<IExcelImport>(this.resourceUrl, excelImport, { observe: 'response' });
+  create(excelImport: IExcelImport): Observable<InvalidPhoneNumberArrayResponseType> {
+    return this.http.post<IInvalidPhoneNumber[]>(this.resourceUrl, excelImport, { observe: 'response' });
   }
 
-  update(excelImport: IExcelImport): Observable<EntityResponseType> {
-    return this.http.put<IExcelImport>(`${this.resourceUrl}/${getExcelImportIdentifier(excelImport) as number}`, excelImport, {
+  update(excelImport: IExcelImport): Observable<InvalidPhoneNumberArrayResponseType> {
+    return this.http.put<IInvalidPhoneNumber[]>(`${this.resourceUrl}/${getExcelImportIdentifier(excelImport) as number}`, excelImport, {
       observe: 'response',
     });
   }

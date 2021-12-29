@@ -77,4 +77,25 @@
       </div>
     </form>
   </div>
+
+  <div class="table-responsive" id="entities" *ngIf="invalidPhoneNumbers && invalidPhoneNumbers.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="autismApp.excelImport.name">Name</span></th>
+          <th scope="col"><span jhiTranslate="autismApp.excelImport.family">Family</span></th>
+          <th scope="col"><span jhiTranslate="autismApp.excelImport.phoneNumber">Phone Number</span></th>
+          <th scope="col"><span jhiTranslate="autismApp.excelImport.reason">Reason</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invalidPhoneNumber of invalidPhoneNumbers" data-cy="entityTable">
+          <td>{{ invalidPhoneNumber.name }}</td>
+          <td>{{ invalidPhoneNumber.family }}</td>
+          <td>{{ invalidPhoneNumber.phoneNumber }}</td>
+          <td>{{ invalidPhoneNumber.reason }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

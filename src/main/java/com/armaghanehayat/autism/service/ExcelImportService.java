@@ -1,6 +1,7 @@
 package com.armaghanehayat.autism.service;
 
 import com.armaghanehayat.autism.domain.ExcelImport;
+import com.armaghanehayat.autism.pojo.InvalidPhoneNumber;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ public interface ExcelImportService {
      * @param excelImport the entity to save.
      * @return the persisted entity.
      */
-    ExcelImport save(ExcelImport excelImport);
+    List<InvalidPhoneNumber> save(ExcelImport excelImport);
 
     /**
      * Partially updates a excelImport.

@@ -28,7 +28,11 @@
       "supporterName": "نام پشتیبان",
       "supporterFamily": "نام خانوادگی پشتیبان",
       "supporters": "پشتیبانان",
-      "upload": "بارگزاری"
+      "upload": "بارگزاری",
+      "name": "نام",
+      "family": "نام خانوادگی",
+      "phoneNumber": "شماره همراه",
+      "reason": "دلیل"
     }
   }
 }

@@ -1,6 +1,7 @@
 package com.armaghanehayat.autism.web.rest;
 
 import com.armaghanehayat.autism.domain.ExcelImport;
+import com.armaghanehayat.autism.pojo.InvalidPhoneNumber;
 import com.armaghanehayat.autism.repository.ExcelImportRepository;
 import com.armaghanehayat.autism.service.ExcelImportService;
 import com.armaghanehayat.autism.web.rest.errors.BadRequestAlertException;
@@ -50,16 +51,14 @@ public class ExcelImportResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/excel-imports")
-    public ResponseEntity<ExcelImport> createExcelImport(@Valid @RequestBody ExcelImport excelImport) throws URISyntaxException {
+    public ResponseEntity<List<InvalidPhoneNumber>> createExcelImport(@Valid @RequestBody ExcelImport excelImport)
+        throws URISyntaxException {
         log.debug("REST request to save ExcelImport : {}", excelImport);
         if (excelImport.getId() != null) {
             throw new BadRequestAlertException("A new excelImport cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ExcelImport result = excelImportService.save(excelImport);
-        return ResponseEntity
-            .created(new URI("/api/excel-imports/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        List<InvalidPhoneNumber> result = excelImportService.save(excelImport);
+        return ResponseEntity.ok().body(result);
     }
 
     /**
@@ -73,7 +72,7 @@ public class ExcelImportResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/excel-imports/{id}")
-    public ResponseEntity<ExcelImport> updateExcelImport(
+    public ResponseEntity<List<InvalidPhoneNumber>> updateExcelImport(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody ExcelImport excelImport
     ) throws URISyntaxException {
@@ -89,7 +88,7 @@ public class ExcelImportResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        ExcelImport result = excelImportService.save(excelImport);
+        List<InvalidPhoneNumber> result = excelImportService.save(excelImport);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, excelImport.getId().toString()))

@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
-import { IExcelImport, ExcelImport } from '../excel-import.model';
+import { ExcelImport, IExcelImport } from '../excel-import.model';
 import { ExcelImportService } from '../service/excel-import.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { AlertService } from '../../../core/util/alert.service';
+import { IInvalidPhoneNumber } from '../invalid-phone-number.model';
+import { IProvince } from '../../province/province.model';
+import { ASC, DESC } from '../../../config/pagination.constants';
 
 @Component({
   selector: 'jhi-excel-import-update',
@@ -18,6 +21,8 @@ import { AlertService } from '../../../core/util/alert.service';
 })
 export class ExcelImportUpdateComponent implements OnInit {
   isSaving = false;
+
+  invalidPhoneNumbers?: IInvalidPhoneNumber[];
 
   message;
   type = 'info';
@@ -78,14 +83,29 @@ export class ExcelImportUpdateComponent implements OnInit {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IExcelImport>>): void {
+  /*
+  *  this.provinceService
+      .query()
+      .pipe(map((res: HttpResponse<IProvince[]>) => res.body ?? []))
+      .pipe(
+        map((provinces: IProvince[]) =>
+          this.provinceService.addProvinceToCollectionIfMissing(provinces, this.editForm.get('province')!.value)
+        )
+      )
+      .subscribe((provinces: IProvince[]) => (this.provincesSharedCollection = provinces));
+  * */
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IInvalidPhoneNumber[]>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
+      (res: HttpResponse<IInvalidPhoneNumber[]>) => {
+        this.onSuccess(res.body);
+      },
       () => this.onSaveError()
     );
   }
 
-  protected onSaveSuccess(): void {
+  protected onSuccess(data: IProvince[] | null): void {
+    this.invalidPhoneNumbers = data ?? [];
     this.message = 'بارگذاری اکسل با موفقیت انجام شد';
     this.type = 'success';
   }

@@ -4,6 +4,7 @@ import com.armaghanehayat.autism.domain.Donation;
 import com.armaghanehayat.autism.domain.ExcelImport;
 import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.domain.User;
+import com.armaghanehayat.autism.pojo.InvalidPhoneNumber;
 import com.armaghanehayat.autism.repository.ExcelImportRepository;
 import com.armaghanehayat.autism.service.ExcelImportService;
 import com.armaghanehayat.autism.service.GiverService;
@@ -14,10 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -53,7 +51,7 @@ public class ExcelImportServiceImpl implements ExcelImportService {
 
     @Override
     @Transactional
-    public ExcelImport save(ExcelImport excelImport) {
+    public List<InvalidPhoneNumber> save(ExcelImport excelImport) {
         log.debug("Request to save ExcelImport : {}", excelImport);
         InputStream fis = new ByteArrayInputStream(excelImport.getExcel());
         HSSFWorkbook wb = null;
@@ -80,7 +78,12 @@ public class ExcelImportServiceImpl implements ExcelImportService {
             Optional<Giver> byPhoneNumber = giverService.findByPhoneNumber(giver.getPhoneNumber());
             if (byPhoneNumber.isEmpty()) giverService.save(giver, true);
         }
-        return excelImportRepository.save(excelImport);
+        excelImportRepository.save(excelImport);
+        // todo add errors to invalidPhoneNumbers
+        List<InvalidPhoneNumber> invalidPhoneNumbers = new ArrayList<>();
+        invalidPhoneNumbers.add(new InvalidPhoneNumber("name1", "family1", "phoneNumber1", "reason1"));
+        invalidPhoneNumbers.add(new InvalidPhoneNumber("name2", "family2", "phoneNumber2", "reason2"));
+        return invalidPhoneNumbers;
     }
 
     @Override

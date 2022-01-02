@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="ceremonyUser">
+      <h2 data-cy="ceremonyUserDetailsHeading"><span jhiTranslate="autismApp.ceremonyUser.detail.title">Ceremony User</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ ceremonyUser.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremonyUser.name">Name</span></dt>
+        <dd>
+          <span>{{ ceremonyUser.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremonyUser.family">Family</span></dt>
+        <dd>
+          <span>{{ ceremonyUser.family }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremonyUser.phoneNumber">Phone Number</span></dt>
+        <dd>
+          <span>{{ ceremonyUser.phoneNumber }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremonyUser.homeNumber">Home Number</span></dt>
+        <dd>
+          <span>{{ ceremonyUser.homeNumber }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremonyUser.address">Address</span></dt>
+        <dd>
+          <span>{{ ceremonyUser.address }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/ceremony-user', ceremonyUser.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

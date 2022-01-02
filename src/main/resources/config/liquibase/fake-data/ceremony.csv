@@ -1,0 +1,11 @@
+id;amount;given_date;description;receipt;receipt_content_type
+1;90014;2022-01-02T04:16:01;داخلی ویروسی;../fake-data/blob/hipster.png;image/png
+2;28512;2022-01-02T04:28:11;فلزی ابزار;../fake-data/blob/hipster.png;image/png
+3;99566;2022-01-02T03:48:07;ها 24/365 سپرده;../fake-data/blob/hipster.png;image/png
+4;37680;2022-01-01T11:42:19;ناحیه;../fake-data/blob/hipster.png;image/png
+5;53603;2022-01-01T18:46:23;مبتنی ین بدون;../fake-data/blob/hipster.png;image/png
+6;20056;2022-01-01T09:59:13;primary;../fake-data/blob/hipster.png;image/png
+7;28386;2022-01-01T20:59:27;صورتحساب فلزی;../fake-data/blob/hipster.png;image/png
+8;28848;2022-01-01T14:20:27;port الگو;../fake-data/blob/hipster.png;image/png
+9;84934;2022-01-02T01:49:12;ای primary Buckinghamshire;../fake-data/blob/hipster.png;image/png
+10;91164;2022-01-01T07:38:05;سلامتی;../fake-data/blob/hipster.png;image/png

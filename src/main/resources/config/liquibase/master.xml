@@ -21,11 +21,14 @@
     <include file="config/liquibase/changelog/20210721173050_added_entity_Province.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210721173051_added_entity_City.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210821033021_added_entity_ExcelImport.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220102053334_added_entity_CeremonyUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220102053335_added_entity_Ceremony.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210716164437_added_entity_constraints_Giver.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210716164438_added_entity_constraints_Donation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210716164439_added_entity_constraints_GiverAuditor.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210721173051_added_entity_constraints_City.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220102053335_added_entity_constraints_Ceremony.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

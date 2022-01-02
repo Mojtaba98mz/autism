@@ -1,0 +1,59 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="ceremony">
+      <h2 data-cy="ceremonyDetailsHeading"><span jhiTranslate="autismApp.ceremony.detail.title">Ceremony</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ ceremony.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremony.amount">Amount</span></dt>
+        <dd>
+          <span>{{ ceremony.amount }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremony.givenDate">Given Date</span></dt>
+        <dd>
+          <span>{{ ceremony.givenDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremony.description">Description</span></dt>
+        <dd>
+          <span>{{ ceremony.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremony.receipt">Receipt</span></dt>
+        <dd>
+          <div *ngIf="ceremony.receipt">
+            <a (click)="openFile(ceremony.receipt, ceremony.receiptContentType)">
+              <img
+                [src]="'data:' + ceremony.receiptContentType + ';base64,' + ceremony.receipt"
+                style="max-width: 100%"
+                alt="ceremony image"
+              />
+            </a>
+            {{ ceremony.receiptContentType }}, {{ byteSize(ceremony.receipt) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="autismApp.ceremony.ceremonyUser">Ceremony User</span></dt>
+        <dd>
+          <div *ngIf="ceremony.ceremonyUser">
+            <a [routerLink]="['/ceremony-user', ceremony.ceremonyUser?.id, 'view']">{{ ceremony.ceremonyUser?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/ceremony', ceremony.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

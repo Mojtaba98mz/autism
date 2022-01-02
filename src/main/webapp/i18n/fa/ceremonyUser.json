@@ -1,0 +1,29 @@
+{
+  "autismApp": {
+    "ceremonyUser": {
+      "home": {
+        "title": "Ceremony Users",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Ceremony User",
+        "createOrEditLabel": "Create or edit a Ceremony User",
+        "notFound": "No Ceremony Users found"
+      },
+      "created": "A new Ceremony User is created with identifier {{ param }}",
+      "updated": "A Ceremony User is updated with identifier {{ param }}",
+      "deleted": "A Ceremony User is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Ceremony User {{ id }}?"
+      },
+      "detail": {
+        "title": "Ceremony User"
+      },
+      "id": "ID",
+      "name": "Name",
+      "family": "Family",
+      "phoneNumber": "Phone Number",
+      "homeNumber": "Home Number",
+      "address": "Address",
+      "ceremony": "Ceremony"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "autismApp": {
+    "ceremony": {
+      "home": {
+        "title": "Ceremonies",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Ceremony",
+        "createOrEditLabel": "Create or edit a Ceremony",
+        "notFound": "No Ceremonies found"
+      },
+      "created": "A new Ceremony is created with identifier {{ param }}",
+      "updated": "A Ceremony is updated with identifier {{ param }}",
+      "deleted": "A Ceremony is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Ceremony {{ id }}?"
+      },
+      "detail": {
+        "title": "Ceremony"
+      },
+      "id": "ID",
+      "amount": "Amount",
+      "givenDate": "Given Date",
+      "description": "Description",
+      "receipt": "Receipt",
+      "ceremonyUser": "Ceremony User"
+    }
+  }
+}

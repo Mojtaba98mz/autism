@@ -20,7 +20,7 @@
     "reactive": false,
     "authenticationType": "jwt",
     "packageName": "com.armaghanehayat.autism",
-    "serverPort": "80",
+    "serverPort": "8085",
     "cacheProvider": "ehcache",
     "enableHibernateCache": true,
     "databaseType": "sql",
@@ -43,7 +43,7 @@
     "devServerPort": 4200,
     "clientPackageManager": "npm",
     "languages": ["fa"],
-    "entities": ["Giver", "Donation", "GiverAuditor", "Province", "City"],
+    "entities": ["Giver", "Donation", "GiverAuditor", "Province", "City", "ExcelImport"],
     "lastLiquibaseTimestamp": 1626888651000
   }
 }

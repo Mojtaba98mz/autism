@@ -41,11 +41,11 @@
             <span jhiTranslate="autismApp.ceremonyUser.phoneNumber">Phone Number</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="homeNumber">
-            <span jhiTranslate="autismApp.ceremonyUser.homeNumber">Home Number</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="autismApp.ceremonyUser.homeNumberForList">Home Number</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="address">
+          <!--<th scope="col" jhiSortBy="address">
             <span jhiTranslate="autismApp.ceremonyUser.address">Address</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -58,7 +58,7 @@
           <td>{{ ceremonyUser.family }}</td>
           <td>{{ ceremonyUser.phoneNumber }}</td>
           <td>{{ ceremonyUser.homeNumber }}</td>
-          <td>{{ ceremonyUser.address }}</td>
+          <!--<td>{{ ceremonyUser.address }}</td>-->
           <td class="text-right">
             <div class="btn-group">
               <button

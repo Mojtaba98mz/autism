@@ -2,28 +2,29 @@
   "autismApp": {
     "ceremonyUser": {
       "home": {
-        "title": "Ceremony Users",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Ceremony User",
-        "createOrEditLabel": "Create or edit a Ceremony User",
-        "notFound": "No Ceremony Users found"
+        "title": "کاربران تشریفات",
+        "refreshListLabel": "بروزرسانی",
+        "createLabel": "ایجاد کاربر تشریفات",
+        "createOrEditLabel": "ایجاد یا ویرایش کاربر تشریفات",
+        "notFound": "هیچ کاربر تشریفاتی یافت نشد"
       },
-      "created": "A new Ceremony User is created with identifier {{ param }}",
-      "updated": "A Ceremony User is updated with identifier {{ param }}",
-      "deleted": "A Ceremony User is deleted with identifier {{ param }}",
+      "created": "کاربر تشریفات {{ param }} ایجاد شد",
+      "updated": "کاربر تشریفات {{ param }} ویرایش شد",
+      "deleted": "کاربر تشریفات {{ param }} حذف شد",
       "delete": {
-        "question": "Are you sure you want to delete Ceremony User {{ id }}?"
+        "question": "آیا از حذف اطمینان دارید؟"
       },
       "detail": {
-        "title": "Ceremony User"
+        "title": "کاربر تشریفات"
       },
-      "id": "ID",
-      "name": "Name",
-      "family": "Family",
-      "phoneNumber": "Phone Number",
-      "homeNumber": "Home Number",
-      "address": "Address",
-      "ceremony": "Ceremony"
+      "id": "شناسه",
+      "name": "نام",
+      "family": "نام خانوادگی",
+      "phoneNumber": "شماره همراه",
+      "homeNumber": "تلفن ثابت(به همراه پیش شماره)",
+      "homeNumberForList": "تلفن ثابت",
+      "address": "نشانی",
+      "ceremony": "تشریفات"
     }
   }
 }

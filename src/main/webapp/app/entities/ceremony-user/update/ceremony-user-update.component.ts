@@ -19,8 +19,8 @@ export class CeremonyUserUpdateComponent implements OnInit {
     id: [],
     name: [null, [Validators.required]],
     family: [null, [Validators.required]],
-    phoneNumber: [null, [Validators.required]],
-    homeNumber: [],
+    phoneNumber: [null, [Validators.required, Validators.pattern('^(\\+98|0098|98|0)?9\\d{9}$')]],
+    homeNumber: [null, [Validators.pattern('^[0-9]\\d*$')]],
     address: [],
   });
 

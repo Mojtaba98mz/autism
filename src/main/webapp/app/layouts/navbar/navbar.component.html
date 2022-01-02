@@ -114,6 +114,31 @@
               <span jhiTranslate="global.menu.entities.giverAuditor">Giver Auditor</span>
             </a>
           </li>
+
+          <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <a
+              class="dropdown-item"
+              routerLink="ceremony-user"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <span jhiTranslate="global.menu.entities.ceremonyUser">Ceremony User</span>
+            </a>
+          </li>
+
+          <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <a
+              class="dropdown-item"
+              routerLink="ceremony"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <span jhiTranslate="global.menu.entities.ceremony">Ceremony</span>
+            </a>
+          </li>
+
           <!--<li>
             <a
               class="dropdown-item"

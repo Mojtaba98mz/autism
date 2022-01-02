@@ -15,7 +15,9 @@
         "province": "Province",
         "city": "City",
         "register-donation": "ثبت کمک",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "ceremony": "تشریفات",
+        "ceremonyUser": "کاربران تشریفات"
       },
       "account": {
         "main": "حساب کاربری",

@@ -24,7 +24,7 @@
         </dd>
         <dt><span jhiTranslate="autismApp.donation.donationDate">Donation Date</span></dt>
         <dd>
-          <span>{{ donation.donationDate | formatMediumDatetime }}</span>
+          <span>{{ donation.donationDate | jalali }}</span>
         </dd>
         <dt><span jhiTranslate="autismApp.donation.helpType">Help Type</span></dt>
         <dd>
@@ -54,7 +54,7 @@
         <dt><span jhiTranslate="autismApp.donation.giver">Giver</span></dt>
         <dd>
           <div *ngIf="donation.giver">
-            <a [routerLink]="['/giver', donation.giver?.id, 'view']">{{ donation.giver?.id }}</a>
+            <a [routerLink]="['/giver', donation.giver?.id, 'view']">{{ donation.giver?.name }} {{ donation.giver?.family }}</a>
           </div>
         </dd>
       </dl>

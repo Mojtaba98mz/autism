@@ -10,6 +10,7 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants
 import { CeremonyService } from '../service/ceremony.service';
 import { CeremonyDeleteDialogComponent } from '../delete/ceremony-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { IDonation } from '../../donation/donation.model';
 
 @Component({
   selector: 'jhi-ceremony',
@@ -25,6 +26,9 @@ export class CeremonyComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  idFilter;
+  amountFilter;
+
   constructor(
     protected ceremonyService: CeremonyService,
     protected activatedRoute: ActivatedRoute,
@@ -34,6 +38,7 @@ export class CeremonyComponent implements OnInit {
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
+    const ceremonyUserId = this.activatedRoute.snapshot.params['ceremonyUserId'];
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
@@ -42,6 +47,7 @@ export class CeremonyComponent implements OnInit {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
+        'ceremonyUserId.equals': ceremonyUserId,
       })
       .subscribe(
         (res: HttpResponse<ICeremony[]>) => {
@@ -55,8 +61,50 @@ export class CeremonyComponent implements OnInit {
       );
   }
 
+  loadPageWithReq(page?: number, dontNavigate?: boolean, req?: any): void {
+    this.isLoading = true;
+    const pageToLoad: number = page ?? this.page ?? 1;
+
+    this.ceremonyService.query(req).subscribe(
+      (res: HttpResponse<IDonation[]>) => {
+        this.isLoading = false;
+        this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+      },
+      () => {
+        this.isLoading = false;
+        this.onError();
+      }
+    );
+  }
+
+  refreshPage(): void {
+    this.idFilter = '';
+    this.amountFilter = '';
+    this.loadPage();
+  }
+
   ngOnInit(): void {
     this.handleNavigation();
+  }
+
+  onEnterPressed(event: any, fieldName: string): void {
+    if (event.keyCode === 13 || fieldName === 'isCash') {
+      const pageToLoad: number = this.page ?? 1;
+      const ceremonyUserId = this.activatedRoute.snapshot.params['ceremonyUserId'];
+      const req = {
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+        'ceremonyUserId.equals': ceremonyUserId,
+      };
+      if (event.keyCode === 13) {
+        const searchValue = event.target.value;
+        if (fieldName === 'id' || fieldName === 'amount') {
+          req[fieldName + '.equals'] = searchValue;
+        }
+      }
+      this.loadPageWithReq(undefined, undefined, req);
+    }
   }
 
   trackId(index: number, item: ICeremony): number {
@@ -80,6 +128,11 @@ export class CeremonyComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  goToNew(): void {
+    const ceremonyUserId = this.activatedRoute.snapshot.params['ceremonyUserId'];
+    this.router.navigate(['/ceremony', ceremonyUserId, 'new']);
   }
 
   protected sort(): string[] {
@@ -107,9 +160,10 @@ export class CeremonyComponent implements OnInit {
 
   protected onSuccess(data: ICeremony[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
+    const ceremonyUserId = this.activatedRoute.snapshot.params['ceremonyUserId'];
     this.page = page;
     if (navigate) {
-      this.router.navigate(['/ceremony'], {
+      this.router.navigate(['/ceremony', ceremonyUserId, 'viewCeremony'], {
         queryParams: {
           page: this.page,
           size: this.itemsPerPage,

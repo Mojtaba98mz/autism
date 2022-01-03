@@ -2,27 +2,27 @@
   "autismApp": {
     "ceremony": {
       "home": {
-        "title": "Ceremonies",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Ceremony",
-        "createOrEditLabel": "Create or edit a Ceremony",
-        "notFound": "No Ceremonies found"
+        "title": "تشریفات",
+        "refreshListLabel": "بروزرسانی",
+        "createLabel": "ایجاد تشریفات",
+        "createOrEditLabel": "ساخت یا ایجاد تشریفات",
+        "notFound": "تشریفاتی یافت نشد"
       },
-      "created": "A new Ceremony is created with identifier {{ param }}",
-      "updated": "A Ceremony is updated with identifier {{ param }}",
-      "deleted": "A Ceremony is deleted with identifier {{ param }}",
+      "created": "تشریفات {{ param }} ایجاد شد",
+      "updated": "تشریفات {{ param }} ویرایش شد",
+      "deleted": "تشریفات {{ param }} حذف شد",
       "delete": {
-        "question": "Are you sure you want to delete Ceremony {{ id }}?"
+        "question": "آیا از حذف تشریفات {{ param }} اطمینان دارید؟"
       },
       "detail": {
-        "title": "Ceremony"
+        "title": "تشریفات"
       },
-      "id": "ID",
-      "amount": "Amount",
-      "givenDate": "Given Date",
-      "description": "Description",
-      "receipt": "Receipt",
-      "ceremonyUser": "Ceremony User"
+      "id": "شناسه",
+      "amount": "مبلغ(ریال)",
+      "givenDate": "تاریخ تشریفات",
+      "description": "توضیحات",
+      "receipt": "تصویر رسید",
+      "ceremonyUser": "کاربر تشریفات"
     }
   }
 }

@@ -3,7 +3,7 @@
     <span jhiTranslate="autismApp.ceremony.home.title">Ceremonies</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="refreshPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="autismApp.ceremony.home.refreshListLabel">Refresh List</span>
       </button>
@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-ceremony"
-        [routerLink]="['/ceremony/new']"
+        (click)="goToNew()"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="autismApp.ceremony.home.createLabel"> Create a new Ceremony </span>
@@ -32,19 +32,31 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="amount">
-            <span jhiTranslate="autismApp.ceremony.amount">Amount</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="id">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" [(ngModel)]="idFilter" class="filter-width" (keydown)="onEnterPressed($event, 'id')" />
           </th>
-          <th scope="col" jhiSortBy="givenDate">
-            <span jhiTranslate="autismApp.ceremony.givenDate">Given Date</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="amount">
+              <span jhiTranslate="autismApp.ceremony.amount">Amount</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
+            <input type="text" [(ngModel)]="amountFilter" class="filter-width" (keydown)="onEnterPressed($event, 'amount')" />
           </th>
-          <th scope="col" jhiSortBy="description">
-            <span jhiTranslate="autismApp.ceremony.description">Description</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <div jhiSortBy="donationDate">
+              <span jhiTranslate="autismApp.ceremony.givenDate">Given Date</span>
+              <fa-icon icon="sort"></fa-icon>
+            </div>
           </th>
           <th scope="col" jhiSortBy="receipt">
-            <span jhiTranslate="autismApp.ceremony.receipt">Receipt</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="autismApp.ceremony.receipt">Receipt</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
+
           <th scope="col" jhiSortBy="ceremonyUser.id">
             <span jhiTranslate="autismApp.ceremony.ceremonyUser">Ceremony User</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -57,8 +69,7 @@
             <a [routerLink]="['/ceremony', ceremony.id, 'view']">{{ ceremony.id }}</a>
           </td>
           <td>{{ ceremony.amount }}</td>
-          <td>{{ ceremony.givenDate | formatMediumDatetime }}</td>
-          <td>{{ ceremony.description }}</td>
+          <td>{{ ceremony.givenDate | jalali }}</td>
           <td>
             <a *ngIf="ceremony.receipt" (click)="openFile(ceremony.receipt, ceremony.receiptContentType)">
               <img
@@ -88,7 +99,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/ceremony', ceremony.id, 'edit']"
+                [routerLink]="['/ceremony', ceremony.id, ceremony.ceremonyUser?.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

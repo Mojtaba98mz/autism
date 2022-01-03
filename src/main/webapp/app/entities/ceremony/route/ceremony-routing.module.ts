@@ -6,6 +6,7 @@ import { CeremonyComponent } from '../list/ceremony.component';
 import { CeremonyDetailComponent } from '../detail/ceremony-detail.component';
 import { CeremonyUpdateComponent } from '../update/ceremony-update.component';
 import { CeremonyRoutingResolveService } from './ceremony-routing-resolve.service';
+import { DonationComponent } from '../../donation/list/donation.component';
 
 const ceremonyRoute: Routes = [
   {
@@ -25,7 +26,7 @@ const ceremonyRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: 'new',
+    path: ':ceremonyUserId/new',
     component: CeremonyUpdateComponent,
     resolve: {
       ceremony: CeremonyRoutingResolveService,
@@ -33,10 +34,18 @@ const ceremonyRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/edit',
+    path: ':id/:ceremonyUserId/edit',
     component: CeremonyUpdateComponent,
     resolve: {
       ceremony: CeremonyRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':ceremonyUserId/viewCeremony',
+    component: CeremonyComponent,
+    data: {
+      defaultSort: 'id,asc',
     },
     canActivate: [UserRouteAccessService],
   },

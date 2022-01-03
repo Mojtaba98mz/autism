@@ -13,8 +13,9 @@ import { CeremonyService } from '../service/ceremony.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { ICeremonyUser } from 'app/entities/ceremony-user/ceremony-user.model';
+import { CeremonyUser, ICeremonyUser } from 'app/entities/ceremony-user/ceremony-user.model';
 import { CeremonyUserService } from 'app/entities/ceremony-user/service/ceremony-user.service';
+import { Giver } from '../../giver/giver.model';
 
 @Component({
   selector: 'jhi-ceremony-update',
@@ -128,7 +129,7 @@ export class CeremonyUpdateComponent implements OnInit {
       description: ceremony.description,
       receipt: ceremony.receipt,
       receiptContentType: ceremony.receiptContentType,
-      ceremonyUser: ceremony.ceremonyUser,
+      ceremonyUser: new CeremonyUser(this.activatedRoute.snapshot.params['ceremonyUserId']),
     });
 
     this.ceremonyUsersSharedCollection = this.ceremonyUserService.addCeremonyUserToCollectionIfMissing(

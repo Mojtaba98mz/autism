@@ -20,7 +20,7 @@
         </dd>
         <dt><span jhiTranslate="autismApp.ceremony.givenDate">Given Date</span></dt>
         <dd>
-          <span>{{ ceremony.givenDate | formatMediumDatetime }}</span>
+          <span>{{ ceremony.givenDate | jalali }}</span>
         </dd>
         <dt><span jhiTranslate="autismApp.ceremony.description">Description</span></dt>
         <dd>
@@ -42,7 +42,9 @@
         <dt><span jhiTranslate="autismApp.ceremony.ceremonyUser">Ceremony User</span></dt>
         <dd>
           <div *ngIf="ceremony.ceremonyUser">
-            <a [routerLink]="['/ceremony-user', ceremony.ceremonyUser?.id, 'view']">{{ ceremony.ceremonyUser?.id }}</a>
+            <a [routerLink]="['/ceremony-user', ceremony.ceremonyUser?.id, 'view']"
+              >{{ ceremony.ceremonyUser?.name }} {{ ceremony.ceremonyUser?.family }}</a
+            >
           </div>
         </dd>
       </dl>

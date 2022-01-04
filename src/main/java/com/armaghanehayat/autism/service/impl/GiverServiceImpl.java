@@ -13,8 +13,10 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.xml.crypto.Data;
 import org.slf4j.Logger;
@@ -145,5 +147,11 @@ public class GiverServiceImpl implements GiverService {
     @Override
     public Optional<Giver> findByPhoneNumber(String phoneNumber) {
         return giverRepository.findFirstByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Giver> filterByGiverName(String filter) {
+        return giverRepository.filterByGiverName(filter);
     }
 }

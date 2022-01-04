@@ -4,6 +4,7 @@ import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.domain.User;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -60,4 +61,6 @@ public interface GiverService {
     List<User> findAllGiversSupporters();
 
     Optional<Giver> findByPhoneNumber(String phoneNumber);
+
+    List<Giver> filterByGiverName(String filter);
 }

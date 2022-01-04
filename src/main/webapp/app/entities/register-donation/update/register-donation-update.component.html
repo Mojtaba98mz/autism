@@ -129,6 +129,27 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12">
+            <mat-form-field class="col-sm-4 col-md-4">
+              <mat-select [formControl]="giverSelectedCtrl" placeholder="جست و جوی خیر">
+                <mat-option>
+                  <ngx-mat-select-search
+                    [formControl]="giverFilteringCtrl"
+                    noEntriesFoundLabel="هیچ موردی یافت نشد"
+                    placeholderLabel="نام ونام خانوادگی خیر"
+                  >
+                    <mat-icon class="fas fa-times" ngxMatSelectSearchClear></mat-icon>
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option>نمایش همه</mat-option>
+                <mat-option *ngFor="let giver of filteredGiver | async" [value]="giver">
+                  {{ giver.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="autismApp.donation.description" for="field_description">Description</label>
           <textarea id="field_description" name="description" rows="4" cols="50" maxlength="255" class="form-control"></textarea>

@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -157,6 +158,12 @@ public class GiverResource {
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, giver.getId().toString())
         );
+    }
+
+    @GetMapping("/givers/filter-by-giver-name")
+    public ResponseEntity<List<Giver>> searchByTeacherName(@RequestParam(value = "filter") String filter) {
+        log.debug("REST request to filter by Teacher Name : {}", filter);
+        return ResponseEntity.ok().body(giverService.filterByGiverName(filter));
     }
 
     /**

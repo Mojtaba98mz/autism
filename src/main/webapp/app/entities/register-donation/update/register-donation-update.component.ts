@@ -1,9 +1,9 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { debounceTime, delay, filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
 
 import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
@@ -23,6 +23,11 @@ import { GiverService } from 'app/entities/giver/service/giver.service';
 export class RegisterDonationUpdateComponent implements OnInit {
   isSaving = false;
 
+  public giverSelectedCtrl: FormControl = new FormControl();
+  public giverFilteringCtrl: FormControl = new FormControl();
+  public filteredGiver: ReplaySubject<IGiver[]> = new ReplaySubject<IGiver[]>(1);
+
+  public searching = false;
   giversSharedCollection: IGiver[] = [];
 
   editForm = this.fb.group({
@@ -38,6 +43,8 @@ export class RegisterDonationUpdateComponent implements OnInit {
     giver: [],
   });
 
+  protected _onDestroy = new Subject<void>();
+
   constructor(
     protected dataUtils: DataUtils,
     protected eventManager: EventManager,
@@ -49,6 +56,31 @@ export class RegisterDonationUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.giverFilteringCtrl.valueChanges
+      .pipe(
+        filter(search => !!search),
+        tap(() => (this.searching = true)),
+        takeUntil(this._onDestroy),
+        debounceTime(200),
+        delay(500)
+      )
+      .subscribe(
+        filterString => {
+          this.giverService.filterByGiverName(filterString).subscribe(
+            (res: HttpResponse<IGiver[]>) => {
+              this.searching = false;
+              this.filteredGiver.next(res.body ?? undefined);
+            },
+            () => {
+              this.searching = false;
+            }
+          );
+        },
+        () => {
+          this.searching = false;
+        }
+      );
+
     this.activatedRoute.data.subscribe(({ donation }) => {
       if (donation.id === undefined) {
         const today = dayjs().startOf('day');

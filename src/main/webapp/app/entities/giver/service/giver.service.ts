@@ -52,6 +52,10 @@ export class GiverService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  filterByGiverName(filter?: string): Observable<HttpResponse<IGiver[]>> {
+    return this.http.get<IGiver[]>(`${this.resourceUrl}/filter-by-giver-name?filter=${filter}`, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

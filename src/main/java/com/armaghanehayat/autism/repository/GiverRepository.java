@@ -4,6 +4,7 @@ import com.armaghanehayat.autism.domain.Giver;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,4 +20,7 @@ public interface GiverRepository extends JpaRepository<Giver, Long>, JpaSpecific
     List<Giver> findBySupporterIsCurrentUser();
 
     Optional<Giver> findFirstByPhoneNumber(String phoneNumber);
+
+    @Query("select giver from Giver giver where lower(concat(giver.name, ' ', giver.family)) like lower(concat('%', :filter,'%'))")
+    List<Giver> filterByGiverName(@Param("filter") String filter);
 }

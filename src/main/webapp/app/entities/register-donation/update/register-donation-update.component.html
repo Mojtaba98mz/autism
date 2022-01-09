@@ -132,10 +132,11 @@
         <div class="row">
           <div class="col-12">
             <mat-form-field class="col-sm-4 col-md-4">
-              <mat-select [formControl]="giverSelectedCtrl" placeholder="جست و جوی خیر">
+              <mat-select [formControl]="giverSelectedCtrl" name="giverSelected" placeholder="جست و جوی خیر">
                 <mat-option>
                   <ngx-mat-select-search
                     [formControl]="giverFilteringCtrl"
+                    name="giverFiltering"
                     noEntriesFoundLabel="هیچ موردی یافت نشد"
                     placeholderLabel="نام ونام خانوادگی خیر"
                   >
@@ -143,11 +144,16 @@
                   </ngx-mat-select-search>
                 </mat-option>
                 <mat-option>نمایش همه</mat-option>
-                <mat-option *ngFor="let giver of filteredGiver | async" [value]="giver">
+                <mat-option *ngFor="let giver of filteredGiver | async" [value]="giver" name="giver">
                   {{ giver.name }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
+
+            <!--<dx-button
+              text="Click me"
+              (onClick)="helloWorld()">
+            </dx-button>-->
           </div>
         </div>
         <div class="form-group">

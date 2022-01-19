@@ -1,0 +1,134 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-ceremony-heading" data-cy="CeremonyCreateUpdateHeading" jhiTranslate="autismApp.ceremony.home.createOrEditLabel">
+        Create or edit a Ceremony
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.ceremony.amount" for="field_amount">Amount</label>
+              <input type="number" class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.ceremony.receipt" for="field_receipt">Receipt</label>
+              <div>
+                <img
+                  [src]="'data:' + editForm.get('receiptContentType')!.value + ';base64,' + editForm.get('receipt')!.value"
+                  style="max-height: 100px"
+                  *ngIf="editForm.get('receipt')!.value"
+                  alt="ceremony image"
+                />
+                <div *ngIf="editForm.get('receipt')!.value" class="form-text text-danger clearfix">
+                  <span class="pull-left"
+                    >{{ editForm.get('receiptContentType')!.value }}, {{ byteSize(editForm.get('receipt')!.value) }}</span
+                  >
+                  <button
+                    type="button"
+                    (click)="clearInputImage('receipt', 'receiptContentType', 'file_receipt')"
+                    class="btn btn-secondary btn-xs pull-right"
+                  >
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+                <input
+                  type="file"
+                  id="file_receipt"
+                  data-cy="receipt"
+                  (change)="setFileData($event, 'receipt', true)"
+                  accept="image/*"
+                  jhiTranslate="entity.action.addimage"
+                />
+              </div>
+              <input type="hidden" class="form-control" name="receipt" id="field_receipt" data-cy="receipt" formControlName="receipt" />
+              <input
+                type="hidden"
+                class="form-control"
+                name="receiptContentType"
+                id="field_receiptContentType"
+                formControlName="receiptContentType"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.ceremony.givenDate" for="field_givenDate">Given Date</label>
+          <div class="d-flex">
+            <input
+              id="field_givenDate"
+              data-cy="givenDate"
+              type="datetime-local"
+              class="form-control"
+              name="givenDate"
+              formControlName="givenDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>-->
+
+        <!--    <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.ceremony.description" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>-->
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.ceremony.description" for="field_description">Description</label>
+          <textarea id="field_description" name="description" rows="4" cols="50" maxlength="255" class="form-control"></textarea>
+        </div>
+
+        <!--<div class="form-group">
+          <label class="form-control-label" jhiTranslate="autismApp.ceremony.ceremonyUser" for="field_ceremonyUser">Ceremony
+            User</label>
+          <select class="form-control" id="field_ceremonyUser" data-cy="ceremonyUser" name="ceremonyUser"
+                  formControlName="ceremonyUser">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                ceremonyUserOption.id === editForm.get('ceremonyUser')!.value?.id ? editForm.get('ceremonyUser')!.value : ceremonyUserOption
+              "
+              *ngFor="let ceremonyUserOption of ceremonyUsersSharedCollection; trackBy: trackCeremonyUserById"
+            >
+              {{ ceremonyUserOption.id }}
+            </option>
+          </select>
+        </div>-->
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

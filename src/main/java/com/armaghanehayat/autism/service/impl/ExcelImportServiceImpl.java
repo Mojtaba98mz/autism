@@ -54,6 +54,7 @@ public class ExcelImportServiceImpl implements ExcelImportService {
     public List<InvalidPhoneNumber> save(ExcelImport excelImport) {
         log.debug("Request to save ExcelImport : {}", excelImport);
         InputStream fis = new ByteArrayInputStream(excelImport.getExcel());
+        List<InvalidPhoneNumber> invalidPhoneNumbers = new ArrayList<>();
         HSSFWorkbook wb = null;
         try {
             wb = new HSSFWorkbook(fis);
@@ -75,15 +76,31 @@ public class ExcelImportServiceImpl implements ExcelImportService {
                 donations.add(donation);
                 giver.setDonations(donations);
             }
+            Optional<User> userWithAuthoritiesByLogin = userService.getUserWithAuthoritiesByLogin(row.getCell(7).getStringCellValue());
+            userWithAuthoritiesByLogin.ifPresent(giver::setAbsorbant);
             Optional<Giver> byPhoneNumber = giverService.findByPhoneNumber(giver.getPhoneNumber());
-            if (byPhoneNumber.isEmpty()) giverService.save(giver, true);
+            if (byPhoneNumber.isEmpty() && ValidatePhoneNumber(invalidPhoneNumbers, giver)) {
+                giverService.save(giver, true);
+            }
         }
         excelImportRepository.save(excelImport);
-        // todo add errors to invalidPhoneNumbers
-        List<InvalidPhoneNumber> invalidPhoneNumbers = new ArrayList<>();
-        invalidPhoneNumbers.add(new InvalidPhoneNumber("name1", "family1", "phoneNumber1", "reason1"));
-        invalidPhoneNumbers.add(new InvalidPhoneNumber("name2", "family2", "phoneNumber2", "reason2"));
         return invalidPhoneNumbers;
+    }
+
+    private Boolean ValidatePhoneNumber(List<InvalidPhoneNumber> invalidPhoneNumbers, Giver giver) {
+        if (giver.getPhoneNumber() == null || giver.getPhoneNumber().isEmpty()) {
+            invalidPhoneNumbers.add(new InvalidPhoneNumber(giver.getName(), giver.getFamily(), giver.getPhoneNumber(), "empty"));
+            return false;
+        } else if (giver.getPhoneNumber() != null && !giver.getPhoneNumber().startsWith("0")) {
+            invalidPhoneNumbers.add(
+                new InvalidPhoneNumber(giver.getName(), giver.getFamily(), giver.getPhoneNumber(), "wrong start number")
+            );
+            return false;
+        } else if (giver.getPhoneNumber() != null && giver.getPhoneNumber().length() != 11) {
+            invalidPhoneNumbers.add(new InvalidPhoneNumber(giver.getName(), giver.getFamily(), giver.getPhoneNumber(), "invalid size"));
+            return false;
+        }
+        return true;
     }
 
     @Override

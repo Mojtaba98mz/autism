@@ -42,7 +42,7 @@
           </span>
         </a>
         <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-          <li>
+          <li *jhiHasAnyAuthority="['ROLE_USER']">
             <a
               class="dropdown-item"
               routerLink="giver"
@@ -55,7 +55,7 @@
             </a>
           </li>
 
-          <li>
+          <li *jhiHasAnyAuthority="['ROLE_USER']">
             <a
               class="dropdown-item"
               routerLink="register-donation"
@@ -68,7 +68,7 @@
             </a>
           </li>
 
-          <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <li *jhiHasAnyAuthority="['ROLE_GIVER', 'ROLE_ADMIN']">
             <a
               class="dropdown-item"
               routerLink="excel-import"
@@ -80,7 +80,7 @@
             </a>
           </li>
 
-          <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <li *jhiHasAnyAuthority="['ROLE_GIVER', 'ROLE_ADMIN']">
             <a
               class="dropdown-item"
               routerLink="giver-assigner"
@@ -115,7 +115,7 @@
             </a>
           </li>
 
-          <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <li *jhiHasAnyAuthority="['ROLE_CEREMONY', 'ROLE_ADMIN']">
             <a
               class="dropdown-item"
               routerLink="ceremony-user"
@@ -127,7 +127,7 @@
             </a>
           </li>
 
-          <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <li *jhiHasAnyAuthority="['ROLE_CEREMONY', 'ROLE_ADMIN']">
             <a
               class="dropdown-item"
               routerLink="register-ceremony"

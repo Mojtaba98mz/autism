@@ -1,6 +1,7 @@
 package com.armaghanehayat.autism.web.rest;
 
 import com.armaghanehayat.autism.domain.CeremonyUser;
+import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.repository.CeremonyUserRepository;
 import com.armaghanehayat.autism.service.CeremonyUserQueryService;
 import com.armaghanehayat.autism.service.CeremonyUserService;
@@ -75,6 +76,12 @@ public class CeremonyUserResource {
             .created(new URI("/api/ceremony-users/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @GetMapping("/ceremony-users/filter-by-name")
+    public ResponseEntity<List<CeremonyUser>> searchByNameAndFamily(@RequestParam(value = "filter") String filter) {
+        log.debug("REST request to filter by Teacher Name : {}", filter);
+        return ResponseEntity.ok().body(ceremonyUserService.filterByName(filter));
     }
 
     /**

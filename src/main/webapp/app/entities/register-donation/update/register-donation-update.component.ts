@@ -24,7 +24,7 @@ import { GiverSelectionService } from '../../../core/giver-selection/giver-selec
   templateUrl: './register-donation-update.component.html',
   styleUrls: ['./register-donation-update.scss'],
 })
-export class RegisterDonationUpdateComponent {
+export class RegisterDonationUpdateComponent implements OnInit {
   isSaving = false;
 
   public searching = false;
@@ -34,7 +34,7 @@ export class RegisterDonationUpdateComponent {
 
   editForm = this.fb.group({
     id: [],
-    isCash: [],
+    isCash: false,
     amount: [null, [Validators.required]],
     donationDate: [],
     helpType: [],
@@ -58,6 +58,19 @@ export class RegisterDonationUpdateComponent {
     protected giverModalService: GiverModalService,
     protected giverSelectionService: GiverSelectionService
   ) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ donation }) => {
+      if (donation === undefined || donation.id === undefined) {
+        const today = dayjs().startOf('day');
+        donation.givenDate = today;
+      }
+
+      this.updateForm(donation);
+
+      this.loadRelationshipsOptions();
+    });
+  }
 
   showGivers(): void {
     const modalRef: NgbModalRef = this.giverModalService.open();

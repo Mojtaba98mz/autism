@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <h4 class="modal-title">خیر</h4>
+
+  <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')">
+    <span aria-hidden="true">x</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <table aria-describedby="page-heading" class="table table-striped">
+    <tbody>
+      <tr>
+        <th>نام</th>
+        <th>نام خانوادگی</th>
+      </tr>
+      <tr>
+        <td>
+          <input type="search" class="form-control" id="nameFilter" (keydown)="onEnterPressed($event)" [(ngModel)]="nameSearch" />
+        </td>
+        <td>
+          <input type="text" class="form-control" id="familyFilter" (keydown)="onEnterPressed($event)" [(ngModel)]="familySearch" />
+        </td>
+      </tr>
+      <tr *ngFor="let giver of giverList; trackBy: trackId" (click)="selectGiver(giver)" class="hover">
+        <td>
+          {{ giver.name }}
+        </td>
+        <td>
+          {{ giver.family }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

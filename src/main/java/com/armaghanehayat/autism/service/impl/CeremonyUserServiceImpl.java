@@ -1,8 +1,10 @@
 package com.armaghanehayat.autism.service.impl;
 
 import com.armaghanehayat.autism.domain.CeremonyUser;
+import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.repository.CeremonyUserRepository;
 import com.armaghanehayat.autism.service.CeremonyUserService;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,5 +82,11 @@ public class CeremonyUserServiceImpl implements CeremonyUserService {
     public void delete(Long id) {
         log.debug("Request to delete CeremonyUser : {}", id);
         ceremonyUserRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CeremonyUser> filterByName(String filter) {
+        return ceremonyUserRepository.filterByCeremonyUserName(filter);
     }
 }

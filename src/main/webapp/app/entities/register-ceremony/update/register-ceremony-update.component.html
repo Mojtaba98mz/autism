@@ -91,6 +91,22 @@
           />
         </div>-->
 
+        <div class="row">
+          <div class="col-2">
+            <i class="fa fa-user"></i>
+            <label class="form-control-label">کاربر تشریفات</label>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <div class="form-control">{{ this.selectedCeremonyUser?.name }} {{ this.selectedCeremonyUser?.family }}</div>
+              <div (click)="showCeremonyUser()" class="btn btn-primary position-absolute top left">+</div>
+              <small class="form-text text-danger" *ngIf="ceremonyUserError" jhiTranslate="entity.validation.required">
+                This field is required.
+              </small>
+            </div>
+          </div>
+        </div>
+
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="autismApp.ceremony.description" for="field_description">Description</label>
           <textarea id="field_description" name="description" rows="4" cols="50" maxlength="255" class="form-control"></textarea>

@@ -15,6 +15,10 @@ import { EventManager, EventWithContent } from 'app/core/util/event-manager.serv
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { CeremonyUser, ICeremonyUser } from 'app/entities/ceremony-user/ceremony-user.model';
 import { CeremonyUserService } from 'app/entities/ceremony-user/service/ceremony-user.service';
+import { IGiver } from '../../giver/giver.model';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { CeremonyUserModalService } from '../../../core/ceremony-user-selection/ceremony-user-modal.service';
+import { CeremonyUserSelectionService } from '../../../core/ceremony-user-selection/ceremony-user-selection.service';
 
 @Component({
   selector: 'jhi-ceremony-update',
@@ -25,6 +29,9 @@ export class RegisterCeremonyUpdateComponent implements OnInit {
   isSaving = false;
 
   ceremonyUsersSharedCollection: ICeremonyUser[] = [];
+
+  ceremonyUserError = false;
+  private _selectedCeremonyUser: ICeremonyUser | undefined;
 
   editForm = this.fb.group({
     id: [],
@@ -43,12 +50,14 @@ export class RegisterCeremonyUpdateComponent implements OnInit {
     protected ceremonyUserService: CeremonyUserService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    protected ceremonyUserModalService: CeremonyUserModalService,
+    protected ceremonyUserSelectionService: CeremonyUserSelectionService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ ceremony }) => {
-      if (ceremony.id === undefined) {
+      if (ceremony === undefined || ceremony.id === undefined) {
         const today = dayjs().startOf('day');
         ceremony.givenDate = today;
       }
@@ -57,6 +66,11 @@ export class RegisterCeremonyUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+  }
+
+  showCeremonyUser(): void {
+    const modalRef: NgbModalRef = this.ceremonyUserModalService.open();
+    modalRef.result.finally(() => (this.selectedCeremonyUser = this.ceremonyUserSelectionService.ceremonyUserSelected));
   }
 
   byteSize(base64String: string): string {
@@ -70,7 +84,12 @@ export class RegisterCeremonyUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('autismApp.error', { ...err, key: 'error.file.' + err.key })),
+        this.eventManager.broadcast(
+          new EventWithContent<AlertError>('autismApp.error', {
+            ...err,
+            key: 'error.file.' + err.key,
+          })
+        ),
     });
   }
 
@@ -91,15 +110,19 @@ export class RegisterCeremonyUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const ceremony = this.createFromForm();
-    if (ceremony.id !== undefined) {
-      this.subscribeToSaveResponse(this.ceremonyService.update(ceremony));
-    } else {
-      this.subscribeToSaveResponse(this.ceremonyService.create(ceremony));
-    }
+    this.subscribeToSaveResponse(this.ceremonyService.create(ceremony));
   }
 
   trackCeremonyUserById(index: number, item: ICeremonyUser): number {
     return item.id!;
+  }
+
+  get selectedCeremonyUser(): ICeremonyUser | undefined {
+    return this._selectedCeremonyUser;
+  }
+
+  set selectedCeremonyUser(value: ICeremonyUser | undefined) {
+    this._selectedCeremonyUser = value;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICeremony>>): void {
@@ -159,7 +182,7 @@ export class RegisterCeremonyUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       receiptContentType: this.editForm.get(['receiptContentType'])!.value,
       receipt: this.editForm.get(['receipt'])!.value,
-      ceremonyUser: this.editForm.get(['ceremonyUser'])!.value,
+      ceremonyUser: this.selectedCeremonyUser,
     };
   }
 }

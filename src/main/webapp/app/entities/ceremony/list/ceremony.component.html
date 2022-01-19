@@ -82,7 +82,9 @@
           </td>
           <td>
             <div *ngIf="ceremony.ceremonyUser">
-              <a [routerLink]="['/ceremony-user', ceremony.ceremonyUser?.id, 'view']">{{ ceremony.ceremonyUser?.id }}</a>
+              <a [routerLink]="['/ceremony-user', ceremony.ceremonyUser?.id, 'view']"
+                >{{ ceremony.ceremonyUser?.name }} {{ ceremony.ceremonyUser?.family }}</a
+              >
             </div>
           </td>
           <td class="text-right">

@@ -15,20 +15,22 @@ import { EventManager, EventWithContent } from 'app/core/util/event-manager.serv
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { Giver, IGiver } from 'app/entities/giver/giver.model';
 import { GiverService } from 'app/entities/giver/service/giver.service';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { GiverModalService } from '../../../core/giver-selection/giver-modal.service';
+import { GiverSelectionService } from '../../../core/giver-selection/giver-selection.service';
 
 @Component({
   selector: 'jhi-donation-update',
   templateUrl: './register-donation-update.component.html',
+  styleUrls: ['./register-donation-update.scss'],
 })
-export class RegisterDonationUpdateComponent implements OnInit {
+export class RegisterDonationUpdateComponent {
   isSaving = false;
-
-  public giverSelectedCtrl: FormControl = new FormControl();
-  public giverFilteringCtrl: FormControl = new FormControl();
-  public filteredGiver: ReplaySubject<IGiver[]> = new ReplaySubject<IGiver[]>(1);
 
   public searching = false;
   giversSharedCollection: IGiver[] = [];
+  giverError = false;
+  private _selectedGiver: IGiver | undefined;
 
   editForm = this.fb.group({
     id: [],
@@ -52,45 +54,14 @@ export class RegisterDonationUpdateComponent implements OnInit {
     protected giverService: GiverService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    protected giverModalService: GiverModalService,
+    protected giverSelectionService: GiverSelectionService
   ) {}
 
-  ngOnInit(): void {
-    this.giverFilteringCtrl.valueChanges
-      .pipe(
-        filter(search => !!search),
-        tap(() => (this.searching = true)),
-        takeUntil(this._onDestroy),
-        debounceTime(200),
-        delay(500)
-      )
-      .subscribe(
-        filterString => {
-          this.giverService.filterByGiverName(filterString).subscribe(
-            (res: HttpResponse<IGiver[]>) => {
-              this.searching = false;
-              this.filteredGiver.next(res.body ?? undefined);
-            },
-            () => {
-              this.searching = false;
-            }
-          );
-        },
-        () => {
-          this.searching = false;
-        }
-      );
-
-    this.activatedRoute.data.subscribe(({ donation }) => {
-      if (donation.id === undefined) {
-        const today = dayjs().startOf('day');
-        donation.donationDate = today;
-      }
-
-      this.updateForm(donation);
-
-      this.loadRelationshipsOptions();
-    });
+  showGivers(): void {
+    const modalRef: NgbModalRef = this.giverModalService.open();
+    modalRef.result.finally(() => (this.selectedGiver = this.giverSelectionService.giverSelected));
   }
 
   byteSize(base64String: string): string {
@@ -125,15 +96,19 @@ export class RegisterDonationUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const donation = this.createFromForm();
-    if (donation.id !== undefined) {
-      this.subscribeToSaveResponse(this.donationService.update(donation));
-    } else {
-      this.subscribeToSaveResponse(this.donationService.create(donation));
-    }
+    this.subscribeToSaveResponse(this.donationService.create(donation));
   }
 
   trackGiverById(index: number, item: IGiver): number {
     return item.id!;
+  }
+
+  get selectedGiver(): IGiver | undefined {
+    return this._selectedGiver;
+  }
+
+  set selectedGiver(value: IGiver | undefined) {
+    this._selectedGiver = value;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDonation>>): void {
@@ -166,7 +141,6 @@ export class RegisterDonationUpdateComponent implements OnInit {
       receipt: donation.receipt,
       receiptContentType: donation.receiptContentType,
       account: donation.account,
-      giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
     });
 
     this.giversSharedCollection = this.giverService.addGiverToCollectionIfMissing(this.giversSharedCollection, donation.giver);
@@ -194,7 +168,7 @@ export class RegisterDonationUpdateComponent implements OnInit {
       receiptContentType: this.editForm.get(['receiptContentType'])!.value,
       receipt: this.editForm.get(['receipt'])!.value,
       account: this.editForm.get(['account'])!.value,
-      giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
+      giver: this.selectedGiver,
     };
   }
 }

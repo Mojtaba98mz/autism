@@ -7,6 +7,7 @@
 
       <div>
         <jhi-alert-error></jhi-alert-error>
+        <!--        <jhi-alert></jhi-alert>-->
 
         <div class="form-group" [hidden]="editForm.get('id')!.value == null">
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
@@ -46,23 +47,6 @@
             </div>
           </div>
         </div>
-
-        <!--<div class="form-group">
-          <label class="form-control-label" jhiTranslate="autismApp.donation.donationDate" for="field_donationDate">Donation
-            Date</label>
-          <div class="d-flex">
-            <input
-              id="field_donationDate"
-              data-cy="donationDate"
-              type="datetime-local"
-              class="form-control"
-              name="donationDate"
-              formControlName="donationDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>-->
-
         <div class="row">
           <div class="col-6">
             <div class="form-group">
@@ -130,49 +114,24 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
-            <mat-form-field class="col-sm-4 col-md-4">
-              <mat-select [formControl]="giverSelectedCtrl" name="giverSelected" placeholder="جست و جوی خیر">
-                <mat-option>
-                  <ngx-mat-select-search
-                    [formControl]="giverFilteringCtrl"
-                    name="giverFiltering"
-                    noEntriesFoundLabel="هیچ موردی یافت نشد"
-                    placeholderLabel="نام ونام خانوادگی خیر"
-                  >
-                    <mat-icon class="fas fa-times" ngxMatSelectSearchClear></mat-icon>
-                  </ngx-mat-select-search>
-                </mat-option>
-                <mat-option>نمایش همه</mat-option>
-                <mat-option *ngFor="let giver of filteredGiver | async" [value]="giver" name="giver">
-                  {{ giver.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <!--<dx-button
-              text="Click me"
-              (onClick)="helloWorld()">
-            </dx-button>-->
+          <div class="col-1">
+            <i class="fa fa-user"></i>
+            <label class="form-control-label">خیر</label>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <div class="form-control">{{ this.selectedGiver?.name }} {{ this.selectedGiver?.family }}</div>
+              <div (click)="showGivers()" class="btn btn-primary position-absolute top left">+</div>
+              <small class="form-text text-danger" *ngIf="giverError" jhiTranslate="entity.validation.required">
+                This field is required.
+              </small>
+            </div>
           </div>
         </div>
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="autismApp.donation.description" for="field_description">Description</label>
           <textarea id="field_description" name="description" rows="4" cols="50" maxlength="255" class="form-control"></textarea>
         </div>
-
-        <!-- <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autismApp.donation.giver" for="field_giver">Giver</label>
-          <select class="form-control" id="field_giver" data-cy="giver" name="giver" formControlName="giver">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="giverOption.id === editForm.get('giver')!.value?.id ? editForm.get('giver')!.value : giverOption"
-              *ngFor="let giverOption of giversSharedCollection; trackBy: trackGiverById"
-            >
-              {{ giverOption.id }}
-            </option>
-          </select>
-        </div>-->
       </div>
 
       <div>

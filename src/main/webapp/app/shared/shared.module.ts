@@ -13,6 +13,8 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { JalaliPipe } from 'app/pipe/jalali.pipe';
+import { InputFilterPipe } from 'app/pipe/input-filter.pipe';
+import { GiverSelectionComponent } from './giver-modal/giver-selection.component';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -24,6 +26,8 @@ import { JalaliPipe } from 'app/pipe/jalali.pipe';
     HasAnyAuthorityDirective,
     DurationPipe,
     JalaliPipe,
+    InputFilterPipe,
+    GiverSelectionComponent,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     SortByDirective,
@@ -43,6 +47,8 @@ import { JalaliPipe } from 'app/pipe/jalali.pipe';
     SortByDirective,
     SortDirective,
     JalaliPipe,
+    InputFilterPipe,
+    GiverSelectionComponent,
     ItemCountComponent,
   ],
 })

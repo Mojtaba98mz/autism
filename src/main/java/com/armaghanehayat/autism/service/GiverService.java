@@ -20,6 +20,8 @@ public interface GiverService {
      */
     Giver save(Giver giver, Boolean isNew);
 
+    Giver saveFromExcel(Giver giver);
+
     /**
      * Partially updates a giver.
      *

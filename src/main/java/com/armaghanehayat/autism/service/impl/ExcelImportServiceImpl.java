@@ -76,11 +76,24 @@ public class ExcelImportServiceImpl implements ExcelImportService {
                 donations.add(donation);
                 giver.setDonations(donations);
             }
-            Optional<User> userWithAuthoritiesByLogin = userService.getUserWithAuthoritiesByLogin(row.getCell(7).getStringCellValue());
-            userWithAuthoritiesByLogin.ifPresent(giver::setAbsorbant);
+
+            String stringCellValue = "";
+            try {
+                stringCellValue = row.getCell(7).getStringCellValue();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Optional<User> userWithAuthoritiesByLogin = userService.getUserWithAuthoritiesByLogin(stringCellValue);
+            if (userWithAuthoritiesByLogin.isPresent()) {
+                giver.setAbsorbant(userWithAuthoritiesByLogin.get());
+                giver.setSupporter(userWithAuthoritiesByLogin.get());
+            } else {
+                giver.setAbsorbant(userService.getUserWithAuthoritiesByLogin("admin").get());
+                giver.setSupporter(userService.getUserWithAuthoritiesByLogin("admin").get());
+            }
             Optional<Giver> byPhoneNumber = giverService.findByPhoneNumber(giver.getPhoneNumber());
             if (byPhoneNumber.isEmpty() && ValidatePhoneNumber(invalidPhoneNumbers, giver)) {
-                giverService.save(giver, true);
+                giverService.saveFromExcel(giver);
             }
         }
         excelImportRepository.save(excelImport);

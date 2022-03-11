@@ -54,7 +54,7 @@ spring:
     cache: false
 
 server:
-  port: 8085
+  port: 80
 
 # ===================================================================
 # JHipster specific properties
@@ -105,7 +105,7 @@ jhipster:
 # application:
 application:
   sms:
-    enable: false
+    enable: true
     sendSmsUrl: 'https://rest.payamak-panel.com/api/SendSMS/'
     username: '09102709481'
     password: 'Armaghan@123'

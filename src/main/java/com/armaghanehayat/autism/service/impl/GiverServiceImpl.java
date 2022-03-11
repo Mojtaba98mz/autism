@@ -73,6 +73,15 @@ public class GiverServiceImpl implements GiverService {
     }
 
     @Override
+    @Transactional
+    public Giver saveFromExcel(Giver giver) {
+        giver.setAbsorbDate(Instant.now());
+        giver.setDisabled(false);
+        log.debug("Request to save Giver : {}", giver);
+        return giverRepository.save(giver);
+    }
+
+    @Override
     public Optional<Giver> partialUpdate(Giver giver) {
         log.debug("Request to partially update Giver : {}", giver);
 

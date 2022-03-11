@@ -20,7 +20,7 @@
     "reactive": false,
     "authenticationType": "jwt",
     "packageName": "com.armaghanehayat.autism",
-    "serverPort": "8085",
+    "serverPort": "80",
     "cacheProvider": "ehcache",
     "enableHibernateCache": true,
     "databaseType": "sql",

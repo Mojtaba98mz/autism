@@ -22,5 +22,10 @@ public interface GiverRepository extends JpaRepository<Giver, Long>, JpaSpecific
     Optional<Giver> findFirstByPhoneNumber(String phoneNumber);
 
     @Query("select giver from Giver giver where lower(concat(giver.name, ' ', giver.family)) like lower(concat('%', :filter,'%'))")
+    List<Giver> filterByGiverNameForAdmin(@Param("filter") String filter);
+
+    @Query(
+        "select giver from Giver giver where giver.supporter.login = ?#{principal.username} and lower(concat(giver.name, ' ', giver.family)) like lower(concat('%', :filter,'%'))"
+    )
     List<Giver> filterByGiverName(@Param("filter") String filter);
 }

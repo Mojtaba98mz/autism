@@ -161,6 +161,9 @@ public class GiverServiceImpl implements GiverService {
     @Override
     @Transactional(readOnly = true)
     public List<Giver> filterByGiverName(String filter) {
-        return giverRepository.filterByGiverName(filter);
+        User currentUser = userService.getUserWithAuthorities().get();
+        if (currentUser.hasRole("ADMIN")) return giverRepository.filterByGiverNameForAdmin(filter); else {
+            return giverRepository.filterByGiverName(filter);
+        }
     }
 }

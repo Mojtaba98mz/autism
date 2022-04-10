@@ -38,9 +38,9 @@
         <dd>
           <span>{{ giver.absorbDate | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="autismApp.giver.disabled">Disabled</span></dt>
+        <dt><span>وضعیت فعال بودن</span></dt>
         <dd>
-          <span>{{ giver.disabled }}</span>
+          <span>{{ giver.disabled == false ? 'فعال' : 'غیر فعال' }}</span>
         </dd>
         <dt><span jhiTranslate="autismApp.giver.province">Province</span></dt>
         <dd>

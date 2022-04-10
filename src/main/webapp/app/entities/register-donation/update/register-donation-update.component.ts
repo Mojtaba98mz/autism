@@ -7,7 +7,7 @@ import { debounceTime, delay, filter, finalize, map, takeUntil, tap } from 'rxjs
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
 import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IDonation, Donation } from '../register-donation.model';
 import { RegisterDonationService } from '../service/register-donation.service';
@@ -19,6 +19,7 @@ import { GiverService } from 'app/entities/giver/service/giver.service';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { GiverModalService } from '../../../core/giver-selection/giver-modal.service';
 import { GiverSelectionService } from '../../../core/giver-selection/giver-selection.service';
+import * as moment from 'jalali-moment';
 
 @Component({
   selector: 'jhi-donation-update',
@@ -30,9 +31,6 @@ export class RegisterDonationUpdateComponent implements OnInit {
 
   public searching = false;
   giversSharedCollection: IGiver[] = [];
-  datePickerConfig = {
-    format: 'jYYYY/jMM/jD',
-  };
   giverError = false;
   private _selectedGiver: IGiver | undefined;
 
@@ -40,7 +38,7 @@ export class RegisterDonationUpdateComponent implements OnInit {
     id: [],
     isCash: false,
     amount: [null, [Validators.required]],
-    donationDate: [],
+    donationDate: [null, [Validators.required]],
     helpType: [],
     description: [],
     receipt: [],
@@ -172,14 +170,16 @@ export class RegisterDonationUpdateComponent implements OnInit {
   }
 
   protected createFromForm(): IDonation {
+    const jalaliDonationDate = this.editForm.get(['donationDate'])!.value;
+    const gregorianDonationDate = moment
+      .from(jalaliDonationDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD')
+      .format('YYYY-MM-DD');
     return {
       ...new Donation(),
       id: this.editForm.get(['id'])!.value,
       isCash: this.editForm.get(['isCash'])!.value,
       amount: this.editForm.get(['amount'])!.value,
-      donationDate: this.editForm.get(['donationDate'])!.value
-        ? dayjs(this.editForm.get(['donationDate'])!.value, DATE_TIME_FORMAT)
-        : undefined,
+      donationDate: this.editForm.get(['donationDate'])!.value ? dayjs(gregorianDonationDate, DATE_FORMAT) : undefined,
       helpType: this.editForm.get(['helpType'])!.value,
       description: this.editForm.get(['description'])!.value,
       receiptContentType: this.editForm.get(['receiptContentType'])!.value,

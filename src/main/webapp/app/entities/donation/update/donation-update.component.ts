@@ -1,28 +1,32 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IDonation, Donation } from '../donation.model';
 import { DonationService } from '../service/donation.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { IGiver } from 'app/entities/giver/giver.model';
+import { Giver, IGiver } from 'app/entities/giver/giver.model';
 import { GiverService } from 'app/entities/giver/service/giver.service';
 import { HelpType } from 'app/entities/enumerations/help-type.model';
 import { Account } from 'app/entities/enumerations/account.model';
+import * as moment from 'jalali-moment';
 
 @Component({
   selector: 'jhi-donation-update',
   templateUrl: './donation-update.component.html',
 })
 export class DonationUpdateComponent implements OnInit {
+  datePickerConfig = {
+    format: 'jYYYY-jMM-jD',
+  };
   isSaving = false;
   helpTypeValues = Object.keys(HelpType);
   accountValues = Object.keys(Account);
@@ -32,14 +36,13 @@ export class DonationUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     isCash: [],
-    amount: [],
-    donationDate: [],
+    amount: [null, [Validators.required]],
+    donationDate: [null, [Validators.required]],
     helpType: [],
     description: [],
     receipt: [],
     receiptContentType: [],
     account: [],
-    registerDate: [],
     giver: [],
   });
 
@@ -57,8 +60,8 @@ export class DonationUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ donation }) => {
       if (donation.id === undefined) {
         const today = dayjs().startOf('day');
-        donation.donationDate = today;
-        donation.registerDate = today;
+        // donation.donationDate = today;
+        // donation.registerDate = today;
       }
 
       this.updateForm(donation);
@@ -99,7 +102,7 @@ export class DonationUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const donation = this.createFromForm();
-    if (donation.id !== undefined) {
+    if (donation.id !== null && donation.id !== undefined) {
       this.subscribeToSaveResponse(this.donationService.update(donation));
     } else {
       this.subscribeToSaveResponse(this.donationService.create(donation));
@@ -130,18 +133,20 @@ export class DonationUpdateComponent implements OnInit {
   }
 
   protected updateForm(donation: IDonation): void {
+    if (donation.id !== undefined) {
+      const x = moment(donation.donationDate?.format('YYYY-MM-DD'), 'YYYY-MM-DD').locale('fa').format('YYYY-MM-DD');
+      this.editForm.get(['donationDate'])!.setValue(x);
+    }
     this.editForm.patchValue({
       id: donation.id,
       isCash: donation.isCash,
       amount: donation.amount,
-      donationDate: donation.donationDate ? donation.donationDate.format(DATE_TIME_FORMAT) : null,
       helpType: donation.helpType,
       description: donation.description,
       receipt: donation.receipt,
       receiptContentType: donation.receiptContentType,
       account: donation.account,
-      registerDate: donation.registerDate ? donation.registerDate.format(DATE_TIME_FORMAT) : null,
-      giver: donation.giver,
+      giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
     });
 
     this.giversSharedCollection = this.giverService.addGiverToCollectionIfMissing(this.giversSharedCollection, donation.giver);
@@ -156,23 +161,20 @@ export class DonationUpdateComponent implements OnInit {
   }
 
   protected createFromForm(): IDonation {
+    const jalaliDonationDate = this.editForm.get(['donationDate'])!.value;
+    const gregorianDonationDate = moment.from(jalaliDonationDate, 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
     return {
       ...new Donation(),
       id: this.editForm.get(['id'])!.value,
       isCash: this.editForm.get(['isCash'])!.value,
       amount: this.editForm.get(['amount'])!.value,
-      donationDate: this.editForm.get(['donationDate'])!.value
-        ? dayjs(this.editForm.get(['donationDate'])!.value, DATE_TIME_FORMAT)
-        : undefined,
+      donationDate: this.editForm.get(['donationDate'])!.value ? dayjs(gregorianDonationDate, DATE_FORMAT) : undefined,
       helpType: this.editForm.get(['helpType'])!.value,
       description: this.editForm.get(['description'])!.value,
       receiptContentType: this.editForm.get(['receiptContentType'])!.value,
       receipt: this.editForm.get(['receipt'])!.value,
       account: this.editForm.get(['account'])!.value,
-      registerDate: this.editForm.get(['registerDate'])!.value
-        ? dayjs(this.editForm.get(['registerDate'])!.value, DATE_TIME_FORMAT)
-        : undefined,
-      giver: this.editForm.get(['giver'])!.value,
+      giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
     };
   }
 }

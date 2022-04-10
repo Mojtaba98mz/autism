@@ -25,7 +25,7 @@ const donationRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: 'new',
+    path: ':giverId/new',
     component: DonationUpdateComponent,
     resolve: {
       donation: DonationRoutingResolveService,
@@ -33,10 +33,18 @@ const donationRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/edit',
+    path: ':id/:giverId/edit',
     component: DonationUpdateComponent,
     resolve: {
       donation: DonationRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':giverId/viewGiverDonate',
+    component: DonationComponent,
+    data: {
+      defaultSort: 'id,asc',
     },
     canActivate: [UserRouteAccessService],
   },

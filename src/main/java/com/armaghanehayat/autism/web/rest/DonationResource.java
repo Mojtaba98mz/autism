@@ -9,6 +9,7 @@ import com.armaghanehayat.autism.service.criteria.DonationCriteria;
 import com.armaghanehayat.autism.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -73,6 +74,7 @@ public class DonationResource {
         if (donation.getId() != null) {
             throw new BadRequestAlertException("A new donation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        donation.setRegisterDate(Instant.now());
         Donation result = donationService.save(donation);
         smsService.sendSmsToGiver(
             donation.getGiver().getPhoneNumber(),

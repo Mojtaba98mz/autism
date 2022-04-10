@@ -99,6 +99,9 @@ public class DonationQueryService extends QueryService<Donation> {
             if (criteria.getAccount() != null) {
                 specification = specification.and(buildSpecification(criteria.getAccount(), Donation_.account));
             }
+            if (criteria.getRegisterDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getRegisterDate(), Donation_.registerDate));
+            }
             if (criteria.getGiverId() != null) {
                 specification =
                     specification.and(

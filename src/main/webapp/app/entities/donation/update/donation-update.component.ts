@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -13,8 +13,10 @@ import { DonationService } from '../service/donation.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { Giver, IGiver } from 'app/entities/giver/giver.model';
+import { IGiver } from 'app/entities/giver/giver.model';
 import { GiverService } from 'app/entities/giver/service/giver.service';
+import { HelpType } from 'app/entities/enumerations/help-type.model';
+import { Account } from 'app/entities/enumerations/account.model';
 
 @Component({
   selector: 'jhi-donation-update',
@@ -22,19 +24,22 @@ import { GiverService } from 'app/entities/giver/service/giver.service';
 })
 export class DonationUpdateComponent implements OnInit {
   isSaving = false;
+  helpTypeValues = Object.keys(HelpType);
+  accountValues = Object.keys(Account);
 
   giversSharedCollection: IGiver[] = [];
 
   editForm = this.fb.group({
     id: [],
     isCash: [],
-    amount: [null, [Validators.required]],
+    amount: [],
     donationDate: [],
     helpType: [],
     description: [],
     receipt: [],
     receiptContentType: [],
     account: [],
+    registerDate: [],
     giver: [],
   });
 
@@ -53,6 +58,7 @@ export class DonationUpdateComponent implements OnInit {
       if (donation.id === undefined) {
         const today = dayjs().startOf('day');
         donation.donationDate = today;
+        donation.registerDate = today;
       }
 
       this.updateForm(donation);
@@ -105,10 +111,10 @@ export class DonationUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IDonation>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {
@@ -134,7 +140,8 @@ export class DonationUpdateComponent implements OnInit {
       receipt: donation.receipt,
       receiptContentType: donation.receiptContentType,
       account: donation.account,
-      giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
+      registerDate: donation.registerDate ? donation.registerDate.format(DATE_TIME_FORMAT) : null,
+      giver: donation.giver,
     });
 
     this.giversSharedCollection = this.giverService.addGiverToCollectionIfMissing(this.giversSharedCollection, donation.giver);
@@ -162,7 +169,10 @@ export class DonationUpdateComponent implements OnInit {
       receiptContentType: this.editForm.get(['receiptContentType'])!.value,
       receipt: this.editForm.get(['receipt'])!.value,
       account: this.editForm.get(['account'])!.value,
-      giver: new Giver(this.activatedRoute.snapshot.params['giverId']),
+      registerDate: this.editForm.get(['registerDate'])!.value
+        ? dayjs(this.editForm.get(['registerDate'])!.value, DATE_TIME_FORMAT)
+        : undefined,
+      giver: this.editForm.get(['giver'])!.value,
     };
   }
 }

@@ -22,6 +22,7 @@ public class Donation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "is_cash")
@@ -51,22 +52,26 @@ public class Donation implements Serializable {
     @Column(name = "account")
     private Account account;
 
+    @Column(name = "register_date")
+    private Instant registerDate;
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "donations", "giverauditors", "absorbant", "supporter", "province", "city" }, allowSetters = true)
     private Giver giver;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Donation id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Donation id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public Boolean getIsCash() {
@@ -74,7 +79,7 @@ public class Donation implements Serializable {
     }
 
     public Donation isCash(Boolean isCash) {
-        this.isCash = isCash;
+        this.setIsCash(isCash);
         return this;
     }
 
@@ -87,7 +92,7 @@ public class Donation implements Serializable {
     }
 
     public Donation amount(Long amount) {
-        this.amount = amount;
+        this.setAmount(amount);
         return this;
     }
 
@@ -100,7 +105,7 @@ public class Donation implements Serializable {
     }
 
     public Donation donationDate(Instant donationDate) {
-        this.donationDate = donationDate;
+        this.setDonationDate(donationDate);
         return this;
     }
 
@@ -113,7 +118,7 @@ public class Donation implements Serializable {
     }
 
     public Donation helpType(HelpType helpType) {
-        this.helpType = helpType;
+        this.setHelpType(helpType);
         return this;
     }
 
@@ -126,7 +131,7 @@ public class Donation implements Serializable {
     }
 
     public Donation description(String description) {
-        this.description = description;
+        this.setDescription(description);
         return this;
     }
 
@@ -139,7 +144,7 @@ public class Donation implements Serializable {
     }
 
     public Donation receipt(byte[] receipt) {
-        this.receipt = receipt;
+        this.setReceipt(receipt);
         return this;
     }
 
@@ -165,7 +170,7 @@ public class Donation implements Serializable {
     }
 
     public Donation account(Account account) {
-        this.account = account;
+        this.setAccount(account);
         return this;
     }
 
@@ -173,17 +178,30 @@ public class Donation implements Serializable {
         this.account = account;
     }
 
+    public Instant getRegisterDate() {
+        return this.registerDate;
+    }
+
+    public Donation registerDate(Instant registerDate) {
+        this.setRegisterDate(registerDate);
+        return this;
+    }
+
+    public void setRegisterDate(Instant registerDate) {
+        this.registerDate = registerDate;
+    }
+
     public Giver getGiver() {
         return this.giver;
+    }
+
+    public void setGiver(Giver giver) {
+        this.giver = giver;
     }
 
     public Donation giver(Giver giver) {
         this.setGiver(giver);
         return this;
-    }
-
-    public void setGiver(Giver giver) {
-        this.giver = giver;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -218,6 +236,7 @@ public class Donation implements Serializable {
             ", receipt='" + getReceipt() + "'" +
             ", receiptContentType='" + getReceiptContentType() + "'" +
             ", account='" + getAccount() + "'" +
+            ", registerDate='" + getRegisterDate() + "'" +
             "}";
     }
 }

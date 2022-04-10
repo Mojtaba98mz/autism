@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.armaghanehayat.autism.IntegrationTest;
 import com.armaghanehayat.autism.domain.Donation;
 import com.armaghanehayat.autism.domain.Giver;
+import com.armaghanehayat.autism.domain.enumeration.Account;
 import com.armaghanehayat.autism.domain.enumeration.HelpType;
 import com.armaghanehayat.autism.repository.DonationRepository;
 import com.armaghanehayat.autism.service.criteria.DonationCriteria;
@@ -56,6 +57,12 @@ class DonationResourceIT {
     private static final String DEFAULT_RECEIPT_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_RECEIPT_CONTENT_TYPE = "image/png";
 
+    private static final Account DEFAULT_ACCOUNT = Account.MELLI;
+    private static final Account UPDATED_ACCOUNT = Account.GHAVAMIN;
+
+    private static final Instant DEFAULT_REGISTER_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_REGISTER_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
     private static final String ENTITY_API_URL = "/api/donations";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -87,7 +94,9 @@ class DonationResourceIT {
             .helpType(DEFAULT_HELP_TYPE)
             .description(DEFAULT_DESCRIPTION)
             .receipt(DEFAULT_RECEIPT)
-            .receiptContentType(DEFAULT_RECEIPT_CONTENT_TYPE);
+            .receiptContentType(DEFAULT_RECEIPT_CONTENT_TYPE)
+            .account(DEFAULT_ACCOUNT)
+            .registerDate(DEFAULT_REGISTER_DATE);
         return donation;
     }
 
@@ -105,7 +114,9 @@ class DonationResourceIT {
             .helpType(UPDATED_HELP_TYPE)
             .description(UPDATED_DESCRIPTION)
             .receipt(UPDATED_RECEIPT)
-            .receiptContentType(UPDATED_RECEIPT_CONTENT_TYPE);
+            .receiptContentType(UPDATED_RECEIPT_CONTENT_TYPE)
+            .account(UPDATED_ACCOUNT)
+            .registerDate(UPDATED_REGISTER_DATE);
         return donation;
     }
 
@@ -134,6 +145,8 @@ class DonationResourceIT {
         assertThat(testDonation.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testDonation.getReceipt()).isEqualTo(DEFAULT_RECEIPT);
         assertThat(testDonation.getReceiptContentType()).isEqualTo(DEFAULT_RECEIPT_CONTENT_TYPE);
+        assertThat(testDonation.getAccount()).isEqualTo(DEFAULT_ACCOUNT);
+        assertThat(testDonation.getRegisterDate()).isEqualTo(DEFAULT_REGISTER_DATE);
     }
 
     @Test
@@ -172,7 +185,9 @@ class DonationResourceIT {
             .andExpect(jsonPath("$.[*].helpType").value(hasItem(DEFAULT_HELP_TYPE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].receiptContentType").value(hasItem(DEFAULT_RECEIPT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].receipt").value(hasItem(Base64Utils.encodeToString(DEFAULT_RECEIPT))));
+            .andExpect(jsonPath("$.[*].receipt").value(hasItem(Base64Utils.encodeToString(DEFAULT_RECEIPT))))
+            .andExpect(jsonPath("$.[*].account").value(hasItem(DEFAULT_ACCOUNT.toString())))
+            .andExpect(jsonPath("$.[*].registerDate").value(hasItem(DEFAULT_REGISTER_DATE.toString())));
     }
 
     @Test
@@ -193,7 +208,9 @@ class DonationResourceIT {
             .andExpect(jsonPath("$.helpType").value(DEFAULT_HELP_TYPE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.receiptContentType").value(DEFAULT_RECEIPT_CONTENT_TYPE))
-            .andExpect(jsonPath("$.receipt").value(Base64Utils.encodeToString(DEFAULT_RECEIPT)));
+            .andExpect(jsonPath("$.receipt").value(Base64Utils.encodeToString(DEFAULT_RECEIPT)))
+            .andExpect(jsonPath("$.account").value(DEFAULT_ACCOUNT.toString()))
+            .andExpect(jsonPath("$.registerDate").value(DEFAULT_REGISTER_DATE.toString()));
     }
 
     @Test
@@ -554,10 +571,121 @@ class DonationResourceIT {
 
     @Test
     @Transactional
+    void getAllDonationsByAccountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        donationRepository.saveAndFlush(donation);
+
+        // Get all the donationList where account equals to DEFAULT_ACCOUNT
+        defaultDonationShouldBeFound("account.equals=" + DEFAULT_ACCOUNT);
+
+        // Get all the donationList where account equals to UPDATED_ACCOUNT
+        defaultDonationShouldNotBeFound("account.equals=" + UPDATED_ACCOUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllDonationsByAccountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        donationRepository.saveAndFlush(donation);
+
+        // Get all the donationList where account not equals to DEFAULT_ACCOUNT
+        defaultDonationShouldNotBeFound("account.notEquals=" + DEFAULT_ACCOUNT);
+
+        // Get all the donationList where account not equals to UPDATED_ACCOUNT
+        defaultDonationShouldBeFound("account.notEquals=" + UPDATED_ACCOUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllDonationsByAccountIsInShouldWork() throws Exception {
+        // Initialize the database
+        donationRepository.saveAndFlush(donation);
+
+        // Get all the donationList where account in DEFAULT_ACCOUNT or UPDATED_ACCOUNT
+        defaultDonationShouldBeFound("account.in=" + DEFAULT_ACCOUNT + "," + UPDATED_ACCOUNT);
+
+        // Get all the donationList where account equals to UPDATED_ACCOUNT
+        defaultDonationShouldNotBeFound("account.in=" + UPDATED_ACCOUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllDonationsByAccountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        donationRepository.saveAndFlush(donation);
+
+        // Get all the donationList where account is not null
+        defaultDonationShouldBeFound("account.specified=true");
+
+        // Get all the donationList where account is null
+        defaultDonationShouldNotBeFound("account.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllDonationsByRegisterDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        donationRepository.saveAndFlush(donation);
+
+        // Get all the donationList where registerDate equals to DEFAULT_REGISTER_DATE
+        defaultDonationShouldBeFound("registerDate.equals=" + DEFAULT_REGISTER_DATE);
+
+        // Get all the donationList where registerDate equals to UPDATED_REGISTER_DATE
+        defaultDonationShouldNotBeFound("registerDate.equals=" + UPDATED_REGISTER_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllDonationsByRegisterDateIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        donationRepository.saveAndFlush(donation);
+
+        // Get all the donationList where registerDate not equals to DEFAULT_REGISTER_DATE
+        defaultDonationShouldNotBeFound("registerDate.notEquals=" + DEFAULT_REGISTER_DATE);
+
+        // Get all the donationList where registerDate not equals to UPDATED_REGISTER_DATE
+        defaultDonationShouldBeFound("registerDate.notEquals=" + UPDATED_REGISTER_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllDonationsByRegisterDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        donationRepository.saveAndFlush(donation);
+
+        // Get all the donationList where registerDate in DEFAULT_REGISTER_DATE or UPDATED_REGISTER_DATE
+        defaultDonationShouldBeFound("registerDate.in=" + DEFAULT_REGISTER_DATE + "," + UPDATED_REGISTER_DATE);
+
+        // Get all the donationList where registerDate equals to UPDATED_REGISTER_DATE
+        defaultDonationShouldNotBeFound("registerDate.in=" + UPDATED_REGISTER_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllDonationsByRegisterDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        donationRepository.saveAndFlush(donation);
+
+        // Get all the donationList where registerDate is not null
+        defaultDonationShouldBeFound("registerDate.specified=true");
+
+        // Get all the donationList where registerDate is null
+        defaultDonationShouldNotBeFound("registerDate.specified=false");
+    }
+
+    @Test
+    @Transactional
     void getAllDonationsByGiverIsEqualToSomething() throws Exception {
         // Initialize the database
         donationRepository.saveAndFlush(donation);
-        Giver giver = GiverResourceIT.createEntity(em);
+        Giver giver;
+        if (TestUtil.findAll(em, Giver.class).isEmpty()) {
+            giver = GiverResourceIT.createEntity(em);
+            em.persist(giver);
+            em.flush();
+        } else {
+            giver = TestUtil.findAll(em, Giver.class).get(0);
+        }
         em.persist(giver);
         em.flush();
         donation.setGiver(giver);
@@ -586,7 +714,9 @@ class DonationResourceIT {
             .andExpect(jsonPath("$.[*].helpType").value(hasItem(DEFAULT_HELP_TYPE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].receiptContentType").value(hasItem(DEFAULT_RECEIPT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].receipt").value(hasItem(Base64Utils.encodeToString(DEFAULT_RECEIPT))));
+            .andExpect(jsonPath("$.[*].receipt").value(hasItem(Base64Utils.encodeToString(DEFAULT_RECEIPT))))
+            .andExpect(jsonPath("$.[*].account").value(hasItem(DEFAULT_ACCOUNT.toString())))
+            .andExpect(jsonPath("$.[*].registerDate").value(hasItem(DEFAULT_REGISTER_DATE.toString())));
 
         // Check, that the count call also returns 1
         restDonationMockMvc
@@ -641,7 +771,9 @@ class DonationResourceIT {
             .helpType(UPDATED_HELP_TYPE)
             .description(UPDATED_DESCRIPTION)
             .receipt(UPDATED_RECEIPT)
-            .receiptContentType(UPDATED_RECEIPT_CONTENT_TYPE);
+            .receiptContentType(UPDATED_RECEIPT_CONTENT_TYPE)
+            .account(UPDATED_ACCOUNT)
+            .registerDate(UPDATED_REGISTER_DATE);
 
         restDonationMockMvc
             .perform(
@@ -662,6 +794,8 @@ class DonationResourceIT {
         assertThat(testDonation.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testDonation.getReceipt()).isEqualTo(UPDATED_RECEIPT);
         assertThat(testDonation.getReceiptContentType()).isEqualTo(UPDATED_RECEIPT_CONTENT_TYPE);
+        assertThat(testDonation.getAccount()).isEqualTo(UPDATED_ACCOUNT);
+        assertThat(testDonation.getRegisterDate()).isEqualTo(UPDATED_REGISTER_DATE);
     }
 
     @Test
@@ -736,7 +870,9 @@ class DonationResourceIT {
             .isCash(UPDATED_IS_CASH)
             .donationDate(UPDATED_DONATION_DATE)
             .receipt(UPDATED_RECEIPT)
-            .receiptContentType(UPDATED_RECEIPT_CONTENT_TYPE);
+            .receiptContentType(UPDATED_RECEIPT_CONTENT_TYPE)
+            .account(UPDATED_ACCOUNT)
+            .registerDate(UPDATED_REGISTER_DATE);
 
         restDonationMockMvc
             .perform(
@@ -757,6 +893,8 @@ class DonationResourceIT {
         assertThat(testDonation.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testDonation.getReceipt()).isEqualTo(UPDATED_RECEIPT);
         assertThat(testDonation.getReceiptContentType()).isEqualTo(UPDATED_RECEIPT_CONTENT_TYPE);
+        assertThat(testDonation.getAccount()).isEqualTo(UPDATED_ACCOUNT);
+        assertThat(testDonation.getRegisterDate()).isEqualTo(UPDATED_REGISTER_DATE);
     }
 
     @Test
@@ -778,7 +916,9 @@ class DonationResourceIT {
             .helpType(UPDATED_HELP_TYPE)
             .description(UPDATED_DESCRIPTION)
             .receipt(UPDATED_RECEIPT)
-            .receiptContentType(UPDATED_RECEIPT_CONTENT_TYPE);
+            .receiptContentType(UPDATED_RECEIPT_CONTENT_TYPE)
+            .account(UPDATED_ACCOUNT)
+            .registerDate(UPDATED_REGISTER_DATE);
 
         restDonationMockMvc
             .perform(
@@ -799,6 +939,8 @@ class DonationResourceIT {
         assertThat(testDonation.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testDonation.getReceipt()).isEqualTo(UPDATED_RECEIPT);
         assertThat(testDonation.getReceiptContentType()).isEqualTo(UPDATED_RECEIPT_CONTENT_TYPE);
+        assertThat(testDonation.getAccount()).isEqualTo(UPDATED_ACCOUNT);
+        assertThat(testDonation.getRegisterDate()).isEqualTo(UPDATED_REGISTER_DATE);
     }
 
     @Test

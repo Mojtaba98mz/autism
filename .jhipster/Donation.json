@@ -31,6 +31,10 @@
       "fieldName": "account",
       "fieldType": "Account",
       "fieldValues": "MELLI (ملی),GHAVAMIN (قوامین),SADERAT (صادرات)"
+    },
+    {
+      "fieldName": "registerDate",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [

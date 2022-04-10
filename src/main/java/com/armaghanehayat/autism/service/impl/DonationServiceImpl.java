@@ -64,6 +64,9 @@ public class DonationServiceImpl implements DonationService {
                     if (donation.getAccount() != null) {
                         existingDonation.setAccount(donation.getAccount());
                     }
+                    if (donation.getRegisterDate() != null) {
+                        existingDonation.setRegisterDate(donation.getRegisterDate());
+                    }
 
                     return existingDonation;
                 }

@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
@@ -38,12 +38,16 @@
             <column name="account" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="register_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
             <column name="giver_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="donation" columnName="donation_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="donation" columnName="register_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -64,12 +68,13 @@
             <column name="id" type="numeric"/>
             <column name="is_cash" type="boolean"/>
             <column name="amount" type="numeric"/>
-            <column name="donation_date" type="${datetimeType}"/>
+            <column name="donation_date" type="date"/>
             <column name="help_type" type="string"/>
             <column name="description" type="string"/>
             <column name="receipt" type="blob"/>
             <column name="receipt_content_type" type="string"/>
             <column name="account" type="string"/>
+            <column name="register_date" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

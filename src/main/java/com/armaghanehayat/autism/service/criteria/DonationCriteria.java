@@ -75,7 +75,11 @@ public class DonationCriteria implements Serializable, Criteria {
 
     private AccountFilter account;
 
+    private InstantFilter registerDate;
+
     private LongFilter giverId;
+
+    private Boolean distinct;
 
     public DonationCriteria() {}
 
@@ -87,7 +91,9 @@ public class DonationCriteria implements Serializable, Criteria {
         this.helpType = other.helpType == null ? null : other.helpType.copy();
         this.description = other.description == null ? null : other.description.copy();
         this.account = other.account == null ? null : other.account.copy();
+        this.registerDate = other.registerDate == null ? null : other.registerDate.copy();
         this.giverId = other.giverId == null ? null : other.giverId.copy();
+        this.distinct = other.distinct;
     }
 
     @Override
@@ -200,6 +206,21 @@ public class DonationCriteria implements Serializable, Criteria {
         this.account = account;
     }
 
+    public InstantFilter getRegisterDate() {
+        return registerDate;
+    }
+
+    public InstantFilter registerDate() {
+        if (registerDate == null) {
+            registerDate = new InstantFilter();
+        }
+        return registerDate;
+    }
+
+    public void setRegisterDate(InstantFilter registerDate) {
+        this.registerDate = registerDate;
+    }
+
     public LongFilter getGiverId() {
         return giverId;
     }
@@ -213,6 +234,14 @@ public class DonationCriteria implements Serializable, Criteria {
 
     public void setGiverId(LongFilter giverId) {
         this.giverId = giverId;
+    }
+
+    public Boolean getDistinct() {
+        return distinct;
+    }
+
+    public void setDistinct(Boolean distinct) {
+        this.distinct = distinct;
     }
 
     @Override
@@ -232,13 +261,15 @@ public class DonationCriteria implements Serializable, Criteria {
             Objects.equals(helpType, that.helpType) &&
             Objects.equals(description, that.description) &&
             Objects.equals(account, that.account) &&
-            Objects.equals(giverId, that.giverId)
+            Objects.equals(registerDate, that.registerDate) &&
+            Objects.equals(giverId, that.giverId) &&
+            Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, isCash, amount, donationDate, helpType, description, account, giverId);
+        return Objects.hash(id, isCash, amount, donationDate, helpType, description, account, registerDate, giverId, distinct);
     }
 
     // prettier-ignore
@@ -252,7 +283,9 @@ public class DonationCriteria implements Serializable, Criteria {
             (helpType != null ? "helpType=" + helpType + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
             (account != null ? "account=" + account + ", " : "") +
+            (registerDate != null ? "registerDate=" + registerDate + ", " : "") +
             (giverId != null ? "giverId=" + giverId + ", " : "") +
+            (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }
 }

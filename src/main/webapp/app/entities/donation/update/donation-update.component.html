@@ -34,6 +34,7 @@
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.donation.amount" for="field_amount">Amount</label>
               <input type="number" ngmod class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
+              <span>{{ editForm.get('amount')!.value | currency: 'Rial':'symbol':'3.0-0' }}</span>
               <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
                 <small
                   class="form-text text-danger"
@@ -131,7 +132,15 @@
         </div>
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="autismApp.donation.description" for="field_description">Description</label>
-          <textarea id="field_description" name="description" rows="4" cols="50" maxlength="255" class="form-control"></textarea>
+          <textarea
+            id="field_description"
+            name="description"
+            rows="4"
+            cols="50"
+            maxlength="255"
+            class="form-control"
+            formControlName="description"
+          ></textarea>
         </div>
 
         <!-- <div class="form-group">

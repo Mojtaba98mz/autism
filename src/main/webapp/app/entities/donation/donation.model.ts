@@ -8,6 +8,7 @@ export interface IDonation {
   isCash?: boolean | null;
   amount?: number | null;
   donationDate?: dayjs.Dayjs | null;
+  registerDate?: dayjs.Dayjs | null;
   helpType?: HelpType | null;
   description?: string | null;
   receiptContentType?: string | null;
@@ -22,6 +23,7 @@ export class Donation implements IDonation {
     public isCash?: boolean | null,
     public amount?: number | null,
     public donationDate?: dayjs.Dayjs | null,
+    public registerDate?: dayjs.Dayjs | null,
     public helpType?: HelpType | null,
     public description?: string | null,
     public receiptContentType?: string | null,

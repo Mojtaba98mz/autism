@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { debounceTime, delay, filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
+import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
 import * as dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
@@ -29,6 +30,9 @@ export class RegisterDonationUpdateComponent implements OnInit {
 
   public searching = false;
   giversSharedCollection: IGiver[] = [];
+  datePickerConfig = {
+    format: 'jYYYY/jMM/jD',
+  };
   giverError = false;
   private _selectedGiver: IGiver | undefined;
 
@@ -63,10 +67,10 @@ export class RegisterDonationUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ donation }) => {
       if (donation === undefined || donation.id === undefined) {
         const today = dayjs().startOf('day');
-        donation.givenDate = today;
+        // donation.donationDate = today;
       }
 
-      this.updateForm(donation);
+      // this.updateForm(donation);
 
       this.loadRelationshipsOptions();
     });

@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DxButtonModule } from 'devextreme-angular';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { CommonModule } from '@angular/common';
+import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     NgxMatSelectSearchModule,
     DxButtonModule,
+    DpDatePickerModule,
   ],
   declarations: [RegisterDonationUpdateComponent],
   entryComponents: [],

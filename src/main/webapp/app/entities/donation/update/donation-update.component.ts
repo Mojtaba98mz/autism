@@ -134,8 +134,11 @@ export class DonationUpdateComponent implements OnInit {
 
   protected updateForm(donation: IDonation): void {
     if (donation.id !== undefined) {
-      const x = moment(donation.donationDate?.format('YYYY-MM-DD'), 'YYYY-MM-DD').locale('fa').format('YYYY-MM-DD');
-      this.editForm.get(['donationDate'])!.setValue(x);
+      const m = moment(
+        moment(donation.donationDate?.format('YYYY-MM-DD'), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD'),
+        'jYYYY/jMM/jDD'
+      );
+      this.editForm.get(['donationDate'])!.setValue(m);
     }
     this.editForm.patchValue({
       id: donation.id,
@@ -162,7 +165,7 @@ export class DonationUpdateComponent implements OnInit {
 
   protected createFromForm(): IDonation {
     const jalaliDonationDate = this.editForm.get(['donationDate'])!.value;
-    const gregorianDonationDate = moment.from(jalaliDonationDate, 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
+    const gregorianDonationDate = moment.from(jalaliDonationDate.format('jYYYY-jMM-jD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
     return {
       ...new Donation(),
       id: this.editForm.get(['id'])!.value,

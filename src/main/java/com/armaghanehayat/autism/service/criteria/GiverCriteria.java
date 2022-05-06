@@ -59,6 +59,10 @@ public class GiverCriteria implements Serializable, Criteria {
 
     private StringFilter supporterFamily;
 
+    private StringFilter absorbantName;
+
+    private StringFilter absorbantFamily;
+
     private BooleanFilter disabled;
 
     public GiverCriteria() {}
@@ -81,6 +85,8 @@ public class GiverCriteria implements Serializable, Criteria {
         this.supporterId = other.supporterId == null ? null : other.supporterId.copy();
         this.supporterName = other.supporterName == null ? null : other.supporterName.copy();
         this.supporterFamily = other.supporterFamily == null ? null : other.supporterFamily.copy();
+        this.absorbantName = other.absorbantName == null ? null : other.absorbantName.copy();
+        this.absorbantFamily = other.absorbantFamily == null ? null : other.absorbantFamily.copy();
         this.disabled = other.disabled == null ? null : other.disabled.copy();
     }
 
@@ -344,6 +350,36 @@ public class GiverCriteria implements Serializable, Criteria {
         return supporterFamily;
     }
 
+    public void setAbsorbantName(StringFilter absorbantName) {
+        this.absorbantName = absorbantName;
+    }
+
+    public StringFilter getAbsorbantName() {
+        return absorbantName;
+    }
+
+    public StringFilter absorbantName() {
+        if (absorbantName == null) {
+            absorbantName = new StringFilter();
+        }
+        return absorbantName;
+    }
+
+    public void setAbsorbantFamily(StringFilter absorbantFamily) {
+        this.absorbantFamily = absorbantFamily;
+    }
+
+    public StringFilter getAbsorbantFamily() {
+        return absorbantFamily;
+    }
+
+    public StringFilter absorbantFamily() {
+        if (absorbantFamily == null) {
+            absorbantFamily = new StringFilter();
+        }
+        return absorbantFamily;
+    }
+
     public BooleanFilter getDisabled() {
         return disabled;
     }
@@ -384,7 +420,9 @@ public class GiverCriteria implements Serializable, Criteria {
             Objects.equals(supporterId, that.supporterId) &&
             Objects.equals(disabled, that.disabled) &&
             Objects.equals(supporterName, that.supporterName) &&
-            Objects.equals(supporterFamily, that.supporterFamily)
+            Objects.equals(supporterFamily, that.supporterFamily) &&
+            Objects.equals(absorbantName, that.absorbantName) &&
+            Objects.equals(absorbantFamily, that.absorbantFamily)
         );
     }
 
@@ -405,8 +443,10 @@ public class GiverCriteria implements Serializable, Criteria {
             absorbantId,
             supporterId,
             supporterName,
-            disabled,
-            supporterFamily
+            supporterFamily,
+            absorbantName,
+            absorbantFamily,
+            disabled
         );
     }
 
@@ -430,6 +470,8 @@ public class GiverCriteria implements Serializable, Criteria {
             (supporterId != null ? "supporterId=" + supporterId + ", " : "") +
             (supporterName != null ? "supporterName=" + supporterName + ", " : "") +
             (supporterFamily != null ? "supporterFamily=" + supporterFamily + ", " : "") +
+            (absorbantName != null ? "absorbantName=" + absorbantName + ", " : "") +
+            (absorbantFamily != null ? "absorbantFamily=" + absorbantFamily + ", " : "") +
             "}";
     }
 }

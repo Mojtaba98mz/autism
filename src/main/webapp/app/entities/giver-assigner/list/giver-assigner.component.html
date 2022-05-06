@@ -92,6 +92,29 @@
                   (keydown)="onRightEnterPressed($event, 'supporterFamily')"
                 />
               </th>
+
+              <th scope="col">
+                <div>
+                  <span jhiTranslate="autismApp.giverAssigner.absorbantName">Absorbant Name</span>
+                </div>
+                <input
+                  type="text"
+                  [(ngModel)]="rAbsorbantNameFilter"
+                  class="filter-width"
+                  (keydown)="onRightEnterPressed($event, 'absorbantName')"
+                />
+              </th>
+              <th scope="col">
+                <div>
+                  <span jhiTranslate="autismApp.giverAssigner.absorbantFamily">Absorbant Family</span>
+                </div>
+                <input
+                  type="text"
+                  [(ngModel)]="rAbsorbantFamilyFilter"
+                  class="filter-width"
+                  (keydown)="onRightEnterPressed($event, 'absorbantFamily')"
+                />
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -106,6 +129,8 @@
               <td>{{ notAssigned?.phoneNumber }}</td>
               <td>{{ notAssigned?.supporter?.firstName }}</td>
               <td>{{ notAssigned?.supporter?.lastName }}</td>
+              <td>{{ notAssigned?.absorbant?.firstName }}</td>
+              <td>{{ notAssigned?.absorbant?.lastName }}</td>
             </tr>
           </tbody>
         </table>
@@ -162,6 +187,29 @@
                   (keydown)="onLeftEnterPressed($event, 'phoneNumber')"
                 />
               </th>
+              <th scope="col">
+                <div>
+                  <span jhiTranslate="autismApp.giverAssigner.absorbantName">Absorbant Name</span>
+                </div>
+                <input
+                  type="text"
+                  [(ngModel)]="lAbsorbantNameFilter"
+                  class="filter-width"
+                  (keydown)="onLeftEnterPressed($event, 'absorbantName')"
+                />
+              </th>
+              <th scope="col">
+                <div>
+                  <span jhiTranslate="autismApp.giverAssigner.absorbantFamily">Absorbant Family</span>
+                </div>
+                <input
+                  type="text"
+                  [(ngModel)]="lAbsorbantFamilyFilter"
+                  class="filter-width"
+                  (keydown)="onLeftEnterPressed($event, 'absorbantFamily')"
+                />
+              </th>
+
               <th scope="col"></th>
             </tr>
           </thead>
@@ -170,6 +218,8 @@
               <td>{{ assigned.name }}</td>
               <td>{{ assigned.family }}</td>
               <td>{{ assigned.phoneNumber }}</td>
+              <td>{{ assigned?.absorbant?.firstName }}</td>
+              <td>{{ assigned?.absorbant?.lastName }}</td>
             </tr>
           </tbody>
         </table>

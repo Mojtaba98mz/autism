@@ -26,6 +26,8 @@
       "giver": "Giver",
       "supporterName": "نام پشتیبان",
       "supporterFamily": "نام خانوادگی پشتیبان",
+      "absorbantName": "نام جذب کننده",
+      "absorbantFamily": "نام خانوادگی جذب کننده",
       "supporters": "پشتیبانان"
     }
   }

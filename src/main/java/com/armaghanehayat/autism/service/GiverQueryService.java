@@ -195,6 +195,25 @@ public class GiverQueryService extends QueryService<Giver> {
                         )
                     );
             }
+
+            if (criteria.getAbsorbantName() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getAbsorbantName(),
+                            root -> root.join(Giver_.absorbant, JoinType.LEFT).get(User_.firstName)
+                        )
+                    );
+            }
+            if (criteria.getAbsorbantFamily() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getAbsorbantFamily(),
+                            root -> root.join(Giver_.absorbant, JoinType.LEFT).get(User_.lastName)
+                        )
+                    );
+            }
             if (criteria.getProvinceId() != null) {
                 specification =
                     specification.and(

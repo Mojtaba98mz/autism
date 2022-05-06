@@ -41,6 +41,10 @@ export class GiverAssignerComponent implements OnInit {
   lPhoneNumberFilter;
   supporterNameFilter;
   supporterFamilyFilter;
+  rAbsorbantNameFilter;
+  rAbsorbantFamilyFilter;
+  lAbsorbantNameFilter;
+  lAbsorbantFamilyFilter;
 
   constructor(protected giverAssignerService: GiverAssignerService, protected activatedRoute: ActivatedRoute, protected router: Router) {}
 

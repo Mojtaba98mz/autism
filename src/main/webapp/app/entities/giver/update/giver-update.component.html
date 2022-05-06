@@ -158,6 +158,30 @@
             </div>
           </div>
         </div>
+
+        <div class="row" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <div class="col-1">
+            <i class="fa fa-user"></i>
+            <label class="form-control-label">پشتیبان</label>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <div class="form-control">{{ this.selectedSupporter?.firstName }} {{ this.selectedSupporter?.lastName }}</div>
+              <div (click)="showSupporters()" class="btn btn-primary position-absolute top left">+</div>
+            </div>
+          </div>
+          <div class="col-1"></div>
+          <div class="col-1">
+            <i class="fa fa-user"></i>
+            <label class="form-control-label">جذب کننده</label>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <div class="form-control">{{ this.selectedAbsorbant?.firstName }} {{ this.selectedAbsorbant?.lastName }}</div>
+              <div (click)="showAbsorbants()" class="btn btn-primary position-absolute top left">+</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="row">

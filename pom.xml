@@ -7,7 +7,7 @@
 
     <groupId>com.armaghanehayat.autism</groupId>
     <artifactId>autism</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.4</version>
     <packaging>jar</packaging>
     <name>Autism</name>
 

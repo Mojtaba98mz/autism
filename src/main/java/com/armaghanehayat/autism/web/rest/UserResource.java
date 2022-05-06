@@ -1,6 +1,7 @@
 package com.armaghanehayat.autism.web.rest;
 
 import com.armaghanehayat.autism.config.Constants;
+import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.domain.User;
 import com.armaghanehayat.autism.repository.UserRepository;
 import com.armaghanehayat.autism.security.AuthoritiesConstants;
@@ -185,6 +186,13 @@ public class UserResource {
         final Page<User> page1 = this.userQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page1);
         return new ResponseEntity<>(page1.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/filter-by-name")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<List<User>> searchUserNameAndFamily(@RequestParam(value = "filter") String filter) {
+        log.debug("REST request to filter by Teacher Name : {}", filter);
+        return ResponseEntity.ok().body(userService.filterByName(filter));
     }
 
     private boolean onlyContainsAllowedProperties(Pageable pageable) {

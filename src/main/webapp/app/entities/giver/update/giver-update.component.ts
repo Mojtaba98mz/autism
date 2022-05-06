@@ -16,10 +16,16 @@ import { ICity } from 'app/entities/city/city.model';
 import { CityService } from 'app/entities/city/service/city.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { GiverModalService } from '../../../core/giver-selection/giver-modal.service';
+import { GiverSelectionService } from '../../../core/giver-selection/giver-selection.service';
+import { UserModalService } from '../../../core/user-selection/user-modal.service';
+import { UserSelectionService } from '../../../core/user-selection/user-selection.service';
 
 @Component({
   selector: 'jhi-giver-update',
   templateUrl: './giver-update.component.html',
+  styleUrls: ['./giver-update.scss'],
 })
 export class GiverUpdateComponent implements OnInit {
   isSaving = false;
@@ -27,6 +33,8 @@ export class GiverUpdateComponent implements OnInit {
   provincesCollection: IProvince[] = [];
   citiesCollection: ICity[] = [];
   usersSharedCollection: IUser[] = [];
+  private _selectedSupporter: IUser | undefined;
+  private _selectedAbsorbant: IUser | undefined;
 
   editForm = this.fb.group({
     id: [],
@@ -49,7 +57,9 @@ export class GiverUpdateComponent implements OnInit {
     protected cityService: CityService,
     protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    protected userModalService: UserModalService,
+    protected userSelectionService: UserSelectionService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +73,16 @@ export class GiverUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+  }
+
+  showSupporters(): void {
+    const modalRef: NgbModalRef = this.userModalService.open();
+    modalRef.result.finally(() => (this.selectedSupporter = this.userSelectionService.selected));
+  }
+
+  showAbsorbants(): void {
+    const modalRef: NgbModalRef = this.userModalService.open();
+    modalRef.result.finally(() => (this.selectedAbsorbant = this.userSelectionService.selected));
   }
 
   previousState(): void {
@@ -102,6 +122,22 @@ export class GiverUpdateComponent implements OnInit {
     return item.id!;
   }
 
+  get selectedSupporter(): IUser | undefined {
+    return this._selectedSupporter;
+  }
+
+  set selectedSupporter(value: IUser | undefined) {
+    this._selectedSupporter = value;
+  }
+
+  get selectedAbsorbant(): IUser | undefined {
+    return this._selectedAbsorbant;
+  }
+
+  set selectedAbsorbant(value: IUser | undefined) {
+    this._selectedAbsorbant = value;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IGiver>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -136,6 +172,12 @@ export class GiverUpdateComponent implements OnInit {
       supporter: giver.supporter,
       disabled: giver.disabled,
     });
+    if (giver.supporter) {
+      this.selectedSupporter = giver.supporter;
+    }
+    if (giver.absorbant) {
+      this.selectedAbsorbant = giver.absorbant;
+    }
 
     this.provincesCollection = this.provinceService.addProvinceToCollectionIfMissing(this.provincesCollection, giver.province);
     this.citiesCollection = this.cityService.addCityToCollectionIfMissing(this.citiesCollection, giver.city);
@@ -189,8 +231,8 @@ export class GiverUpdateComponent implements OnInit {
       absorbDate: this.editForm.get(['absorbDate'])!.value ? dayjs(this.editForm.get(['absorbDate'])!.value, DATE_TIME_FORMAT) : undefined,
       province: this.editForm.get(['province'])!.value,
       city: this.editForm.get(['city'])!.value,
-      absorbant: this.editForm.get(['absorbant'])!.value,
-      supporter: this.editForm.get(['supporter'])!.value,
+      absorbant: this.selectedAbsorbant,
+      supporter: this.selectedSupporter,
       disabled: this.editForm.get(['disabled'])!.value,
     };
   }

@@ -13,6 +13,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -45,4 +47,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Page<User> findAllByIdNotNullAndActivatedIsTrue(Pageable pageable);
 
     List<User> findAllByIdNotNullAndActivatedIsTrue();
+
+    @Query("select user from User user where lower(concat(user.firstName, ' ', user.lastName)) like lower(concat('%', :filter,'%'))")
+    List<User> filterByName(@Param("filter") String filter);
 }

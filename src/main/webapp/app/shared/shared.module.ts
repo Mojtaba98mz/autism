@@ -16,6 +16,7 @@ import { JalaliPipe } from 'app/pipe/jalali.pipe';
 import { InputFilterPipe } from 'app/pipe/input-filter.pipe';
 import { GiverSelectionComponent } from './giver-modal/giver-selection.component';
 import { CeremonyUserSelectionComponent } from './ceremony-user-modal/ceremony-user-selection.component';
+import { UserSelectionComponent } from './user-modal/user-selection.component';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -29,6 +30,7 @@ import { CeremonyUserSelectionComponent } from './ceremony-user-modal/ceremony-u
     JalaliPipe,
     InputFilterPipe,
     GiverSelectionComponent,
+    UserSelectionComponent,
     CeremonyUserSelectionComponent,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
@@ -51,6 +53,7 @@ import { CeremonyUserSelectionComponent } from './ceremony-user-modal/ceremony-u
     JalaliPipe,
     InputFilterPipe,
     GiverSelectionComponent,
+    UserSelectionComponent,
     ItemCountComponent,
   ],
 })

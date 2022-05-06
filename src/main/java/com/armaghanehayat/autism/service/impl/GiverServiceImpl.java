@@ -64,8 +64,8 @@ public class GiverServiceImpl implements GiverService {
         }
         if (userService.getUserWithAuthorities().isPresent()) {
             User currentUser = userService.getUserWithAuthorities().get();
-            giver.setAbsorbant(currentUser);
-            giver.setSupporter(currentUser);
+            if (giver.getAbsorbant() == null) giver.setAbsorbant(currentUser);
+            if (giver.getSupporter() == null) giver.setSupporter(currentUser);
         }
         giver.setAbsorbDate(Instant.now());
         log.debug("Request to save Giver : {}", giver);

@@ -88,9 +88,10 @@ export class DonationComponent implements OnInit {
   ngOnInit(): void {
     this.handleNavigation();
   }
-
+  private timer: any;
   onEnterPressed(event: any, fieldName: string): void {
-    if (event.keyCode === 13 || fieldName === 'isCash') {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
       const pageToLoad: number = this.page ?? 1;
       const giverId = this.activatedRoute.snapshot.params['giverId'];
       const req = {
@@ -99,19 +100,18 @@ export class DonationComponent implements OnInit {
         sort: this.sort(),
         'giverId.equals': giverId,
       };
-      if (event.keyCode === 13) {
-        const searchValue = event.target.value;
-        if (fieldName === 'id' || fieldName === 'amount') {
-          req[fieldName + '.equals'] = searchValue;
-        } else {
-          const searchField = fieldName + '.contains';
-          req[searchField] = searchValue;
-        }
-      } else if (fieldName === 'isCash') {
+      const searchValue = event.target.value;
+      if (fieldName === 'id' || fieldName === 'amount') {
+        req[fieldName + '.equals'] = searchValue;
+      } else {
+        const searchField = fieldName + '.contains';
+        req[searchField] = searchValue;
+      }
+      if (fieldName === 'isCash') {
         req['isCash.equals'] = event.target.checked;
       }
       this.loadPageWithReq(undefined, undefined, req);
-    }
+    }, 3000);
   }
 
   trackId(index: number, item: IDonation): number {

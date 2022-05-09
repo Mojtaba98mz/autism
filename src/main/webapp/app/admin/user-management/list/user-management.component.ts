@@ -62,9 +62,10 @@ export class UserManagementComponent implements OnInit {
       }
     });
   }
-
+  private timer: any;
   onEnterPressed(event: any, fieldName: string): void {
-    if (event.keyCode === 13) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
       const searchValue = event.target.value;
       let searchField = fieldName + '.contains';
       const req = {
@@ -77,7 +78,7 @@ export class UserManagementComponent implements OnInit {
       }
       req[searchField] = searchValue;
       this.loadAllWithReq(req);
-    }
+    }, 1000);
   }
 
   loadAllWithReq(req?: any): void {

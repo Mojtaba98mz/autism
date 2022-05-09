@@ -83,9 +83,10 @@ export class CeremonyUserComponent implements OnInit {
   trackId(index: number, item: ICeremonyUser): number {
     return item.id!;
   }
-
+  private timer: any;
   onEnterPressed(event: any, fieldName: string): void {
-    if (event.keyCode === 13) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
       const searchValue = event.target.value;
       let searchField = fieldName + '.contains';
       const pageToLoad: number = this.page ?? 1;
@@ -99,7 +100,7 @@ export class CeremonyUserComponent implements OnInit {
       }
       req[searchField] = searchValue;
       this.loadPageWithReq(undefined, undefined, req);
-    }
+    }, 1000);
   }
 
   delete(ceremonyUser: ICeremonyUser): void {

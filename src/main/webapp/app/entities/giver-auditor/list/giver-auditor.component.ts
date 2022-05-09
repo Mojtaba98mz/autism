@@ -92,9 +92,10 @@ export class GiverAuditorComponent implements OnInit {
       }
     );
   }
-
+  private timer: any;
   onEnterPressed(event: any, fieldName: string): void {
-    if (event.keyCode === 13) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
       const searchValue = event.target.value;
       let searchField = fieldName + '.contains';
       const pageToLoad: number = this.page ?? 1;
@@ -108,7 +109,7 @@ export class GiverAuditorComponent implements OnInit {
       }
       req[searchField] = searchValue;
       this.loadPageWithReq(undefined, undefined, req);
-    }
+    }, 1000);
   }
 
   protected sort(): string[] {

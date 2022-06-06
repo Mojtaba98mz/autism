@@ -17,7 +17,8 @@
         "register-donation": "ثبت کمک",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "ceremony": "تشریفات",
-        "ceremonyUser": "کاربران تشریفات"
+        "ceremonyUser": "کاربران تشریفات",
+        "report": "گزارشات"
       },
       "account": {
         "main": "حساب کاربری",

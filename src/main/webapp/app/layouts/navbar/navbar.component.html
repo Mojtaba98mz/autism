@@ -80,7 +80,7 @@
             </a>
           </li>
 
-          <li *jhiHasAnyAuthority="['ROLE_GIVER', 'ROLE_ADMIN']">
+          <li *jhiHasAnyAuthority="['ROLE_ADMIN']">
             <a
               class="dropdown-item"
               routerLink="giver-assigner"
@@ -89,6 +89,18 @@
               (click)="collapseNavbar()"
             >
               <span jhiTranslate="global.menu.entities.giver-assigner">giver-assigner</span>
+            </a>
+          </li>
+
+          <li *jhiHasAnyAuthority="['ROLE_ADMIN']">
+            <a
+              class="dropdown-item"
+              routerLink="report"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <span jhiTranslate="global.menu.entities.report">report</span>
             </a>
           </li>
           <!--<li>

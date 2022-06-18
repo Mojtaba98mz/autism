@@ -9,7 +9,7 @@ import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import * as dayjs from 'dayjs';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/config/input.constants';
 
-import { IDonation, Donation } from '../report.model';
+import { IReport, Report } from '../report.model';
 import { ReportService } from '../service/report.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
@@ -20,6 +20,11 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { GiverModalService } from '../../../core/giver-selection/giver-modal.service';
 import { GiverSelectionService } from '../../../core/giver-selection/giver-selection.service';
 import * as moment from 'jalali-moment';
+import { IProvince } from '../../province/province.model';
+import { ICity } from '../../city/city.model';
+import { ProvinceService } from '../../province/service/province.service';
+import { CityService } from '../../city/service/city.service';
+import { IUser } from '../../user/user.model';
 
 @Component({
   selector: 'jhi-donation-update',
@@ -29,6 +34,9 @@ import * as moment from 'jalali-moment';
 export class ReportUpdateComponent implements OnInit {
   isSaving = false;
 
+  provincesCollection: IProvince[] = [];
+  citiesCollection: ICity[] = [];
+
   public searching = false;
   giversSharedCollection: IGiver[] = [];
   giverError = false;
@@ -37,14 +45,13 @@ export class ReportUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     isCash: false,
-    amount: [null, [Validators.required]],
-    donationDate: [null, [Validators.required]],
+    amountFrom: [],
+    amountTo: [],
+    fromDate: [],
+    toDate: [],
     helpType: [],
-    description: [],
-    receipt: [],
-    receiptContentType: [],
-    account: [],
-    giver: [],
+    province: [],
+    city: [],
   });
 
   protected _onDestroy = new Subject<void>();
@@ -52,12 +59,14 @@ export class ReportUpdateComponent implements OnInit {
   constructor(
     protected dataUtils: DataUtils,
     protected eventManager: EventManager,
-    protected donationService: ReportService,
+    protected reportService: ReportService,
     protected giverService: GiverService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder,
     protected giverModalService: GiverModalService,
+    protected provinceService: ProvinceService,
+    protected cityService: CityService,
     protected giverSelectionService: GiverSelectionService
   ) {}
 
@@ -72,11 +81,6 @@ export class ReportUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
-  }
-
-  showGivers(): void {
-    const modalRef: NgbModalRef = this.giverModalService.open();
-    modalRef.result.finally(() => (this.selectedGiver = this.giverSelectionService.giverSelected));
   }
 
   byteSize(base64String: string): string {
@@ -108,25 +112,32 @@ export class ReportUpdateComponent implements OnInit {
     window.history.back();
   }
 
-  save(): void {
-    this.isSaving = true;
-    const donation = this.createFromForm();
-    this.subscribeToSaveResponse(this.donationService.create(donation));
+  onProvinceChange(): void {
+    this.cityService
+      .query({
+        size: '40',
+        'provinceId.equals': this.editForm.get('province')!.value ? this.editForm.get('province')!.value.id : 0,
+      })
+      .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))
+      .pipe(map((cities: ICity[]) => this.cityService.addCityToCollectionIfMissing(cities, this.editForm.get('city')!.value)))
+      .subscribe((cities: ICity[]) => (this.citiesCollection = cities));
   }
 
-  trackGiverById(index: number, item: IGiver): number {
+  save(): void {
+    this.isSaving = true;
+    const report = this.createFromForm();
+    this.subscribeToSaveResponse(this.reportService.create(report));
+  }
+
+  trackProvinceById(index: number, item: IProvince): number {
     return item.id!;
   }
 
-  get selectedGiver(): IGiver | undefined {
-    return this._selectedGiver;
+  trackCityById(index: number, item: ICity): number {
+    return item.id!;
   }
 
-  set selectedGiver(value: IGiver | undefined) {
-    this._selectedGiver = value;
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IDonation>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IReport>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError()
@@ -145,47 +156,52 @@ export class ReportUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  protected updateForm(donation: IDonation): void {
+  protected updateForm(report: IReport): void {
     this.editForm.patchValue({
-      id: donation.id,
-      isCash: donation.isCash,
-      amount: donation.amount,
-      donationDate: donation.donationDate ? donation.donationDate.format(DATE_TIME_FORMAT) : null,
-      helpType: donation.helpType,
-      description: donation.description,
-      receipt: donation.receipt,
-      receiptContentType: donation.receiptContentType,
-      account: donation.account,
+      id: report.id,
+      isCash: report.isCash,
+      amountFrom: report.amountFrom,
+      amountTo: report.amountTo,
+      fromDate: report.fromDate ? report.fromDate.format(DATE_TIME_FORMAT) : null,
+      toDate: report.toDate ? report.toDate.format(DATE_TIME_FORMAT) : null,
+      helpType: report.helpType,
+      province: report.province,
+      city: report.city,
+      account: report.account,
     });
 
-    this.giversSharedCollection = this.giverService.addGiverToCollectionIfMissing(this.giversSharedCollection, donation.giver);
+    this.provincesCollection = this.provinceService.addProvinceToCollectionIfMissing(this.provincesCollection, report.province);
+    this.citiesCollection = this.cityService.addCityToCollectionIfMissing(this.citiesCollection, report.city);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.giverService
-      .query()
-      .pipe(map((res: HttpResponse<IGiver[]>) => res.body ?? []))
-      .pipe(map((givers: IGiver[]) => this.giverService.addGiverToCollectionIfMissing(givers, this.editForm.get('giver')!.value)))
-      .subscribe((givers: IGiver[]) => (this.giversSharedCollection = givers));
+    this.provinceService
+      .query({ size: '32' })
+      .pipe(map((res: HttpResponse<IProvince[]>) => res.body ?? []))
+      .pipe(
+        map((provinces: IProvince[]) =>
+          this.provinceService.addProvinceToCollectionIfMissing(provinces, this.editForm.get('province')!.value)
+        )
+      )
+      .subscribe((provinces: IProvince[]) => (this.provincesCollection = provinces));
   }
 
-  protected createFromForm(): IDonation {
-    const jalaliDonationDate = this.editForm.get(['donationDate'])!.value;
-    const gregorianDonationDate = moment
-      .from(jalaliDonationDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD')
-      .format('YYYY-MM-DD');
+  protected createFromForm(): IReport {
+    const jalaliFromDate = this.editForm.get(['donationDate'])!.value;
+    const jalaliToDate = this.editForm.get(['donationDate'])!.value;
+    const gregorianFromDate = moment.from(jalaliFromDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
+    const gregorianToDate = moment.from(jalaliToDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
     return {
-      ...new Donation(),
+      ...new Report(),
       id: this.editForm.get(['id'])!.value,
       isCash: this.editForm.get(['isCash'])!.value,
-      amount: this.editForm.get(['amount'])!.value,
-      donationDate: this.editForm.get(['donationDate'])!.value ? dayjs(gregorianDonationDate, DATE_FORMAT) : undefined,
+      amountFrom: this.editForm.get(['amountFrom'])!.value,
+      amountTo: this.editForm.get(['amountTo'])!.value,
+      fromDate: this.editForm.get(['fromDate'])!.value ? dayjs(gregorianFromDate, DATE_FORMAT) : undefined,
+      toDate: this.editForm.get(['toDate'])!.value ? dayjs(gregorianToDate, DATE_FORMAT) : undefined,
       helpType: this.editForm.get(['helpType'])!.value,
-      description: this.editForm.get(['description'])!.value,
-      receiptContentType: this.editForm.get(['receiptContentType'])!.value,
-      receipt: this.editForm.get(['receipt'])!.value,
-      account: this.editForm.get(['account'])!.value,
-      giver: this.selectedGiver,
+      province: this.editForm.get(['province'])!.value,
+      city: this.editForm.get(['city'])!.value,
     };
   }
 }

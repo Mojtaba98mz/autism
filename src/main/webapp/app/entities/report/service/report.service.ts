@@ -7,10 +7,10 @@ import * as dayjs from 'dayjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IDonation, getDonationIdentifier } from '../report.model';
+import { getDonationIdentifier, IReport } from '../report.model';
 
-export type EntityResponseType = HttpResponse<IDonation>;
-export type EntityArrayResponseType = HttpResponse<IDonation[]>;
+export type EntityResponseType = HttpResponse<IReport>;
+export type EntityArrayResponseType = HttpResponse<IReport[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ReportService {
@@ -18,37 +18,37 @@ export class ReportService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(donation: IDonation): Observable<EntityResponseType> {
+  create(donation: IReport): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(donation);
     return this.http
-      .post<IDonation>(this.resourceUrl, copy, { observe: 'response' })
+      .post<IReport>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  update(donation: IDonation): Observable<EntityResponseType> {
+  update(donation: IReport): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(donation);
     return this.http
-      .put<IDonation>(`${this.resourceUrl}/${getDonationIdentifier(donation) as number}`, copy, { observe: 'response' })
+      .put<IReport>(`${this.resourceUrl}/${getDonationIdentifier(donation) as number}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  partialUpdate(donation: IDonation): Observable<EntityResponseType> {
+  partialUpdate(donation: IReport): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(donation);
     return this.http
-      .patch<IDonation>(`${this.resourceUrl}/${getDonationIdentifier(donation) as number}`, copy, { observe: 'response' })
+      .patch<IReport>(`${this.resourceUrl}/${getDonationIdentifier(donation) as number}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
     return this.http
-      .get<IDonation>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .get<IReport>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<IDonation[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .get<IReport[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
@@ -56,8 +56,8 @@ export class ReportService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  addDonationToCollectionIfMissing(donationCollection: IDonation[], ...donationsToCheck: (IDonation | null | undefined)[]): IDonation[] {
-    const donations: IDonation[] = donationsToCheck.filter(isPresent);
+  addDonationToCollectionIfMissing(donationCollection: IReport[], ...donationsToCheck: (IReport | null | undefined)[]): IReport[] {
+    const donations: IReport[] = donationsToCheck.filter(isPresent);
     if (donations.length > 0) {
       const donationCollectionIdentifiers = donationCollection.map(donationItem => getDonationIdentifier(donationItem)!);
       const donationsToAdd = donations.filter(donationItem => {
@@ -73,23 +73,26 @@ export class ReportService {
     return donationCollection;
   }
 
-  protected convertDateFromClient(donation: IDonation): IDonation {
-    return Object.assign({}, donation, {
-      donationDate: donation.donationDate?.isValid() ? donation.donationDate.toJSON() : undefined,
+  protected convertDateFromClient(report: IReport): IReport {
+    return Object.assign({}, report, {
+      fromDate: report.fromDate?.isValid() ? report.fromDate.toJSON() : undefined,
+      toDate: report.toDate?.isValid() ? report.toDate.toJSON() : undefined,
     });
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.donationDate = res.body.donationDate ? dayjs(res.body.donationDate) : undefined;
+      res.body.fromDate = res.body.fromDate ? dayjs(res.body.fromDate) : undefined;
+      res.body.toDate = res.body.toDate ? dayjs(res.body.toDate) : undefined;
     }
     return res;
   }
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
-      res.body.forEach((donation: IDonation) => {
-        donation.donationDate = donation.donationDate ? dayjs(donation.donationDate) : undefined;
+      res.body.forEach((report: IReport) => {
+        report.fromDate = report.fromDate ? dayjs(report.fromDate) : undefined;
+        report.toDate = report.toDate ? dayjs(report.toDate) : undefined;
       });
     }
     return res;

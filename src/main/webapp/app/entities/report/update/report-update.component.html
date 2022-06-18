@@ -1,10 +1,6 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-donation-heading" data-cy="DonationCreateUpdateHeading" jhiTranslate="autismApp.donation.home.createOrEditLabel">
-        Create or edit a Donation
-      </h2>
-
       <div>
         <jhi-alert-error></jhi-alert-error>
         <!--        <jhi-alert></jhi-alert>-->
@@ -15,41 +11,26 @@
         </div>
 
         <div class="row">
+          <div class="col-4">
+            <div class="form-group">
+              <dp-date-picker placeholder="از تاریخ" dir="rtl" mode="day" formControlName="fromDate" theme="dp-material"> </dp-date-picker>
+            </div>
+          </div>
+          <div class="col-1"></div>
+          <div class="col-4">
+            <div class="form-group">
+              <dp-date-picker placeholder="تا تاریخ" dir="rtl" mode="day" formControlName="toDate" theme="dp-material"> </dp-date-picker>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-2">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.donation.isCash" for="field_isCash">Is Cash</label>
               <input type="checkbox" class="form-check" name="isCash" id="field_isCash" data-cy="isCash" formControlName="isCash" />
             </div>
           </div>
-          <div class="col-5" *ngIf="editForm.get('isCash')!.value == true">
-            <div class="form-group">
-              <label class="form-control-label" jhiTranslate="autismApp.donation.account" for="field_account">Account</label>
-              <select class="form-control" name="account" formControlName="account" id="field_account" data-cy="account">
-                <option value="MELLI">{{ 'autismApp.Account.MELLI' | translate }}</option>
-                <option value="GHAVAMIN">{{ 'autismApp.Account.GHAVAMIN' | translate }}</option>
-                <option value="SADERAT">{{ 'autismApp.Account.SADERAT' | translate }}</option>
-              </select>
-            </div>
-          </div>
           <div class="col-5">
-            <div class="form-group">
-              <label class="form-control-label" jhiTranslate="autismApp.donation.amount" for="field_amount">Amount</label>
-              <input type="number" ngmod class="form-control" name="amount" id="field_amount" data-cy="amount" formControlName="amount" />
-              <span>{{ editForm.get('amount')!.value | currency: 'Rial':'symbol':'3.0-0' }}</span>
-              <div *ngIf="editForm.get('amount')!.invalid && (editForm.get('amount')!.dirty || editForm.get('amount')!.touched)">
-                <small
-                  class="form-text text-danger"
-                  *ngIf="editForm.get('amount')?.errors?.required"
-                  jhiTranslate="entity.validation.required"
-                >
-                  This field is required.
-                </small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.donation.helpType" for="field_helpType">Help Type</label>
               <select class="form-control" name="helpType" formControlName="helpType" id="field_helpType" data-cy="helpType">
@@ -70,92 +51,111 @@
               </select>
             </div>
           </div>
-
-          <div class="col-6">
+          <div class="col-5" *ngIf="editForm.get('isCash')!.value == true">
             <div class="form-group">
-              <label class="form-control-label" jhiTranslate="autismApp.donation.receipt" for="field_receipt">Receipt</label>
-              <div>
-                <img
-                  [src]="'data:' + editForm.get('receiptContentType')!.value + ';base64,' + editForm.get('receipt')!.value"
-                  style="max-height: 100px"
-                  *ngIf="editForm.get('receipt')!.value"
-                  alt="donation image"
-                />
-                <div *ngIf="editForm.get('receipt')!.value" class="form-text text-danger clearfix">
-                  <span class="pull-left"
-                    >{{ editForm.get('receiptContentType')!.value }} , {{ byteSize(editForm.get('receipt')!.value) }}</span
-                  >
-                  <button
-                    type="button"
-                    (click)="clearInputImage('receipt', 'receiptContentType', 'file_receipt')"
-                    class="btn btn-secondary btn-xs pull-right"
-                  >
-                    <fa-icon icon="times"></fa-icon>
-                  </button>
-                </div>
-                <input
-                  type="file"
-                  id="file_receipt"
-                  data-cy="receipt"
-                  (change)="setFileData($event, 'receipt', true)"
-                  accept="image/*"
-                  data-buttonText="Your label here."
-                  jhiTranslate="entity.action.addimage"
-                />
-              </div>
-              <input type="hidden" class="form-control" name="receipt" id="field_receipt" data-cy="receipt" formControlName="receipt" />
-              <input
-                type="hidden"
-                class="form-control"
-                name="receiptContentType"
-                id="field_receiptContentType"
-                formControlName="receiptContentType"
-              />
+              <label class="form-control-label" jhiTranslate="autismApp.donation.account" for="field_account">Account</label>
+              <select class="form-control" name="account" formControlName="account" id="field_account" data-cy="account">
+                <option value="MELLI">{{ 'autismApp.Account.MELLI' | translate }}</option>
+                <option value="GHAVAMIN">{{ 'autismApp.Account.GHAVAMIN' | translate }}</option>
+                <option value="SADERAT">{{ 'autismApp.Account.SADERAT' | translate }}</option>
+              </select>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-1">
-            <i class="fa fa-user"></i>
-            <label class="form-control-label">خیر</label>
-          </div>
-          <div class="col-4">
+          <div class="col-5">
             <div class="form-group">
-              <div class="form-control">{{ this.selectedGiver?.name }} {{ this.selectedGiver?.family }}</div>
-              <div (click)="showGivers()" class="btn btn-primary position-absolute top left">+</div>
-              <small class="form-text text-danger" *ngIf="giverError" jhiTranslate="entity.validation.required">
-                This field is required.
-              </small>
+              <label class="form-control-label" jhiTranslate="autismApp.reports.amount.from" for="field_amount_from">Amount</label>
+              <input
+                type="number"
+                ngmod
+                class="form-control"
+                name="amountFrom"
+                id="field_amount_from"
+                data-cy="amount"
+                formControlName="amountFrom"
+              />
+              <span>{{ editForm.get('amountFrom')!.value | currency: 'Rial':'symbol':'3.0-0' }}</span>
+              <div
+                *ngIf="editForm.get('amountFrom')!.invalid && (editForm.get('amountFrom')!.dirty || editForm.get('amountFrom')!.touched)"
+              >
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('amountFrom')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+              </div>
             </div>
           </div>
-          <div class="col-1"></div>
-          <div class="col-4">
+          <div class="col-5">
             <div class="form-group">
-              <dp-date-picker placeholder="تاریخ کمک*" dir="rtl" mode="day" formControlName="donationDate" theme="dp-material">
-              </dp-date-picker>
+              <label class="form-control-label" jhiTranslate="autismApp.reports.amount.to" for="field_amount_to">Amount</label>
+              <input
+                type="number"
+                ngmod
+                class="form-control"
+                name="amountTo"
+                id="field_amount_to"
+                data-cy="amount"
+                formControlName="amountFrom"
+              />
+              <span>{{ editForm.get('amountTo')!.value | currency: 'Rial':'symbol':'3.0-0' }}</span>
+              <div *ngIf="editForm.get('amountTo')!.invalid && (editForm.get('amountTo')!.dirty || editForm.get('amountTo')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('amountTo')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="autismApp.donation.description" for="field_description">Description</label>
-          <textarea
-            id="field_description"
-            name="description"
-            rows="4"
-            cols="50"
-            maxlength="255"
-            class="form-control"
-            formControlName="description"
-          ></textarea>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.giver.province" for="field_province">Province</label>
+              <select
+                (change)="onProvinceChange()"
+                class="form-control"
+                id="field_province"
+                data-cy="province"
+                name="province"
+                formControlName="province"
+              >
+                <option [ngValue]="null"></option>
+                <option
+                  [ngValue]="provinceOption.id === editForm.get('province')!.value?.id ? editForm.get('province')!.value : provinceOption"
+                  *ngFor="let provinceOption of provincesCollection; trackBy: trackProvinceById"
+                >
+                  {{ provinceOption.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="autismApp.giver.city" for="field_city">City</label>
+              <select class="form-control" id="field_city" data-cy="city" name="city" formControlName="city">
+                <option [ngValue]="null"></option>
+                <option
+                  [ngValue]="cityOption.id === editForm.get('city')!.value?.id ? editForm.get('city')!.value : cityOption"
+                  *ngFor="let cityOption of citiesCollection; trackBy: trackCityById"
+                >
+                  {{ cityOption.name }}
+                </option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-
         <button
           type="submit"
           id="save-entity"
@@ -163,7 +163,7 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>نمایش</span>
         </button>
       </div>
     </form>

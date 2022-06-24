@@ -99,7 +99,7 @@
                 name="amountTo"
                 id="field_amount_to"
                 data-cy="amount"
-                formControlName="amountFrom"
+                formControlName="amountTo"
               />
               <span>{{ editForm.get('amountTo')!.value | currency: 'Rial':'symbol':'3.0-0' }}</span>
               <div *ngIf="editForm.get('amountTo')!.invalid && (editForm.get('amountTo')!.dirty || editForm.get('amountTo')!.touched)">

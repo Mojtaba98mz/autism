@@ -50,9 +50,13 @@ export class ReportUpdateComponent implements OnInit {
     fromDate: [],
     toDate: [],
     helpType: [],
+    account: [],
     province: [],
     city: [],
   });
+
+  showDataGrid = false;
+  showChart = false;
 
   protected _onDestroy = new Subject<void>();
 
@@ -124,9 +128,13 @@ export class ReportUpdateComponent implements OnInit {
   }
 
   save(): void {
+    this.showDataGrid = false;
+    this.showChart = false;
     this.isSaving = true;
+    const x = this.editForm.get(['amountFrom'])!.value;
+    const y = this.editForm.get(['amountTo'])!.value;
     const report = this.createFromForm();
-    this.subscribeToSaveResponse(this.reportService.create(report));
+    this.subscribeToSaveResponse(this.reportService.getReport(report));
   }
 
   trackProvinceById(index: number, item: IProvince): number {
@@ -137,7 +145,7 @@ export class ReportUpdateComponent implements OnInit {
     return item.id!;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IReport>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IReport[]>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError()
@@ -145,7 +153,7 @@ export class ReportUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    // this.previousState();
   }
 
   protected onSaveError(): void {
@@ -187,8 +195,8 @@ export class ReportUpdateComponent implements OnInit {
   }
 
   protected createFromForm(): IReport {
-    const jalaliFromDate = this.editForm.get(['donationDate'])!.value;
-    const jalaliToDate = this.editForm.get(['donationDate'])!.value;
+    const jalaliFromDate = this.editForm.get(['fromDate'])!.value;
+    const jalaliToDate = this.editForm.get(['toDate'])!.value;
     const gregorianFromDate = moment.from(jalaliFromDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
     const gregorianToDate = moment.from(jalaliToDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
     return {
@@ -197,6 +205,7 @@ export class ReportUpdateComponent implements OnInit {
       isCash: this.editForm.get(['isCash'])!.value,
       amountFrom: this.editForm.get(['amountFrom'])!.value,
       amountTo: this.editForm.get(['amountTo'])!.value,
+      account: this.editForm.get(['account'])!.value,
       fromDate: this.editForm.get(['fromDate'])!.value ? dayjs(gregorianFromDate, DATE_FORMAT) : undefined,
       toDate: this.editForm.get(['toDate'])!.value ? dayjs(gregorianToDate, DATE_FORMAT) : undefined,
       helpType: this.editForm.get(['helpType'])!.value,

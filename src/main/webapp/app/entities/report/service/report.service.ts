@@ -14,7 +14,7 @@ export type EntityArrayResponseType = HttpResponse<IReport[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ReportService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/donations');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/reports');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -25,35 +25,11 @@ export class ReportService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  update(donation: IReport): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(donation);
+  getReport(report: IReport): Observable<EntityArrayResponseType> {
+    const copy = this.convertDateFromClient(report);
     return this.http
-      .put<IReport>(`${this.resourceUrl}/${getDonationIdentifier(donation) as number}`, copy, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  partialUpdate(donation: IReport): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(donation);
-    return this.http
-      .patch<IReport>(`${this.resourceUrl}/${getDonationIdentifier(donation) as number}`, copy, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  find(id: number): Observable<EntityResponseType> {
-    return this.http
-      .get<IReport>(`${this.resourceUrl}/${id}`, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http
-      .get<IReport[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .post<IReport[]>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   addDonationToCollectionIfMissing(donationCollection: IReport[], ...donationsToCheck: (IReport | null | undefined)[]): IReport[] {

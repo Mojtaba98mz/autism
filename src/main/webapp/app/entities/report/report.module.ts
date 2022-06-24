@@ -8,6 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { DxButtonModule } from 'devextreme-angular';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { CommonModule } from '@angular/common';
+import {
+  DxBulletModule,
+  DxChartModule,
+  DxDataGridModule,
+  DxLoadPanelModule,
+  DxSelectBoxModule,
+  DxTemplateModule,
+} from 'devextreme-angular';
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
 @NgModule({
@@ -21,6 +29,13 @@ import { DpDatePickerModule } from 'ng2-jalali-date-picker';
     NgxMatSelectSearchModule,
     DxButtonModule,
     DpDatePickerModule,
+    DxDataGridModule,
+    DxTemplateModule,
+    DxSelectBoxModule,
+    DpDatePickerModule,
+    DxLoadPanelModule,
+    DxBulletModule,
+    DxChartModule,
   ],
   declarations: [ReportUpdateComponent],
   entryComponents: [],

@@ -197,8 +197,18 @@ export class ReportUpdateComponent implements OnInit {
   protected createFromForm(): IReport {
     const jalaliFromDate = this.editForm.get(['fromDate'])!.value;
     const jalaliToDate = this.editForm.get(['toDate'])!.value;
-    const gregorianFromDate = moment.from(jalaliFromDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
-    const gregorianToDate = moment.from(jalaliToDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
+    let gregorianFromDate;
+    if (jalaliFromDate === null) {
+      gregorianFromDate = null;
+    } else {
+      gregorianFromDate = moment.from(jalaliFromDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
+    }
+    let gregorianToDate;
+    if (jalaliToDate === null) {
+      gregorianToDate = null;
+    } else {
+      gregorianToDate = moment.from(jalaliFromDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
+    }
     return {
       ...new Report(),
       id: this.editForm.get(['id'])!.value,

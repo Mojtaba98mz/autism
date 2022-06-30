@@ -3,6 +3,7 @@ package com.armaghanehayat.autism.web.rest.vm;
 import com.armaghanehayat.autism.domain.City;
 import com.armaghanehayat.autism.domain.Province;
 import com.armaghanehayat.autism.domain.enumeration.Account;
+import com.armaghanehayat.autism.domain.enumeration.HelpType;
 import java.time.Instant;
 
 public class ReportVM {
@@ -13,7 +14,7 @@ public class ReportVM {
     private Long amountTo;
     private Instant fromDate;
     private Instant toDate;
-    private String helpType;
+    private HelpType helpType;
     private Province province;
     private City city;
     private Account account;
@@ -27,7 +28,7 @@ public class ReportVM {
         Long amountTo,
         Instant fromDate,
         Instant toDate,
-        String helpType,
+        HelpType helpType,
         Province province,
         City city,
         Account account
@@ -92,11 +93,11 @@ public class ReportVM {
         this.toDate = toDate;
     }
 
-    public String getHelpType() {
+    public HelpType getHelpType() {
         return helpType;
     }
 
-    public void setHelpType(String helpType) {
+    public void setHelpType(HelpType helpType) {
         this.helpType = helpType;
     }
 

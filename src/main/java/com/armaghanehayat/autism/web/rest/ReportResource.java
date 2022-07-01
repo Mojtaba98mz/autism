@@ -2,26 +2,22 @@ package com.armaghanehayat.autism.web.rest;
 
 import com.armaghanehayat.autism.domain.City;
 import com.armaghanehayat.autism.domain.Donation;
+import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.domain.Province;
 import com.armaghanehayat.autism.domain.enumeration.Account;
 import com.armaghanehayat.autism.domain.enumeration.HelpType;
 import com.armaghanehayat.autism.repository.CityRepository;
 import com.armaghanehayat.autism.repository.GiverRepository;
 import com.armaghanehayat.autism.repository.ProvinceRepository;
+import com.armaghanehayat.autism.service.SMSService;
 import com.armaghanehayat.autism.web.rest.vm.ReportListVM;
 import com.armaghanehayat.autism.web.rest.vm.ReportVM;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing {@link Donation}.
@@ -33,11 +29,18 @@ public class ReportResource {
     private final GiverRepository giverRepository;
     private final ProvinceRepository provinceRepository;
     private final CityRepository cityRepository;
+    private final SMSService smsService;
 
-    public ReportResource(GiverRepository giverRepository, ProvinceRepository provinceRepository, CityRepository cityRepository) {
+    public ReportResource(
+        GiverRepository giverRepository,
+        ProvinceRepository provinceRepository,
+        CityRepository cityRepository,
+        SMSService smsService
+    ) {
         this.giverRepository = giverRepository;
         this.provinceRepository = provinceRepository;
         this.cityRepository = cityRepository;
+        this.smsService = smsService;
     }
 
     @PostMapping("/reports")
@@ -95,5 +98,13 @@ public class ReportResource {
                     accounts
                 )
             );
+    }
+
+    @GetMapping("/reports/send/{content}")
+    public void getCourseReport(@PathVariable String content) {
+        List<String> phoneNumbers = giverRepository.findAllPhoneNumbers();
+        for (String phoneNumber : phoneNumbers) {
+            smsService.sendSmsToGiver(phoneNumber, content);
+        }
     }
 }

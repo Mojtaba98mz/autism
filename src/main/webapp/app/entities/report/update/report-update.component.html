@@ -13,13 +13,13 @@
         <div class="row">
           <div class="col-4">
             <div class="form-group">
-              <dp-date-picker placeholder="از تاریخ" dir="rtl" mode="day" formControlName="fromDate" theme="dp-material"> </dp-date-picker>
+              <dp-date-picker placeholder="از تاریخ" dir="rtl" mode="day" formControlName="fromDate" theme="dp-material"></dp-date-picker>
             </div>
           </div>
           <div class="col-1"></div>
           <div class="col-4">
             <div class="form-group">
-              <dp-date-picker placeholder="تا تاریخ" dir="rtl" mode="day" formControlName="toDate" theme="dp-material"> </dp-date-picker>
+              <dp-date-picker placeholder="تا تاریخ" dir="rtl" mode="day" formControlName="toDate" theme="dp-material"></dp-date-picker>
             </div>
           </div>
         </div>
@@ -167,5 +167,67 @@
         </button>
       </div>
     </form>
+  </div>
+  <div class="col-12">
+    <div>
+      <dx-data-grid
+        id="gridContainer"
+        #dataGrid
+        *ngIf="showDataGrid"
+        [dataSource]="reportList"
+        [rtlEnabled]="true"
+        [allowColumnReordering]="true"
+        [noDataText]="'داده ای یافت نشد'"
+        [allowColumnResizing]="true"
+        [columnResizingMode]="'nextColumn'"
+        [showBorders]="true"
+      >
+        <dxi-column dataField="giverName" [caption]="'نام'"></dxi-column>
+        <dxi-column dataField="giverFamily" [caption]="'نام خانودگی'"></dxi-column>
+        <dxi-column dataField="giverPhoneNumber" [caption]="'شماره همراه'"></dxi-column>
+        <!--<dxi-column dataField="isCash"
+                    dataType="boolean"
+                    [caption]="'نقدی'"></dxi-column>-->
+        <dxi-column dataField="stringDonationDate" [caption]="'تاریخ کمک'"></dxi-column>
+        <dxi-column dataField="helpType" [caption]="'نوع کمک'"></dxi-column>
+        <dxi-column dataField="account" [caption]="'حساب'"> </dxi-column>
+        <dxi-column dataField="province" [caption]="'استان'"> </dxi-column>
+        <dxi-column dataField="city" [caption]="'شهر'"></dxi-column>
+        <dxi-column dataField="amount" dataType="string" format="###,000 ریال" [caption]="'مبلغ'"></dxi-column>
+        <!--<dxo-search-panel [visible]="true"
+                          [width]="200"
+                          [searchVisibleColumnsOnly]="true"
+                          [placeholder]="'جستجو'">
+        </dxo-search-panel>-->
+        <dxo-export [enabled]="true" [texts]="{ exportAll: 'خروجی اکسل' }"></dxo-export>
+        <dxo-paging [pageSize]="20"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"> </dxo-pager>
+
+        <!--<dxo-summary>
+          <dxi-group-item
+            column="userFirstName"
+            summaryType="count"
+            displayFormat="تعداد : {0}">
+          </dxi-group-item>
+          <dxi-group-item
+            column="amount"
+            summaryType="sum"
+            displayFormat="جمع : {0} تومان">
+          </dxi-group-item>
+
+          <dxi-total-item
+            column="userFirstName"
+            summaryType="count"
+            displayFormat="تعداد : {0}">
+          </dxi-total-item>
+          <dxi-total-item
+            column="amount"
+            summaryType="sum"
+            valueFormat="#,##0 تومان"
+            displayFormat="جمع : {0}">
+          </dxi-total-item>
+        </dxo-summary>-->
+      </dx-data-grid>
+    </div>
   </div>
 </div>

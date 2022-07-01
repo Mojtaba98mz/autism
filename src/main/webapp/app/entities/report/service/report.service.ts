@@ -6,11 +6,12 @@ import * as dayjs from 'dayjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
 import { getDonationIdentifier, IReport } from '../report.model';
+import { IReportList } from '../report-list.model';
+import * as moment from 'jalali-moment';
 
 export type EntityResponseType = HttpResponse<IReport>;
-export type EntityArrayResponseType = HttpResponse<IReport[]>;
+export type EntityArrayResponseType = HttpResponse<IReportList[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ReportService {
@@ -28,7 +29,7 @@ export class ReportService {
   getReport(report: IReport): Observable<EntityArrayResponseType> {
     const copy = this.convertDateFromClient(report);
     return this.http
-      .post<IReport[]>(this.resourceUrl, copy, { observe: 'response' })
+      .post<IReportList[]>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
@@ -66,9 +67,10 @@ export class ReportService {
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
-      res.body.forEach((report: IReport) => {
-        report.fromDate = report.fromDate ? dayjs(report.fromDate) : undefined;
-        report.toDate = report.toDate ? dayjs(report.toDate) : undefined;
+      res.body.forEach((report: IReportList) => {
+        const value = report.donationDate ? dayjs(report.donationDate) : undefined;
+        const date = value ? value.format('YYYY MM DD') : '';
+        report.stringDonationDate = moment(date, 'YYYY MM DD').locale('fa').format('YYYY/M/D');
       });
     }
     return res;

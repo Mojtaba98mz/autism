@@ -55,4 +55,7 @@ public interface GiverRepository extends JpaRepository<Giver, Long>, JpaSpecific
         @Param("cId") List<Long> cId,
         @Param("account") List<Account> account
     );
+
+    @Query("select g.phoneNumber from Giver g")
+    List<String> findAllPhoneNumbers();
 }

@@ -2,7 +2,8 @@
   "autismApp": {
     "reports": {
       "home": {
-        "title": "گزارش خیرین"
+        "title": "گزارش خیرین",
+        "smstitle": "ارسال پیامک"
       },
       "amount": {
         "from": "از مبلغ",

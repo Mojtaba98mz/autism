@@ -103,6 +103,17 @@
               <span jhiTranslate="global.menu.entities.report">report</span>
             </a>
           </li>
+          <li *jhiHasAnyAuthority="['ROLE_ADMIN']">
+            <a
+              class="dropdown-item"
+              routerLink="sms"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <span>ارسال پیامک</span>
+            </a>
+          </li>
           <!--<li>
             <a
               class="dropdown-item"

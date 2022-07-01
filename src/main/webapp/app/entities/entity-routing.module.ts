@@ -64,6 +64,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'autismApp.reports.home.title' },
         loadChildren: () => import('./report/report.module').then(m => m.ReportModule),
       },
+      {
+        path: 'sms',
+        data: { pageTitle: 'autismApp.reports.home.smstitle' },
+        loadChildren: () => import('./sms/sms.module').then(m => m.SmsModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

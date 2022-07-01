@@ -3,9 +3,11 @@ package com.armaghanehayat.autism.service;
 import com.armaghanehayat.autism.config.ApplicationProperties;
 import com.armaghanehayat.autism.domain.Giver;
 import com.armaghanehayat.autism.domain.User;
+import com.armaghanehayat.autism.service.dto.BulkSendSmsDto;
 import com.armaghanehayat.autism.service.dto.SendSmsDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Locale;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -33,6 +35,7 @@ public class SMSService {
     private final Logger log = LoggerFactory.getLogger(SMSService.class);
 
     private static final String SEND_SMS_END_POINT = "SendSMS";
+    private static final String SEND_BULK_SMS_END_POINT = "SendSimpleSMS";
 
     private final ApplicationProperties.SMS smsProperties;
 

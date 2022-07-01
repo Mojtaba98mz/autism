@@ -46,7 +46,7 @@
             "styles": [
               "src/main/webapp/content/scss/vendor.scss",
               "src/main/webapp/content/scss/global.scss",
-              "node_modules/devextreme/dist/css/dx.material.purple.light.css"
+              "node_modules/devextreme/dist/css/dx.light.css"
             ],
             "scripts": []
           },

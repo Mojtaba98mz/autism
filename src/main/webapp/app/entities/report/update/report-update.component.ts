@@ -1,10 +1,9 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { debounceTime, delay, filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
-import { DpDatePickerModule } from 'ng2-jalali-date-picker';
+import { Observable, Subject } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 import * as dayjs from 'dayjs';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/config/input.constants';
@@ -14,9 +13,8 @@ import { ReportService } from '../service/report.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { Giver, IGiver } from 'app/entities/giver/giver.model';
+import { IGiver } from 'app/entities/giver/giver.model';
 import { GiverService } from 'app/entities/giver/service/giver.service';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { GiverModalService } from '../../../core/giver-selection/giver-modal.service';
 import { GiverSelectionService } from '../../../core/giver-selection/giver-selection.service';
 import * as moment from 'jalali-moment';
@@ -24,10 +22,10 @@ import { IProvince } from '../../province/province.model';
 import { ICity } from '../../city/city.model';
 import { ProvinceService } from '../../province/service/province.service';
 import { CityService } from '../../city/service/city.service';
-import { IUser } from '../../user/user.model';
+import { IReportList } from '../report-list.model';
 
 @Component({
-  selector: 'jhi-donation-update',
+  selector: 'jhi-report-update',
   templateUrl: './report-update.component.html',
   styleUrls: ['./report-update.scss'],
 })
@@ -36,6 +34,7 @@ export class ReportUpdateComponent implements OnInit {
 
   provincesCollection: IProvince[] = [];
   citiesCollection: ICity[] = [];
+  reportList: IReportList[];
 
   public searching = false;
   giversSharedCollection: IGiver[] = [];
@@ -68,10 +67,8 @@ export class ReportUpdateComponent implements OnInit {
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder,
-    protected giverModalService: GiverModalService,
     protected provinceService: ProvinceService,
-    protected cityService: CityService,
-    protected giverSelectionService: GiverSelectionService
+    protected cityService: CityService
   ) {}
 
   ngOnInit(): void {
@@ -128,7 +125,7 @@ export class ReportUpdateComponent implements OnInit {
   }
 
   save(): void {
-    this.showDataGrid = false;
+    this.showDataGrid = true;
     this.showChart = false;
     this.isSaving = true;
     const x = this.editForm.get(['amountFrom'])!.value;
@@ -145,8 +142,11 @@ export class ReportUpdateComponent implements OnInit {
     return item.id!;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IReport[]>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IReportList[]>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
+      (res: any) => {
+        this.reportList = res.body;
+      },
       () => this.onSaveSuccess(),
       () => this.onSaveError()
     );

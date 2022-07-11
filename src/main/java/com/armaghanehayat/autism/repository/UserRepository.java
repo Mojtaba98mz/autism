@@ -48,6 +48,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     List<User> findAllByIdNotNullAndActivatedIsTrue();
 
+    @EntityGraph(attributePaths = "authorities")
+    List<User> findAllWithAuthoritiesByIdNotNullAndActivatedIsTrue();
+
     @Query("select user from User user where lower(concat(user.firstName, ' ', user.lastName)) like lower(concat('%', :filter,'%'))")
     List<User> filterByName(@Param("filter") String filter);
 }

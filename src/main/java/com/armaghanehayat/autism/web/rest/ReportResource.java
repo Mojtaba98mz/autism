@@ -1,19 +1,19 @@
 package com.armaghanehayat.autism.web.rest;
 
-import com.armaghanehayat.autism.domain.City;
-import com.armaghanehayat.autism.domain.Donation;
-import com.armaghanehayat.autism.domain.Giver;
-import com.armaghanehayat.autism.domain.Province;
+import com.armaghanehayat.autism.domain.*;
 import com.armaghanehayat.autism.domain.enumeration.Account;
 import com.armaghanehayat.autism.domain.enumeration.HelpType;
-import com.armaghanehayat.autism.repository.CityRepository;
-import com.armaghanehayat.autism.repository.GiverRepository;
-import com.armaghanehayat.autism.repository.ProvinceRepository;
+import com.armaghanehayat.autism.repository.*;
 import com.armaghanehayat.autism.service.SMSService;
 import com.armaghanehayat.autism.web.rest.vm.ReportListVM;
+import com.armaghanehayat.autism.web.rest.vm.ReportMonthListVM;
+import com.armaghanehayat.autism.web.rest.vm.ReportMonthVM;
 import com.armaghanehayat.autism.web.rest.vm.ReportVM;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
@@ -30,17 +30,26 @@ public class ReportResource {
     private final ProvinceRepository provinceRepository;
     private final CityRepository cityRepository;
     private final SMSService smsService;
+    private final UserRepository userRepository;
+    private final DonationRepository donationRepository;
+    private final CeremonyRepository ceremonyRepository;
 
     public ReportResource(
         GiverRepository giverRepository,
         ProvinceRepository provinceRepository,
         CityRepository cityRepository,
-        SMSService smsService
+        SMSService smsService,
+        UserRepository userRepository,
+        DonationRepository donationRepository,
+        CeremonyRepository ceremonyRepository
     ) {
         this.giverRepository = giverRepository;
         this.provinceRepository = provinceRepository;
         this.cityRepository = cityRepository;
         this.smsService = smsService;
+        this.userRepository = userRepository;
+        this.donationRepository = donationRepository;
+        this.ceremonyRepository = ceremonyRepository;
     }
 
     @PostMapping("/reports")
@@ -106,5 +115,34 @@ public class ReportResource {
         for (String phoneNumber : phoneNumbers) {
             smsService.sendSmsToGiver(phoneNumber, content);
         }
+    }
+
+    @PostMapping("/reports/month")
+    public List<ReportMonthListVM> getMonthReport(@RequestBody ReportMonthVM reportMonthVM) {
+        List<User> users = userRepository
+            .findAllWithAuthoritiesByIdNotNullAndActivatedIsTrue()
+            .stream()
+            .filter(item -> item.hasOnlyRole("ROLE_USER"))
+            .collect(Collectors.toList());
+        List<ReportMonthListVM> reportMonthListVMS = new LinkedList<>();
+        for (User user : users) {
+            List<ReportMonthListVM> collect = donationRepository
+                .findAllDonationsOfUserInDate(reportMonthVM.getFromDate(), reportMonthVM.getToDate(), user)
+                .stream()
+                .map(
+                    item -> {
+                        item.setUsername(user.getFirstName() + " " + user.getLastName());
+                        return item;
+                    }
+                )
+                .collect(Collectors.toList());
+            reportMonthListVMS.addAll(collect);
+        }
+        return reportMonthListVMS;
+    }
+
+    @PostMapping("/reports/ceremony")
+    public List<ReportMonthListVM> getCeremonyReport(@RequestBody ReportMonthVM reportMonthVM) {
+        return ceremonyRepository.findAllCeremonyInDate(reportMonthVM.getFromDate(), reportMonthVM.getToDate());
     }
 }

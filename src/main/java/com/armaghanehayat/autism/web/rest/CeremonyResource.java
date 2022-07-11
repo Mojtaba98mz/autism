@@ -8,6 +8,7 @@ import com.armaghanehayat.autism.service.criteria.CeremonyCriteria;
 import com.armaghanehayat.autism.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -68,6 +69,7 @@ public class CeremonyResource {
         if (ceremony.getId() != null) {
             throw new BadRequestAlertException("A new ceremony cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        ceremony.setGivenDate(Instant.now());
         Ceremony result = ceremonyService.save(ceremony);
         return ResponseEntity
             .created(new URI("/api/ceremonies/" + result.getId()))

@@ -23,6 +23,13 @@ import { ICity } from '../../city/city.model';
 import { ProvinceService } from '../../province/service/province.service';
 import { CityService } from '../../city/service/city.service';
 import { IReportList } from '../report-list.model';
+import { FromToModel } from '../from-to.model';
+import { IFromToList } from '../from-to-list.model';
+
+export interface ReportName {
+  id: number;
+  name: string;
+}
 
 @Component({
   selector: 'jhi-report-update',
@@ -32,9 +39,27 @@ import { IReportList } from '../report-list.model';
 export class ReportUpdateComponent implements OnInit {
   isSaving = false;
 
+  reports: ReportName[] = [
+    {
+      id: 1,
+      name: 'گزارش خیرین',
+    },
+    {
+      id: 2,
+      name: 'گزارش کاربران',
+    },
+    {
+      id: 3,
+      name: 'گزارش تشریفات',
+    },
+  ];
+
+  selectedReport: ReportName = this.reports[0];
+
   provincesCollection: IProvince[] = [];
   citiesCollection: ICity[] = [];
   reportList: IReportList[];
+  fromToReportList: IFromToList[];
 
   public searching = false;
   giversSharedCollection: IGiver[] = [];
@@ -95,7 +120,12 @@ export class ReportUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('autismApp.error', { ...err, key: 'error.file.' + err.key })),
+        this.eventManager.broadcast(
+          new EventWithContent<AlertError>('autismApp.error', {
+            ...err,
+            key: 'error.file.' + err.key,
+          })
+        ),
     });
   }
 
@@ -128,10 +158,16 @@ export class ReportUpdateComponent implements OnInit {
     this.showDataGrid = true;
     this.showChart = false;
     this.isSaving = true;
-    const x = this.editForm.get(['amountFrom'])!.value;
-    const y = this.editForm.get(['amountTo'])!.value;
-    const report = this.createFromForm();
-    this.subscribeToSaveResponse(this.reportService.getReport(report));
+    if (this.selectedReport.id === 1) {
+      const report = this.createFromForm();
+      this.subscribeToSaveResponse(this.reportService.getReport(report), 1);
+    } else if (this.selectedReport.id === 2) {
+      const report = this.createFromToDate();
+      this.subscribeToSaveResponse(this.reportService.getUsersReport(report), 2);
+    } else {
+      const report = this.createFromToDate();
+      this.subscribeToSaveResponse(this.reportService.getCeremonyReport(report), 3);
+    }
   }
 
   trackProvinceById(index: number, item: IProvince): number {
@@ -142,10 +178,14 @@ export class ReportUpdateComponent implements OnInit {
     return item.id!;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IReportList[]>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IReportList[]>>, reportType: number): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       (res: any) => {
-        this.reportList = res.body;
+        if (reportType === 1) {
+          this.reportList = res.body;
+        } else {
+          this.fromToReportList = res.body;
+        }
       },
       () => this.onSaveSuccess(),
       () => this.onSaveError()
@@ -182,6 +222,28 @@ export class ReportUpdateComponent implements OnInit {
     this.citiesCollection = this.cityService.addCityToCollectionIfMissing(this.citiesCollection, report.city);
   }
 
+  protected createFromToDate(): FromToModel {
+    const jalaliFromDate = this.editForm.get(['fromDate'])!.value;
+    const jalaliToDate = this.editForm.get(['toDate'])!.value;
+    let gregorianFromDate;
+    if (jalaliFromDate === null) {
+      gregorianFromDate = null;
+    } else {
+      gregorianFromDate = moment.from(jalaliFromDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
+    }
+    let gregorianToDate;
+    if (jalaliToDate === null) {
+      gregorianToDate = null;
+    } else {
+      gregorianToDate = moment.from(jalaliToDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
+    }
+    return {
+      ...new FromToModel(),
+      fromDate: this.editForm.get(['fromDate'])!.value ? dayjs(gregorianFromDate, DATE_FORMAT) : undefined,
+      toDate: this.editForm.get(['toDate'])!.value ? dayjs(gregorianToDate, DATE_FORMAT) : undefined,
+    };
+  }
+
   protected loadRelationshipsOptions(): void {
     this.provinceService
       .query({ size: '32' })
@@ -207,7 +269,7 @@ export class ReportUpdateComponent implements OnInit {
     if (jalaliToDate === null) {
       gregorianToDate = null;
     } else {
-      gregorianToDate = moment.from(jalaliFromDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
+      gregorianToDate = moment.from(jalaliToDate.locale('fa').format('YYYY-MM-DD'), 'fa', 'YYYY-MM-DD').format('YYYY-MM-DD');
     }
     return {
       ...new Report(),

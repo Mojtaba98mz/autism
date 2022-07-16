@@ -41,11 +41,10 @@ public interface GiverRepository extends JpaRepository<Giver, Long>, JpaSpecific
     @Query(
         "select new com.armaghanehayat.autism.web.rest.vm.ReportListVM(g.id,g.name,g.family,g.phoneNumber,d.isCash,d.amount,d.donationDate,d.helpType,p.name,c.name,d.account)" +
         "from Giver g left join fetch Donation d on g.id = d.giver.id inner join fetch Province p on g.province.id = p.id " +
-        "inner join fetch City c on c.id = g.city.id where d.isCash = :isCash and d.amount between :amountFrom and :amountTo and d.donationDate between :fromDate and :toDate " +
+        "inner join fetch City c on c.id = g.city.id where d.isCash = true and d.amount between :amountFrom and :amountTo and d.donationDate between :fromDate and :toDate " +
         "and d.helpType in(:helpType) and p.id in(:pId) and c.id in(:cId) and d.account in (:account)"
     )
     List<ReportListVM> getReport(
-        @Param("isCash") Boolean isCash,
         @Param("amountFrom") Long amountFrom,
         @Param("amountTo") Long amountTo,
         @Param("fromDate") Instant fromDate,
@@ -54,6 +53,22 @@ public interface GiverRepository extends JpaRepository<Giver, Long>, JpaSpecific
         @Param("pId") List<Long> pId,
         @Param("cId") List<Long> cId,
         @Param("account") List<Account> account
+    );
+
+    @Query(
+        "select new com.armaghanehayat.autism.web.rest.vm.ReportListVM(g.id,g.name,g.family,g.phoneNumber,d.isCash,d.amount,d.donationDate,d.helpType,p.name,c.name,d.account)" +
+        "from Giver g left join fetch Donation d on g.id = d.giver.id inner join fetch Province p on g.province.id = p.id " +
+        "inner join fetch City c on c.id = g.city.id where d.isCash = false and d.amount between :amountFrom and :amountTo and d.donationDate between :fromDate and :toDate " +
+        "and d.helpType in(:helpType) and p.id in(:pId) and c.id in(:cId) "
+    )
+    List<ReportListVM> getNotCashReport(
+        @Param("amountFrom") Long amountFrom,
+        @Param("amountTo") Long amountTo,
+        @Param("fromDate") Instant fromDate,
+        @Param("toDate") Instant toDate,
+        @Param("helpType") List<HelpType> helpType,
+        @Param("pId") List<Long> pId,
+        @Param("cId") List<Long> cId
     );
 
     @Query("select g.phoneNumber from Giver g")

@@ -92,21 +92,36 @@ public class ReportResource {
         } else {
             cities.add(reportVM.getCity().getId());
         }
-        return ResponseEntity
-            .ok()
-            .body(
-                giverRepository.getReport(
-                    reportVM.getIsCash(),
-                    reportVM.getAmountFrom(),
-                    reportVM.getAmountTo(),
-                    reportVM.getFromDate(),
-                    reportVM.getToDate(),
-                    helpTypes,
-                    provinces,
-                    cities,
-                    accounts
-                )
-            );
+        if (reportVM.getIsCash()) {
+            return ResponseEntity
+                .ok()
+                .body(
+                    giverRepository.getReport(
+                        reportVM.getAmountFrom(),
+                        reportVM.getAmountTo(),
+                        reportVM.getFromDate(),
+                        reportVM.getToDate(),
+                        helpTypes,
+                        provinces,
+                        cities,
+                        accounts
+                    )
+                );
+        } else {
+            return ResponseEntity
+                .ok()
+                .body(
+                    giverRepository.getNotCashReport(
+                        reportVM.getAmountFrom(),
+                        reportVM.getAmountTo(),
+                        reportVM.getFromDate(),
+                        reportVM.getToDate(),
+                        helpTypes,
+                        provinces,
+                        cities
+                    )
+                );
+        }
     }
 
     @GetMapping("/reports/send/{content}")
@@ -117,8 +132,10 @@ public class ReportResource {
         }
     }
 
-    @PostMapping("/reports/month")
+    @PostMapping("/reports/users")
     public List<ReportMonthListVM> getMonthReport(@RequestBody ReportMonthVM reportMonthVM) {
+        if (reportMonthVM.getFromDate() == null) reportMonthVM.setFromDate(ZonedDateTime.now().minusYears(20).toInstant());
+        if (reportMonthVM.getToDate() == null) reportMonthVM.setToDate(ZonedDateTime.now().plusYears(20).toInstant());
         List<User> users = userRepository
             .findAllWithAuthoritiesByIdNotNullAndActivatedIsTrue()
             .stream()
@@ -143,6 +160,8 @@ public class ReportResource {
 
     @PostMapping("/reports/ceremony")
     public List<ReportMonthListVM> getCeremonyReport(@RequestBody ReportMonthVM reportMonthVM) {
+        if (reportMonthVM.getFromDate() == null) reportMonthVM.setFromDate(ZonedDateTime.now().minusYears(20).toInstant());
+        if (reportMonthVM.getToDate() == null) reportMonthVM.setToDate(ZonedDateTime.now().plusYears(20).toInstant());
         return ceremonyRepository.findAllCeremonyInDate(reportMonthVM.getFromDate(), reportMonthVM.getToDate());
     }
 }

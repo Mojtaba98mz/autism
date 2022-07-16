@@ -9,6 +9,8 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { getDonationIdentifier, IReport } from '../report.model';
 import { IReportList } from '../report-list.model';
 import * as moment from 'jalali-moment';
+import { IFromToModel } from '../from-to.model';
+import { FromToListModel } from '../from-to-list.model';
 
 export type EntityResponseType = HttpResponse<IReport>;
 export type EntityArrayResponseType = HttpResponse<IReportList[]>;
@@ -31,6 +33,20 @@ export class ReportService {
     return this.http
       .post<IReportList[]>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  getCeremonyReport(report: IFromToModel): Observable<HttpResponse<FromToListModel[]>> {
+    const copy = this.convertDateFromClient(report);
+    return this.http
+      .post<FromToListModel[]>(this.resourceUrl + '/ceremony', copy, { observe: 'response' })
+      .pipe(map((res: HttpResponse<FromToListModel[]>) => this.convertDateArrayFromServer(res)));
+  }
+
+  getUsersReport(report: IFromToModel): Observable<HttpResponse<FromToListModel[]>> {
+    const copy = this.convertDateFromClient(report);
+    return this.http
+      .post<FromToListModel[]>(this.resourceUrl + '/users', copy, { observe: 'response' })
+      .pipe(map((res: HttpResponse<FromToListModel[]>) => this.convertDateArrayFromServer(res)));
   }
 
   addDonationToCollectionIfMissing(donationCollection: IReport[], ...donationsToCheck: (IReport | null | undefined)[]): IReport[] {
@@ -68,6 +84,16 @@ export class ReportService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((report: IReportList) => {
+        const value = report.donationDate ? dayjs(report.donationDate) : undefined;
+        const date = value ? value.format('YYYY MM DD') : '';
+        report.stringDonationDate = moment(date, 'YYYY MM DD').locale('fa').format('YYYY/M/D');
+      });
+    }
+    return res;
+  }
+  protected convertFromToDateArrayFromServer(res: HttpResponse<FromToListModel[]>): HttpResponse<FromToListModel[]> {
+    if (res.body) {
+      res.body.forEach((report: FromToListModel) => {
         const value = report.donationDate ? dayjs(report.donationDate) : undefined;
         const date = value ? value.format('YYYY MM DD') : '';
         report.stringDonationDate = moment(date, 'YYYY MM DD').locale('fa').format('YYYY/M/D');

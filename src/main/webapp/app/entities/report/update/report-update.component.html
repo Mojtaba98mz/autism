@@ -12,18 +12,41 @@
 
         <div class="row">
           <div class="col-4">
+            <div class="dx-field">
+              <div class="dx-field-value">
+                <dx-select-box
+                  #selectBox
+                  [dataSource]="reports"
+                  [(selectedItem)]="selectedReport"
+                  displayExpr="name"
+                  valueExpr="id"
+                  [value]="reports[0].id"
+                >
+                  <div *dxTemplate="let data of 'item'">
+                    <div class="custom-item">
+                      <div class="product-name">
+                        {{ data.name }}
+                      </div>
+                    </div>
+                  </div>
+                </dx-select-box>
+              </div>
+              <div class="dx-field-label">نوع گزارش</div>
+            </div>
+          </div>
+
+          <div class="col-4">
             <div class="form-group">
               <dp-date-picker placeholder="از تاریخ" dir="rtl" mode="day" formControlName="fromDate" theme="dp-material"></dp-date-picker>
             </div>
           </div>
-          <div class="col-1"></div>
           <div class="col-4">
             <div class="form-group">
               <dp-date-picker placeholder="تا تاریخ" dir="rtl" mode="day" formControlName="toDate" theme="dp-material"></dp-date-picker>
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="selectedReport.id === 1">
           <div class="col-2">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.donation.isCash" for="field_isCash">Is Cash</label>
@@ -62,7 +85,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="selectedReport.id === 1">
           <div class="col-5">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.reports.amount.from" for="field_amount_from">Amount</label>
@@ -115,7 +138,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="selectedReport.id === 1">
           <div class="col-6">
             <div class="form-group">
               <label class="form-control-label" jhiTranslate="autismApp.giver.province" for="field_province">Province</label>
@@ -168,7 +191,7 @@
       </div>
     </form>
   </div>
-  <div class="col-12">
+  <div class="col-12" *ngIf="selectedReport.id === 1">
     <div>
       <dx-data-grid
         id="gridContainer"
@@ -190,44 +213,57 @@
                     [caption]="'نقدی'"></dxi-column>-->
         <dxi-column dataField="stringDonationDate" [caption]="'تاریخ کمک'"></dxi-column>
         <dxi-column dataField="helpType" [caption]="'نوع کمک'"></dxi-column>
-        <dxi-column dataField="account" [caption]="'حساب'"> </dxi-column>
-        <dxi-column dataField="province" [caption]="'استان'"> </dxi-column>
+        <dxi-column dataField="account" [caption]="'حساب'"></dxi-column>
+        <dxi-column dataField="province" [caption]="'استان'"></dxi-column>
         <dxi-column dataField="city" [caption]="'شهر'"></dxi-column>
         <dxi-column dataField="amount" dataType="string" format="###,000 ریال" [caption]="'مبلغ'"></dxi-column>
-        <!--<dxo-search-panel [visible]="true"
-                          [width]="200"
-                          [searchVisibleColumnsOnly]="true"
-                          [placeholder]="'جستجو'">
-        </dxo-search-panel>-->
         <dxo-export [enabled]="true" [texts]="{ exportAll: 'خروجی اکسل' }"></dxo-export>
         <dxo-paging [pageSize]="20"></dxo-paging>
-        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"> </dxo-pager>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"></dxo-pager>
         <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-group-panel [visible]="true" text [emptyPanelText]="'برای گروه بندی یک سرستون را اینجا بکشید'"> </dxo-group-panel>
 
-        <!--<dxo-summary>
-          <dxi-group-item
-            column="userFirstName"
-            summaryType="count"
-            displayFormat="تعداد : {0}">
-          </dxi-group-item>
-          <dxi-group-item
-            column="amount"
-            summaryType="sum"
-            displayFormat="جمع : {0} تومان">
-          </dxi-group-item>
+        <dxo-summary>
+          <dxi-group-item column="username" summaryType="count" displayFormat="تعداد : {0}"> </dxi-group-item>
+          <dxi-group-item column="amount" summaryType="sum" displayFormat="جمع : {0} ریال"> </dxi-group-item>
 
-          <dxi-total-item
-            column="userFirstName"
-            summaryType="count"
-            displayFormat="تعداد : {0}">
-          </dxi-total-item>
-          <dxi-total-item
-            column="amount"
-            summaryType="sum"
-            valueFormat="#,##0 تومان"
-            displayFormat="جمع : {0}">
-          </dxi-total-item>
-        </dxo-summary>-->
+          <dxi-total-item column="username" summaryType="count" displayFormat="تعداد : {0}"> </dxi-total-item>
+          <dxi-total-item column="amount" summaryType="sum" valueFormat="#,##0 ریال" displayFormat="جمع : {0}"> </dxi-total-item>
+        </dxo-summary>
+      </dx-data-grid>
+    </div>
+  </div>
+
+  <div class="col-12" *ngIf="selectedReport.id !== 1">
+    <div>
+      <dx-data-grid
+        id="userCeremonyContainer"
+        #dataGrid
+        *ngIf="showDataGrid"
+        [dataSource]="fromToReportList"
+        [rtlEnabled]="true"
+        [allowColumnReordering]="true"
+        [noDataText]="'داده ای یافت نشد'"
+        [allowColumnResizing]="true"
+        [columnResizingMode]="'nextColumn'"
+        [showBorders]="true"
+      >
+        <dxi-column dataField="username" [caption]="'نام و نام خانوادگی'"></dxi-column>
+        <dxi-column dataField="stringDonationDate" [caption]="'تاریخ کمک'"></dxi-column>
+        <dxi-column dataField="amount" dataType="string" format="###,000 ریال" [caption]="'مبلغ'"></dxi-column>
+        <dxo-export [enabled]="true" [texts]="{ exportAll: 'خروجی اکسل' }"></dxo-export>
+        <dxo-paging [pageSize]="20"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 30]"></dxo-pager>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-group-panel [visible]="true" text [emptyPanelText]="'برای گروه بندی یک سرستون را اینجا بکشید'"> </dxo-group-panel>
+
+        <dxo-summary>
+          <dxi-group-item column="username" summaryType="count" displayFormat="تعداد : {0}"> </dxi-group-item>
+          <dxi-group-item column="amount" summaryType="sum" displayFormat="جمع : {0} ریال"> </dxi-group-item>
+
+          <dxi-total-item column="username" summaryType="count" displayFormat="تعداد : {0}"> </dxi-total-item>
+          <dxi-total-item column="amount" summaryType="sum" valueFormat="#,##0 ریال" displayFormat="جمع : {0}"> </dxi-total-item>
+        </dxo-summary>
       </dx-data-grid>
     </div>
   </div>
